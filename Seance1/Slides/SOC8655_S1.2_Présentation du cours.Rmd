@@ -1,0 +1,334 @@
+---
+title: "Séance 1.2: Présentation du cours"
+author: "Visseho Adjiwanou"
+institute: "Sociologie, UQAM"
+#date: "`r format(Sys.time(), '%d %B %Y')`"
+output:
+  beamer_presentation:
+    colortheme: beaver
+    fonttheme: structurebold
+    theme: Ilmenau
+  slidy_presentation: default
+  ioslides_presentation: default
+header-includes:
+  - \usepackage{color}
+---
+
+## Plan de présentation
+
+- Introduction
+    - Introduction
+    - Objectifs du cours
+    - Différences avec les autres cours de statistiques
+- Matériels
+    - Logiciels
+    - Datacamp
+    - Autres: Slack, Perusall
+    - Références
+- Modes d'évaluation
+- Calendrier
+- Que faire pour réussir ce cours
+
+
+Introduction
+========================================================
+
+## Introduction
+
+- Ce cours présente les notions **avancées** en méthodes quantitatives (et computationnelles) en sociologie
+- Changements importants dans l'écosystème des méthodes quantitatives (voir introduction)
+- Ce cours ambitionne de vous introduire à ces changements et de vous former à prendre plein contrôle de ces nouvelles méthodes
+
+## Introduction
+
+Subdivisé en trois parties :
+
+1. La première partie :
+  - introduit l'environnement RStudio
+  - présente les concepts fondamentaux de la modélisation statistique et 
+  - traite de leurs problèmes (causalité, mesure, échantillonnage) et de leurs solutions. 
+  - présente les notions de relation entre les variables et de leur évaluation. 
+  - fait un survol rapide de l’analyse descriptive, 
+  
+## Introduction
+  
+2. La deuxième partie présente une série de modèles de régression et de leurs extensions.
+
+3. La troisième partie présente :
+  - les nouveaux types de données disponibles pour les chercheurs en sciences sociales, principalement les données de Twitter et de Facebook;
+  - et les nouvelles méthodes d'analyse de ces données (analyses textuelles, analyses de réseaux).
+
+## Objectifs du cours
+
+À la fin du cours, l'étudiant(e) sera capable de :
+
+1. Comprendre quels sont les types de données en sociologie et en démographie et les problèmes qui s’y rattachent;
+2. Comprendre les problèmes conceptuels et empiriques présents dans de nombreuses études empiriques;
+3. Appliquer un jugement critique et objectif sur la validité de la méthodologie d’un article scientifique;
+4. Comprendre la différence entre corrélation et causalité;
+5. Conduire une analyse descriptive avec une visualisation appropriée des résultats;
+
+## Objectifs du cours
+
+À la fin du cours, l'étudiant(e) sera capable de :
+
+6. Savoir utiliser les méthodes statistiques les plus populaires utilisées en sociologie et leurs extensions;
+7. Comprendre et utiliser les nouvelles approches d’analyse sur les données numériques en sciences sociales
+8. Utiliser R et RStudio pour analyser les données
+9. Produire un document de recherche à partir de RMarkdown
+
+
+## Différences avec les autres cours de statistiques
+
+1. Motiver les étudiants
+  - L'analyse des données est un outil nécessaire pour la recherche en sciences sociales.
+  - L'analyse de données comme une compétence utile pour la carrière de troisième cycle
+2. Aider les étudiants à apprendre efficacement :
+  - Des devoirs courts mais fréquents.
+  - Instruction pratique dans les laboratoires informatiques
+  - Assistance en dehors de la classe: en ligne ou en personne
+
+
+## Différences avec les autres cours de statistiques
+
+<!--
+Ce qui se faisait                          Ce que nous allons faire
+----------------------------------------   ----------------------------------------
+Statistiques avec des crayons et papiers   Analyse des données
+Probabilité -> Statistiques -> Données     Données -> Probabilité -> Statistiques
+Général -> Applications                    Applications -> Général -> Applications
+Exemples imaginaires                       Vraies données de recherche
+Cours magistraux                           Cours magistraux + Labs
+Examens                                    Examens + Devoirs + Lectures
+
+-->
+
+
+<!--![](/Users/visseho/OneDrive - UQAM/Cours/Images_cours/differences.png)-->
+
+
+```{r, out.width='90%', echo = FALSE, fig.align = 'center'}
+knitr::include_graphics("/Users/visseho/OneDrive - UQAM/Cours/Images_cours/differences.png")
+```
+
+
+
+## Différences avec les autres cours de statistiques
+
+- Combine trois composantes essentielles:
+  1. Recherche en sciences sociales
+  2. Concepts méthodologiques
+  3. Programmation informatique (en utilisant R et RStudio)
+- Enseigne l'analyse des données et développe l'intuition statistique avant les statistiques
+
+
+Matériels
+========================================================
+
+## Logiciels
+
+1. Logiciels
+  - Utilisation du logiciel R avec RStudio, RMarkDown
+  - Apprentissage personnel à partir de Datacamp
+  - Apprentissage en classe
+  - Appui constant de la part du professeur
+  - Séminaire en R
+
+2. Installation
+
+Voir plan de cours
+
+  - http://cran.cnr.berkeley.edu/
+  - https://www.rstudio.com/
+  - https://miktex.org/2.9/setup ou 
+  - https://pages.uoregon.edu/koch/texshop/
+
+
+## Logiciels
+
+- BlueSkyStatistics est une interface intégrée (Graphical User Interface) pour utiliser R (similaire à SPSS). Vous pouvez l’installer à partir de ce lien : https://www.blueskystatistics.com/Articles.asp?ID=317. 
+
+## Datacamp
+
+> - Datacamp est une plateforme d’apprentissage en ligne qui sera utilisé tout au long de la session pour appuyer votre apprentissage. Vous n’avez pas à payer pour les cours qui y sont dessus, je m’en suis déjà chargé. 
+> - Veuillez-vous inscrire à partir de ce lien pour accéder aux cours (pour ceux qui ne l'ont pas encore fait): https://www.datacamp.com/groups/sharedlinks/96288181e47119bd675b6f15982e6770687fb8f37b2305dbe5ce399dff5bff0b
+
+> - Je vous encourage vivement (dans la mesure de vos possibilités) à compléter les deux premiers chapitres “Introduction à R” et “Introduction to the Tidyverse” avant le début des classes. N’hésitez pas à me contacter si vous avez des questions.
+
+## Slack
+
+> - Slack est un forum de discussion en classe où vous pouvez poser des questions sur le matériel, interagir avec vos camarades. 
+
+> - Vous pouvez aussi poser directement vos questions sur Moodle. 
+
+> - Sachez que vos questions peuvent aider d’autres personnes aussi à comprendre la matière. 
+
+> - De même, d’autres personnes peuvent avoir de meilleures réponses à vos questions que moi. 
+
+> - Slack dispose d'une interface bureau ainsi que d'une application pour votre téléphone
+
+## Perusal
+
+> - Perusall est une plate-forme avec annotation collaborative qui vous permet de poser et de répondre aux questions directement dans le texte que vous lisez ; des questions sur les parties du texte que vous ne comprenez pas. 
+
+> - D’autres étudiants du cours peuvent y répondre. 
+
+> - Donc, poser de bonnes questions ne vous aide pas seulement, cela aide aussi vos camarades de classe. Si vous connaissez la réponse à une question posée par un autre étudiant, veuillez apporter une contribution à la classe et essayez d'y répondre! 
+
+> - Pour accéder aux textes en ligne, vous devez créer un compte sur https://perusall.com/ et joindre le cours avec ce code VISSEHO-RVPTJ.
+
+
+## Références
+
+> 1. Références importantes 
+
+  > - John, Fox & Sanford, Weisberg. 2019. An R Companion to Applied regression, 3rd edition. Sage. (Obligatoires)
+
+  > - Wickham, Hadley & Grolemund, Garrett. 2017. R for Data Science: Import, Tidy, Transform, Visualize, and Model data. Boston. O'Reilly. Pp.492. Version en ligne: http://r4ds.had.co.nz/
+   
+  > - Salganik, Matthews. 2017. Bit by bit: Social research in the digital age. Princeton University Press. https://www.bitbybitbook.com/fr/1st-ed/preface/
+
+
+## Références
+
+> 2. Autres Références
+  
+  > - Kosuke Imai. 2017. Quantitative social science: An introduction. Princeton University Press.
+  
+  > - Fox, W. 1999. Statistiques sociales. Les Presses de l'Université Laval. Traduit de l'Anglais et adapté par L.M. Imbeau. (Pour vous rappeler les notions du bac)
+
+
+## Références
+
+> 2. Autres Références
+    
+  > - Tabachnick, B. et Fidell, L. 2013. Using Multivariate Statistics, 6th Edition. Pearson.
+   
+  > - Kennedy, Peter. 2008. A Guide to Econometrics. Malden, MA: Blackwell Publishing.
+  
+  > - Babbie, Earl. 2015. The Practice of social research. 14th Edition. Belmont, CA: Wadsworth.
+
+
+## Ressources en ligne
+
+> 1. **En français**: 
+
+> - https://juba.github.io/tidyverse/index.html: Une très bonne ressource en français 
+> - http://dimension.usherbrooke.ca/dimension/v2ssrcadre.html
+
+> 2. **En anglais**: 
+
+> - https://clanfear.github.io/CSSS508/: Vous avez une série de cours et de code ici 
+
+> - https://jrnold.github.io/qss-tidy/: tous les codes du livre de Kosuke Imai sont réecrits ici en version tidyverse. 
+
+> - https://r4ds.had.co.nz/: le livre de Wickham en ligne 
+
+
+## Ressources en ligne
+
+> 2. **En anglais**: 
+
+> - https://www.bitbybitbook.com/en/1st-ed/preface/: le livre de Salganik en ligne 
+
+> - https://education.rstudio.com/teach/materials/
+
+<!--- https://data.hypotheses.org/-->
+
+## Ressources en ligne
+
+- Comme vous vous en rendrez compte assez rapidement, il y a des millions de ressources en ligne. Votre tâche souvent va consister à trouver la bonne ressource pour la tâche à faire. Aussi, google.com vous sera d’un atout formidable.
+
+## Mode d'évaluation
+
+1. **Lectures d’articles et travaux pratiques** (25%)
+    - Vous avez à faire le résumé de deux lectures assignées à vous et le soumettre la veille de chaque cours (voir section sur Calendrier). 
+    - De même, je vais vous assigner des capsules vidéo à écouter sur Datacamp chaque semaine, qui seront évaluées. 
+    - Par ailleurs, chaque étudiant.e aura à faire une présentation de 15 minutes sur un des articles lus. Vous devez vous filmer et envoyer la présentation puisque nous n’aurons pas le temps de faire une présentation synchrone. Vingt-cinq pour cent (25%) de la note finale est attribuée à votre engagement avec ces matériels.  
+
+## Mode d'évaluation
+
+2. **Travaux de maison** (40%)
+    - Quatre (4) devoirs couvrant les principaux chapitres du cours
+    - Devoirs à faire avec documents ouverts mais pas en groupe
+    - Utilisation de RMarkDown pour soumettre les devoirs
+    - Deux semaines pour rendre le devoir (sauf le 6e)
+    - Compte chacun pour 10%
+
+## Mode d'évaluation
+
+3. **Projet final** (35%)
+    - Vous aurez à soumettre un projet final de 7500 mots sur un sujet de votre choix. 
+    - Idéalement, ce projet doit couvrir les deux parties du cours. Vous aurez jusqu’au 5 janvier pour soumettre ce projet. 
+    - Ce projet peut être fait individuellement ou par binôme. Voici les étapes et échéances à respecter pour la soumission du projet :
+    - Réplication d'un article qui vous sera assigné ou de votre choix (mais après discussion avec moi). Il y aura différentes étapes à suivre jusqu'au projet final. 
+    - Possibilité de travailler sur votre propre projet.
+
+## Mode d'évaluation
+
+4. **Note finale**
+
+- Votre note finale sera une moyenne pondérée de votre note du projet final ou examen final (35%), des séries de devoirs (40%), des cours sur datacamp, des travaux pratiques et de résumé de lectures (25%). 
+- Je me réserve le droit de donner des bonus pour une participation active à l'intérieur et à l'extérieur de la classe. Par exemple, un étudiant qui aide activement ses camarades de classe en répondant aux questions ou qui s'engage de manière productive en classe pourrait avoir droit à une petite prime.
+
+## Mode d'évaluation
+
+Remarques: 
+
+  - Advenant un problème pour compléter les 4 devoirs, la pondération des devoirs non faite sera distribuée équitablement entre le reste des devoirs (50%) et l'examen final (50%).
+
+
+## Mode d'évaluation
+
+
+Devoirs               Date remise                Date de soumission 
+--------------------  -------------------------  ---------------------
+1                     3 octobre                  17 octobre         
+2                     7 novembre                 21 novembre         
+3                     28 novembre                14 décembre        
+4                     12 décembre                19 décembre        
+
+## Mode d'évaluation
+
+Pénalités pour les devoirs et les cours:
+
+  - Chaque devoir soumis en retard sera pénalisé de 3% par jour de retard de la note obtenue
+  - Des étudiants qui rendront des travaux similaires seront sévèrement pénalisés. Leurs devoirs seront simplement annulés.
+  - Chaque cours manqué sans justification entraîne une pénalité de 2% sur la moyenne finale.
+
+
+## Mode d'évaluation: échéance projet
+
+
+Date               Date remise              
+-----------------  ----------------------------------------------
+26 septembre       Soumission de votre sujet de recherche 
+                   (1 page d’introduction – 10%)
+31 octobre         Soumission de votre revue de littérature (15%)
+21 novembre        Soumission de votre méthodologie et plan d’analyse (15%) 
+19 décembre        Soumission du draft du projet (ou projet final)
+4 janvier          Soumission du projet final
+
+
+## Calendrier 
+
+Voir syllabus
+
+
+## Que faire pour réussir ce cours
+
+1. Pour être franc, je demanderai de votre part plus de **motivation** et de bonne **volonté** que de connaissances à proprement parler.
+2. Si vous étudiez seul et que vous rencontrez quelque chose que vous ne comprenez pas, votre premier réflexe devrait de **revoir les notes de cours et les diapositives**. Il y a beaucoup d’information dans les diapositives et ils sont destinés à être examinés plusieurs fois, pas seulement vus une fois pendant le cours.
+3. Garder un esprit positif.
+4. Soyez patient envers vous-même.
+5. Ne jamais vous sous-estimer.
+6. Faites vos lectures et exercices.
+7. Pratiquer R, pratiquer R, pratiquer R.
+
+Bonne session
+========================================================
+
+
+
+
+
