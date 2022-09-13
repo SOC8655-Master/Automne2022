@@ -84,7 +84,7 @@ Intérêts de recherche
 
 ```{r, out.width='70%', echo = FALSE, fig.align = 'center'}
 
-knitr::include_graphics("/Users/visseho/OneDrive - UQAM/Cours/Images_cours/odd_poster.jpg")
+knitr::include_graphics("../Images/odd_poster.jpg")
 ```
 
 
@@ -191,7 +191,7 @@ Exemples
 
 
 ```{r, out.width='80%', echo = FALSE, fig.align = 'center'}
-knitr::include_graphics("/Users/visseho/OneDrive - UQAM/Cours/Images_cours/joke1.png")
+knitr::include_graphics("../Images/joke1.png")
 ```
 
 
@@ -203,7 +203,7 @@ knitr::include_graphics("/Users/visseho/OneDrive - UQAM/Cours/Images_cours/joke1
 
 
 ```{r, out.width='80%', echo = FALSE, fig.align = 'center'}
-knitr::include_graphics("/Users/visseho/OneDrive - UQAM/Cours/Images_cours/Blumenstock.jpg")
+knitr::include_graphics("../Images/Blumenstock.jpg")
 
 ```
 
@@ -231,7 +231,7 @@ L'étude combine des données volumineuses (Big Data) avec des données d'enquê
 ## Prédire la pauvreté
 
 ```{r, out.width='80%', echo = FALSE, fig.align = 'center'}
-knitr::include_graphics("/Users/visseho/OneDrive - UQAM/Cours/Images_cours/Matthews2.png")
+knitr::include_graphics("../Images/Matthews2.png")
 
 ```
 
@@ -240,7 +240,7 @@ knitr::include_graphics("/Users/visseho/OneDrive - UQAM/Cours/Images_cours/Matth
 
 
 ```{r, out.width='80%', echo = FALSE, fig.align = 'center'}
-knitr::include_graphics("/Users/visseho/OneDrive - UQAM/Cours/Images_cours/blum_pp.png")
+knitr::include_graphics("../Images/blum_pp.png")
 
 ```
 
@@ -249,7 +249,7 @@ knitr::include_graphics("/Users/visseho/OneDrive - UQAM/Cours/Images_cours/blum_
 ## Prédire la pauvreté
 
 ```{r, out.width='80%', echo = FALSE, fig.align = 'center'}
-knitr::include_graphics("/Users/visseho/OneDrive - UQAM/Cours/Images_cours/blum_pp2.png")
+knitr::include_graphics("../Images/blum_pp2.png")
 
 ```
 
