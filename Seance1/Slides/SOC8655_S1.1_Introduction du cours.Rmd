@@ -155,13 +155,19 @@ Exercice 1: Télécharger vos données de Facebook pour le prochain cours.
     - Capacité de stockage X 2 plus ou moins tous les 40 mois
     - Progrès très rapides dans l'apprentissage automatique /Intelligence Artificielle.
 
-<!--![](/Users/visseho/OneDrive - UQAM/Cours/Images_cours/Matthews.png)-->
+<!--![](/Users/visseho/OneDrive - UQAM/Cours/Images_cours/Matthews.png)
 
 
 ```{r, out.width='70%', echo = FALSE, fig.align = 'center'}
 knitr::include_graphics("/Users/visseho/OneDrive - UQAM/Cours/Images_cours/Matthews.png")
 ```
 
+-->
+
+
+```{r, out.width='70%', echo = FALSE, fig.align = 'center'}
+knitr::include_graphics("../Images/Matthews.png")
+```
 
 ## Conséquences
 
