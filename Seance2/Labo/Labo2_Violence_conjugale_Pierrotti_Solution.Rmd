@@ -1,31 +1,14 @@
 ---
-title: 'Devoir2: Accès à l information et attitudes face à la violence conjugale'
+title: 'Labo 2: Accès à l information et attitudes face à la violence conjugale'
 author: "Visseho Adjiwanou, PhD."
-date: "26/9/2018"
+#date: "26/9/2018"
 output:
   pdf_document: default
   word_document: default
   html_document: default
 ---
 
---------------------------------------------------------------------------------
-**NOTE**
 
-1. Ce devoir est à rendre au plus grand tard le **10 octobre**. 
-
-2. Vous me l'envoyer par courriel, une version RMarkDown et une version pdf.
-
-3. Je répondrai à vos questions sur ce devoir jusqu'au **4 octobre**.
-
-4. Si vous travaillez par groupe de deux, vous devez me l'indiquer à l'avance.
-
-  * Indiquer la contribution de chacun.
-  
-  * Noter votre camarade.
-  
-5. Éviter le **plagiat**. Éviter de vous copier.
-
---------------------------------------------------
 Dans cet exercice, nous examinons les différences transnationales dans les attitudes envers la violence domestique et l'accès à l'information. Nous explorons l’hypothèse selon laquelle il existe une association à un niveau global, entre la mesure dans laquelle les individus dans un pays ont accès à la connaissance et aux nouvelles informations, à la fois, à travers la scolarisation formelle et par les médias, et leur probabilité de condamner les actes de violence conjugale. Cet exercice est en partie basé sur:
 
 Pierotti, Rachel. (2013). "[Increasing Rejection of Intimate Partner Violence: Evidence of Global Cultural Diffusion](http://dx.doi.org/10.1177/0003122413480363)." *American Sociological Review*, 78: 240-265. 
@@ -61,18 +44,18 @@ rm(list = ls())     # Permet d'éffacer l'environnement
 library(tidyverse)
 library(pander)
 
-dhs <- read.csv("dhs_ipv.csv")
+dhs <- read.csv("../Data/dhs_ipv.csv")
 # Information rapide sur les données
 head(dhs)
 ```
 
 
-## Question 1: 10 points
+## Question 1: 
 
-Commencçons par comprendre les caractéristiques de l'échantillon. 
+Commençons par comprendre les caractéristiques de l'échantillon. 
 - Quelle est la taille de l'échantillon?
 - Quelle est la nature (type) des deux variables dépendantes et des deux variables indépendante?
-- Combien y'a-t-il d'informations manquantes dans chaque variable de la base de données? Pouvez-vous suggérer des explications quant à la présence des valeurs manquantes dans les données?
+- Combien y a-t-il d'informations manquantes dans chaque variable de la base de données? Pouvez-vous suggérer des explications quant à la présence des valeurs manquantes dans les données?
 
 
 ### Réponse 1
@@ -106,9 +89,9 @@ summary(dhs)
 
 
 
-## Question 2 : 10 points
+## Question 2 : 
 
-Calculer les paramètres de *position* de nos quatre variables d'intérêt, globalement et par régions. Présentez les résultats statistiques dans un tableau de manière appropriée.  Commentez les résultats. 
+Calculer les paramètres de *position* de nos quatre variables d'intérêt, globalement et par régions. Présentez les résultats statistiques dans un tableau de manière appropriée. Commentez les résultats. 
 De même, calculer les paramètres de *dispersion* de nos quatre variables d'intérêt, globalement et par régions. Présentez les résultats statistiques dans un tableau de manière appropriée.  Commentez les résultats. 
 
 ## Réponse 2
@@ -243,13 +226,17 @@ dispersion_media
 
 
 ```{r}
+
 # Paramètre de position des 4 variables
 
 indicateur_position <- bind_rows(burnfood = position_burnfood, position_goesout, position_school, position_media)
+
 indicateur_position
+
 # Paramètres de dispersion des 4 variables
 
 indicateur_dispersion <- bind_rows(dispersion_burnfood, dispersion_goesout, dispersion_school, dispersion_media)
+
 indicateur_dispersion
 
 ```
@@ -262,13 +249,13 @@ indicateur_dispersion
 position_all <-
   dhs %>% 
   select(beat_burnfood, beat_goesout, sec_school, no_media) %>% 
-  summarise_all(funs(min = min(., na.rm = TRUE), 
-            max = max(., na.rm = TRUE), 
-            moyen = mean(., na.rm = TRUE), 
-            median = median(., na.rm = TRUE), 
-            Q1 = quantile(. , prob = 0.25, na.rm = TRUE), 
-            Q3 = quantile(., prob = 0.75, na.rm = TRUE),
-            n = n()
+  summarise_all(funs(min = min(., na.rm = TRUE),
+                     max = max(., na.rm = TRUE), 
+                     moyen = mean(., na.rm = TRUE), 
+                     median = median(., na.rm = TRUE), 
+                     Q1 = quantile(. , prob = 0.25, na.rm = TRUE), 
+                     Q3 = quantile(., prob = 0.75, na.rm = TRUE),
+                     n = n()
             )) %>% 
   mutate(region = "All")
 
@@ -292,7 +279,15 @@ position_all_region
 
 para_position <- bind_rows(position_all_region, position_all)
 
-# 
+
+
+```
+
+
+On peut mieux organiser ces données:
+
+```{r}
+
 para_position
 
 tidy_para_position <-
@@ -311,16 +306,17 @@ ggplot(tidy_para_position) +
   geom_col(aes(x = region, y = moyen)) +
   facet_wrap(~ variable)
 
+
 ```
 
 
 ## Votre interpretation (texte)
 
 
-## Question 3 : 10 points
+## Question 3 :
 
-Ces statistiques nous donnent une description de l'ensemble de l'echantillon. On peut toutefois aussi présenter les informations sous formes graphiques. Présenter quatre graphiques `Barplot` donnant la distribution de chacune des quatre variables d'intérêt selon la région d'étude? Commenter les résultats?
-Est-ce qu'il se dégage une relation entre ces quatres variables (spécialement, d'un côté les deux indicateurs d'*attitudes envers la violence domestique* et les deux indicateurs d'accès à l'information )
+Ces statistiques nous donnent une description de l'ensemble de l'échantillon. On peut toutefois aussi présenter les informations sous formes graphiques. Présenter quatre graphiques `Boxplot` donnant la distribution de chacune des quatre variables d'intérêt selon la région d'étude? Commenter les résultats?
+Est-ce qu'il se dégage une relation entre ces quatre variables (spécialement, d'un côté les deux indicateurs d'*attitudes envers la violence domestique* et les deux indicateurs d'accès à l'information )
 
 ## Réponse 3
 
@@ -328,21 +324,29 @@ Est-ce qu'il se dégage une relation entre ces quatres variables (spécialement,
 
 ```{r}
 
-ggplot(dhs_ipv) +
-  geom_bar(aes(x = beat_burnfood)) +
+# beat_burnfood
+ggplot(dhs) +
+  geom_boxplot(aes(y = beat_burnfood)) +
+  facet_wrap(~ region)
+
+
+# no-media
+ggplot(dhs) +
+  geom_boxplot(aes(y = no_media)) +
   facet_wrap(~ region)
 
 ```
 
 ## Votre interpretation (texte)
+
 La première boîte à moustaches montre qu'en Asie, en Amérique latine et au Moyen-Orient / Asie centrale, la distribution médiane de la distribution de `beat_burnfood` est également basse. Cependant, par rapport à l'Amérique latine, les attitudes des femmes sont plus dispersées au Moyen-Orient / Asie centrale et en Asie. Plus important encore, nous pouvons voir qu'en Afrique subsaharienne, la médiane de la distribution est nettement plus élevée que dans les autres régions et plus dispersée si l'on se base sur l'intervalle interquartile. Nous notons également la présence de pays aberrants en Asie, au Moyen-Orient / Asie centrale et en Afrique subsaharienne.
 
 De plus, nous constatons des différences importantes dans la distribution de la faible exposition aux médias. Au Moyen-Orient et en Asie centrale, la distribution médiane se situe autour de r (médiane (dhs $ no_media [région $ dhs == "Moyen-Orient et Asie centrale"], na.rm = TRUE), 2) `% et est fortement concentrée autour de cette valeur. En Afrique subsaharienne, la médiane est égale à `r ronde (médiane (dhs $ no_media [dhs $ région ==" Afrique subsaharienne "], na.rm = TRUE), 2)` % et il existe de grandes disparités dans la distribution.
 
-Dans le cas de l'éducation, l'Asie et l'Amérique latine ont des distributions similaires; environ 30% des femmes dans la moitié inférieure de la distribution ont un enseignement secondaire ou supérieur. Au Moyen-Orient / Asie centrale, la médiane de l’éducation des femmes est de `r (médiane (dhs $ sec_school [dhs $ region ==" Moyen-Orient et Asie centrale "], na.rm = TRUE), 2)`%, Bien que nous puissions constater une plus grande dispersion entre les pays à en juger par les différences entre le premier et le troisième quartile de la distribution. En revanche, en Afrique subsaharienne, la médiane de la distribution n’est que r (médiane (dhs $ sec_school [dhs $ region == "Afrique subsaharienne"], na.rm = TRUE), 2) `% et la dispersion est également plus grande entre les pays de la moitié supérieure de la distribution.
+Dans le cas de l'éducation, l'Asie et l'Amérique latine ont des distributions similaires; environ 30% des femmes dans la moitié inférieure de la distribution ont un enseignement secondaire ou supérieur. Au Moyen-Orient / Asie centrale, la médiane de l’éducation des femmes est de `r (médian(dhs$sec_school[dhs$region ==" Moyen-Orient et Asie centrale "], na.rm = TRUE), 2)`%, Bien que nous puissions constater une plus grande dispersion entre les pays à en juger par les différences entre le premier et le troisième quartile de la distribution. En revanche, en Afrique subsaharienne, la médiane de la distribution n’est que `r (médian(dhs$sec_school[dhs$region == "Afrique subsaharienne"], na.rm = TRUE), 2)`% et la dispersion est également plus grande entre les pays de la moitié supérieure de la distribution.
 
 
-## Question 4 : 10 points
+## Question 4 : 
 
 Examinons maintenant de manière concrète, l'association entre les attitudes envers la violence entre partenaires intimes et les deux variables d'exposition à l'information dans nos données. Utilisez des diagrammes de dispersion (**scatter plot**) pour examiner la relation bidimensionnelle entre `beat_goesout` et` no_media` ainsi qu'entre `beat_goesout` et `sec_school`. Répétez ces graphiques bivariés entre `beat_burnfood` et` no_media`, ainsi que `beat_burnfood` et` sec_school`. Veillez à ajouter des étiquettes d'axes informatives. Interpréter brièvement ces graphiques à la lumière de l’hypothèse de l’étude.
 
@@ -353,19 +357,25 @@ Examinons maintenant de manière concrète, l'association entre les attitudes en
 
 ```{r}
 
-ggplot(dhs_ipv) +
+ggplot(dhs) +
   geom_point(aes(x = sec_school, y = beat_burnfood))
 
-ggplot(dhs_ipv) +
+ggplot(dhs) +
   geom_point(aes(x = sec_school, y = beat_burnfood, color = region))
 
-ggplot(dhs_ipv) +
+ggplot(dhs) +
   geom_point(aes(x = sec_school, y = beat_burnfood)) +
   facet_wrap(~region)
 
-ggplot(dhs_ipv) +
+ggplot(dhs) +
   geom_point(aes(x = sec_school, y = beat_burnfood, color = region)) +
-  geom_smooth(aes(x = sec_school, y = beat_burnfood, method = "lm", se = FALSE, color = region))
+  geom_smooth(aes(x = sec_school, y = beat_burnfood, color = region), method = 'lm', se = FALSE)
+
+
+ggplot(dhs, aes(x = sec_school, y = beat_burnfood, color = region)) +
+  geom_point() +
+  geom_smooth(method = 'lm', se = FALSE)
+
 
 ```
 
@@ -373,7 +383,7 @@ ggplot(dhs_ipv) +
 
 Globalement, ces graphiques suggèrent que l'association entre les attitudes à l'égard de la violence entre partenaires intimes, l'exposition aux médias et l'éducation des femmes se comporte dans la direction attendue. Par exemple, les graphiques bivariés montrent une relation positive claire entre le pourcentage de femmes peu médiatisées et le pourcentage de femmes qui estiment que la violence du partenaire intime est justifiée dans des situations spécifiques, telles que `beat_goesout` et` beat_burnfood`. De même, ces graphiques montrent une relation négative entre le pourcentage de femmes instruites et le degré d’accord avec la violence entre partenaires intimes.
 
-## Question 5 : 10 points
+## Question 5 : 
 
 Maintenant, pensez à toutes les raisons possibles, des plus loufoques aux plus sérieuses qui mettent en doute les relations observées à la question 4. 
 
@@ -381,7 +391,7 @@ Maintenant, pensez à toutes les raisons possibles, des plus loufoques aux plus 
 
 
 
-## Question 6: 10 points (Bonus)
+## Question 6: 
 
 Un des points importants de l’hypothèse du chercheur est que le soutien à la violence entre partenaires intimes devrait *diminuer* avec le temps, étant donné que de plus en plus de femmes dans toutes les régions ont accès à une éducation formelle et à une exposition aux médias. Pour tester cette idée, en utilisant des diagrammes de séries chronologiques, examinez les tendances de `beat_burnfood` de 1999 à 2014 *dans chaque région*. En pensant à la conception de l'étude, que devrions-nous considérer avant de croire que cette figure montre un changement dans le temps dans les attitudes?  
 
@@ -406,7 +416,7 @@ dhs_subset <-
   summarise(mean_bf = mean(beat_burnfood, na.rm = TRUE),
             mean_year = mean(year, na.rm = TRUE))
 
-table(dhs_subset$mean_bf, dhs_subset$region)
+head(dhs_subset)
 
 ggplot(dhs_subset, aes( x = mean_year, y = mean_bf)) +
   geom_line(aes(group = region, color = region))  +
@@ -417,3 +427,4 @@ ggplot(dhs_subset, aes( x = mean_year, y = mean_bf)) +
 ## Votre interpretation (texte)
 
 Le graphique chronologique ne montre pas de tendance à la baisse des attitudes envers la violence domestique dans aucune des régions. Cependant, chaque année varie en fonction des pays qu’elle représente. Ce graphique ne donne donc pas une image précise de l’évolution des attitudes à l’égard de la violence domestique.
+

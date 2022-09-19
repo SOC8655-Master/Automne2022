@@ -1,32 +1,15 @@
 ---
-title: 'Devoir2: Accès à l information et attitudes face à la violence conjugale'
+title: 'Labo 2: Accès à l information et attitudes face à la violence conjugale'
 author: "Visseho Adjiwanou, PhD."
-date: "26/9/2018"
+#date: "26/9/2018"
 output:
   pdf_document: default
   word_document: default
   html_document: default
 ---
 
---------------------------------------------------------------------------------
-**NOTE**
 
-1. Ce devoir est à rendre au plus grand tard le **10 octobre**. 
-
-2. Vous me l'envoyer par courriel, une version RMarkDown et une version pdf.
-
-3. Je répondrai à vos questions sur ce devoir jusqu'au **4 octobre**.
-
-4. Si vous travaillez par groupe de deux, vous devez me l'indiquer à l'avance.
-
-  * Indiquer la contribution de chacun.
-  
-  * Noter votre camarade.
-  
-5. Éviter le **plagiat**. Éviter de vous copier.
-
---------------------------------------------------
-Dans cet exercice, nous examinons les différences transnationales dans les attitudes envers la violence domestique et l'accès à l'information. Nous explorons l’hypothèse selon laquelle il existe une association à un niveau global, entre la mesure dans laquelle les individus dans un pays ont accès à la connaissance et aux nouvelles informations, à la fois, à travers la scolarisation formelle et par les médias, et leur probabilité de condamner les actes de violence conjugale. Cet exercice est en partie basé sur:
+Dans ce labo, nous examinons les différences transnationales dans les attitudes envers la violence domestique et l'accès à l'information. Nous explorons l'hypothèse selon laquelle il existe une association à un niveau global, entre la mesure dans laquelle les individus dans un pays ont accès à la connaissance et aux nouvelles informations, à la fois, à travers la scolarisation formelle et par les médias, et leur probabilité de condamner les actes de violence conjugale. Cet exercice est en partie basé sur:
 
 Pierotti, Rachel. (2013). "[Increasing Rejection of Intimate Partner Violence: Evidence of Global Cultural Diffusion](http://dx.doi.org/10.1177/0003122413480363)." *American Sociological Review*, 78: 240-265. 
 
@@ -60,12 +43,12 @@ rm(list = ls())     # Permet d'éffacer l'environnement
 # Chargement 
 library(tidyverse)
 
-dhs <- read.csv("dhs_ipv.csv")
+dhs <- read.csv("../Data/dhs_ipv.csv")
 
 ```
 
 
-## Question 1: 10 points
+## Question 1: 
 
 Commencçons par comprendre les caractéristiques de l'échantillon. 
 - Quelle est la taille de l'échantillon?
@@ -84,10 +67,10 @@ Commencçons par comprendre les caractéristiques de l'échantillon.
 ### Votre interpretation (texte)
 
 
-## Question 2 : 10 points
+## Question 2 : 
 
 Calculer les paramètres de *position* de nos quatre variables d'intérêt, globalement et par régions. Présentez les résultats statistiques dans un tableau de manière appropriée.  Commentez les résultats. 
-De meême, calculer les paramètres de *dispersion* de nos quatre variables d'intérêt, globalement et par régions. Présentez les résultats statistiques dans un tableau de manière appropriée.  Commentez les résultats. 
+De même, calculer les paramètres de *dispersion* de nos quatre variables d'intérêt, globalement et par régions. Présentez les résultats statistiques dans un tableau de manière appropriée.  Commentez les résultats. 
 
 ### Réponse 2
 
@@ -100,10 +83,10 @@ De meême, calculer les paramètres de *dispersion* de nos quatre variables d'in
 ### Votre interpretation (texte)
 
 
-## Question 3 : 10 points
+## Question 3 : 
 
-Ces statistiques nous donnent une description de l'ensemble de l'echantillon. On peut toutefois aussi présenter les informations sous formes graphiques. Présenter quatre graphiques `Barplot` donnant la distribution de chacune des quatre variables d'intéreêt selon le pays d'étude? Commenter les résultats?
-Est-ce qu'il se dégage une relation entre ces quatres variables (spécialement, d'un côté les deux indicateurs d'*attitudes envers la violence domestique* et les deux indicateurs d'accès à l'information )
+Ces statistiques nous donnent une description de l'ensemble de l'échantillon. On peut toutefois aussi présenter les informations sous formes graphiques. Présenter quatre graphiques `Boxplot` donnant la distribution de chacune des quatre variables d'intérêt selon le pays d'étude? Commenter les résultats?
+Est-ce qu'il se dégage une relation entre ces quatre variables (spécialement, d'un côté les deux indicateurs d'*attitudes envers la violence domestique* et les deux indicateurs d'accès à l'information )
 
 ### Réponse 3
 
@@ -116,7 +99,7 @@ Est-ce qu'il se dégage une relation entre ces quatres variables (spécialement,
 ### Votre interpretation (texte)
 
 
-## Question 4 : 10 points
+## Question 4 : 
 
 Examinons maintenant de manière concrète, l'association entre les attitudes envers la violence entre partenaires intimes et les deux variables d'exposition à l'information dans nos données. Utilisez des diagrammes de dispersion (**scatter plot**) pour examiner la relation bidimensionnelle entre `beat_goesout` et` no_media` ainsi qu'entre `beat_goesout` et `sec_school`. Répétez ces graphiques bivariés entre `beat_burnfood` et` no_media`, ainsi que `beat_burnfood` et` sec_school`. Veillez à ajouter des étiquettes d'axes informatives. Interpréter brièvement ces graphiques à la lumière de l’hypothèse de l’étude.
 
@@ -132,7 +115,7 @@ Examinons maintenant de manière concrète, l'association entre les attitudes en
 ### Votre interpretation (texte)
 
 
-## Question 5 : 10 points
+## Question 5 : 
 
 Maintenant, pensez à toutes les raisons possibles, des plus loufoques aux plus sérieuses qui mettent en doute les relations observées à la question 4. 
 
@@ -140,7 +123,7 @@ Maintenant, pensez à toutes les raisons possibles, des plus loufoques aux plus 
 
 
 
-## Question 6: 10 points (Bonus)
+## Question 6: 
 
 Un des points importants de l’hypothèse du chercheur est que le soutien à la violence entre partenaires intimes devrait *diminuer* avec le temps, étant donné que de plus en plus de femmes dans toutes les régions ont accès à une éducation formelle et à une exposition aux médias. Pour tester cette idée, en utilisant des diagrammes de séries chronologiques, examinez les tendances de `beat_burnfood` de 1999 à 2014 *dans chaque région*. En pensant à la conception de l'étude, que devrions-nous considérer avant de croire que cette figure montre un changement dans le temps dans les attitudes?  
 

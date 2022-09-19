@@ -3,13 +3,13 @@ title: "Séance 2: Bref Survol de l'analyse descriptive"
 subtitle: "Partie 1"
 author: "Visseho Adjiwanou, PhD."
 institute: "Département de Sociologie - UQAM"
-date: "`r format(Sys.time(), '%d %B %Y')`"
+#date: "`r format(Sys.time(), '%d %B %Y')`"
 output:
-  slidy_presentation: default
   beamer_presentation:
     colortheme: beaver
     fonttheme: structurebold
     theme: Ilmenau
+  slidy_presentation: default
   ioslides_presentation: default
 header-includes:
   - \usepackage{color}
@@ -139,7 +139,9 @@ Quatre catégories de variables selon la façon dont elles sont mésurées:
 
   - variable nominale dichotomique: prend deux valeurs. ex, sexe
   - variable nominale non dichotomique: ex. religion
-  
+
+## Les niveaux de mesures
+
 2. $\color{red}{\text{Variable ordinale}}$ : variables dont les valeurs peuvent êtres ordonnées.
 
   - classe sociale
@@ -158,6 +160,8 @@ Quatre catégories de variables selon la façon dont elles sont mésurées:
   - Température
   - Date de naissance
 
+## Les niveaux de mesures
+
 4. $\color{red}{\text{Variable de ratio}}$ : est semblable à une variable d'intervalle. Mais, en plus, elle a un zéro non arbitraire. 
   - Nombre d'habitants
   - Âge
@@ -168,18 +172,28 @@ Remarques:
 
   - Variable de ratio car permettent de calculer des ratios
   - variable d'intervalle + variable de ratio == $\color{red}{\text{variable quantitative}}$
-  - Peuvent être $\color{red}{\text{continue}}$ quand elles peuvent prendre une infinité de valeurs ou $\color{red}{\text{discret}}$ quand elles prennent un nombre fini de valeurs. 
+  - Peuvent être $\color{red}{\text{continues}}$ quand elles peuvent prendre une infinité de valeurs ou $\color{red}{\text{discrètes}}$ quand elles prennent un nombre fini de valeurs. 
 
 ## Résumé
 
 https://www.graphpad.com/support/faq/what-is-the-difference-between-ordinal-interval-and-ratio-variables-why-should-i-care/
 
-![](/Users/visseho/OneDrive - UQAM/Cours/Images_cours/resume_variable1.png)
+
+```{r, out.width='70%', echo = FALSE, fig.align = 'center'}
+
+knitr::include_graphics("../Images/resume_variable1.png")
+
+```
+
 
 
 ## Résumé
 
-![](/Users/visseho/OneDrive - UQAM/Cours/Images_cours/resume_variable2.png)
+```{r, out.width='70%', echo = FALSE, fig.align = 'center'}
+
+knitr::include_graphics("../Images/resume_variable2.png")
+
+```
 
 
 
@@ -295,7 +309,11 @@ La description des données
 
 ## Les distributions de fréquences (Chap 2 : Fox)
 
-![](/Users/visseho/OneDrive - UQAM/Cours/Images_cours/frequence.jpg)
+```{r, out.width='70%', echo = FALSE, fig.align = 'center'}
+
+knitr::include_graphics("../Images/frequence.jpg")
+
+```
 
 <!--
 ```{r frequance, echo=FALSE, out.width = '60%'}
@@ -337,7 +355,10 @@ knitr::include_graphics("/Users/visseho/OneDrive - UQAM/Cours/Images_cours/pourc
 
 ## Les distributions de pourcentages
 
-![](/Users/visseho/OneDrive - UQAM/Cours/Images_cours/pourcentage.jpg)
+```{r, out.width='70%', echo = FALSE, fig.align = 'center'}
+
+knitr::include_graphics("../Images/pourcentage.jpg")
+```
 
 ## Représentation (voir cours prochain)
 
@@ -351,7 +372,11 @@ knitr::include_graphics("/Users/visseho/OneDrive - UQAM/Cours/Images_cours/circu
 ```
 -->
 
-![](/Users/visseho/OneDrive - UQAM/Cours/Images_cours/circulaire.jpg)
+```{r, out.width='70%', echo = FALSE, fig.align = 'center'}
+
+knitr::include_graphics("../Images/circulaire.jpg")
+
+```
 
 
 
@@ -368,7 +393,12 @@ knitr::include_graphics("/Users/visseho/OneDrive - UQAM/Cours/Images_cours/barre
 -->
 
 
-![](/Users/visseho/OneDrive - UQAM/Cours/Images_cours/barre.jpg)
+```{r, out.width='70%', echo = FALSE, fig.align = 'center'}
+
+knitr::include_graphics("../Images/barre.jpg")
+
+```
+
 
 ## Description 
 
@@ -416,11 +446,11 @@ Plus skewness et kurtosis, paramètres d'étalement et d'asymétrie.
 
 **Le Mode** = Encore appelée valeur dominante: valeur observée de fréquence maximum telle que la moitié des observations lui sont inférieures et donc la moitié lui sont supérieures.
 
-  - Exemple : 1, 2, 3, 3, 3, 3, 4, 5, 6, 6, 6, 6, 7, 15 : modes = 3 et 6
+    - Exemple : 1, 2, 3, 3, 3, 3, 4, 5, 6, 6, 6, 6, 7, 15 : modes = 3 et 6
 
-  - On parle de distribution est bimodale
-  - On peut penser que l'échantillon est en réalité issu de deux populations différentes
-  - Si toutes les valeurs sont différentes, autant de modes que de valeurs : 
+    - On parle de distribution bimodale
+    - On peut penser que l'échantillon est en réalité issu de deux populations différentes
+    - Si toutes les valeurs sont différentes, autant de modes que de valeurs : 
     - 1, 2, 3, 5, 6, 9, 14, 16 --> chaque valeur = mode
   - la seule pour laquelle il n'y a pas de formule
 
@@ -466,7 +496,10 @@ classes de même efféctif (au moins approximativement).
 - Pour une distribution, la variance est:
  $$Variance, s^2 = \frac{1}{n-1} \sum_{i=1}^n (X_i - \bar{X})^2$$
 
-- la variance est elle aussi très sensible aux valeurs extrèmes 
+
+## Paramètres de dispersion
+
+- la variance est elle aussi très sensible aux valeurs extrêmes 
 
 - Pour éliminer le fait d'avoir utilisé le carré des écarts, on calcule finalement la racine carrée de la variance
 - Ceci donne la façon la plus générale de mesurer l'écart par rapport à la moyenne, appelée pour cette raison son **écart-type** 
