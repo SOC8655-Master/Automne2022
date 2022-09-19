@@ -1,0 +1,51 @@
+---
+title: "Séance 1: Règles de présentations en classe"
+author: "Visseho Adjiwanou"
+institute: "Sociologie, UQAM"
+date: "`r format(Sys.time(), '%d %B %Y')`"
+output:
+  pdf_document: default
+  html_document: default
+  number_sections: false
+header-includes:
+  - \usepackage{color}
+---
+
+# Introduction
+La présentation en classe vise à acquérir des compétences en présentation orale. De ce fait :
+
+- le powerpoint doit être aéré et clair 
+- votre locution audible et cohérente
+
+# Organisation powerpoint
+
+10 slides:
+
+- 1 slide: titre
+- 2 slides: questions de recherche et théories mobiisées
+- 2 Slides: données utilisées
+- 2 slides: méthodes utilisées
+  - Vous devez être précis et dire la méthode que la personne à utiliser
+- 1 slide: résultats généraux de l'étude
+- 2 à 3 slides: Points forts et limites de l'étude
+  - Points forts: En quoi la manière dont le travail est fait vous a convaincu que les méthodes utilisées permettent réellement de répondre à la question posée?
+  - Limites
+    - Population étudiée ?
+    - Données utilisées?
+    - Méthodes utilisées?
+    - Résultats obtenus? autres explications possibles?
+
+**Remarque**: Vous devez créer votre powerpoint à partir de RMarkdown    
+
+# Présentation orale
+
+- Ne relisez pas juste votre powerpoint
+- Vous avez 15 minutes de présentations. Je vous arrête exactement à 15 minutes. 
+- 5 minutes de questions.
+- Soyez audible.
+
+# Remarques
+
+- Soyez créatif
+- Allez chercher des informations additionnelles
+- Si votre présentation ne porte pas sur un article empirique, donnez des informations additionnelles.
