@@ -4,12 +4,12 @@ author: "Visseho Adjiwanou, PhD."
 institute: "SICSS-Montréal"
 #date: "`r format(Sys.time(), '%d %B %Y')`"
 output:
-  ioslides_presentation: default
-  slidy_presentation: default
   beamer_presentation:
     colortheme: beaver
     fonttheme: structurebold
     theme: Ilmenau
+  slidy_presentation: default
+  ioslides_presentation: default
 header-includes:
   - \usepackage{color}
 ---
@@ -72,9 +72,9 @@ Présentation générale de R
 
 ## Avantages du logiciel orienté commande
 
-> - Il est plus facile de corriger, de modifier et de répliquer des analyses dans un système piloté par des commandes. 
-> - Il est plus simple et naturel de créer un dossier permanent sur son travail, y compris les entrées et les sorties.
-> - Les interfaces graphiques vers des systèmes statistiques complexes sont **incomplètes** (nécessitant l'utilisation de commandes pour des analyses plus avancées ou non standard) ou/et **byzantines** (obligeant l'utilisateur à parcourir un labyrinthe complexe de menus, de boîtes de dialogue et de contrôles graphiques).
+> - Plus facile de corriger, de modifier et de répliquer des analyses 
+> - Plus simple et naturel de créer un dossier permanent sur son travail, y compris les entrées et les sorties.
+> - Interfaces graphiques vers des systèmes statistiques complexes sont **incomplètes** (nécessitant l'utilisation de commandes pour des analyses plus avancées ou non standard) ou/et **byzantines** (obligeant l'utilisateur à parcourir un labyrinthe complexe de menus, de boîtes de dialogue et de contrôles graphiques).
 
 
 ## Avantages du logiciel orienté commande
