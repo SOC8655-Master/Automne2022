@@ -40,7 +40,7 @@ Dans l'un ou l'autre cas, voici ce que ce document doit comprendre:
 Ce document doit être de 7500 mots (enciron 15 pages, sans les annexes). 
 
 ## 3. Échéance et notation
-
+<!--
 1. Présentation préliminaire de votre projet (partie 1 à 3) : 1 novembre (15%)
 2. Deuxième présentation de de votre projet (Partie 3 et 4) : 13 décembre (20% de la note finale)
 3. Travail final soumis (65%)
@@ -48,6 +48,15 @@ Ce document doit être de 7500 mots (enciron 15 pages, sans les annexes).
   - 10% sur la forme. Prêtez attention à l'écriture et à la qualité du document.
 
 Le calendrier est suggestif. 
+-->
+
+1. Soumission de votre sujet de recherche (1 page d’introduction – 5%): 26 septembre
+2. Soumission de votre revue de littérature (5%): 31 octobre
+3. Soumission de votre méthodologie et plan d’analyse (5%): 21 novembre
+4. Soumission des résultats (10%) : 19 décembre
+5. Soumission du projet final (20%, tiendra compte de la manière dont vous avez pris en compte les commentaires) : 5 janvier 
+
+
 
 ## 4. Autres éléments à considérer
 
