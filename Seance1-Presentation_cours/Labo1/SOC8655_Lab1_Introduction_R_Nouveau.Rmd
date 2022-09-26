@@ -24,6 +24,9 @@ knitr::include_graphics("/Users/visseho/OneDrive - UQAM/Cours/Images_cours/joke2
 ```
 
 
+kouadio
+
+
 ## Au programme
 
 <!--$\color{blue}{\text{B. Deuxième partie}}$-->
