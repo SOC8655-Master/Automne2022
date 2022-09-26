@@ -125,6 +125,10 @@ library(summarytools)
 
 ```
 
+
+
+
+
 ## Téléchargement de la base de données
 
 ```{r}
@@ -150,7 +154,7 @@ crsc96_small <-
 
 #crsc96_small 
 glimpse(crsc96_small)
-head(crsc96_small)
+head(crsc96_small, 10)
 
 ```
 
@@ -163,6 +167,7 @@ ctable(crsc96_small$age, crsc96_small$sexq, "no")
 crsc96_small_homme <-
   crsc96_small %>% 
   filter(sexq == 1 & age >= 35)
+
 
 freq(crsc96_small$age)
 
@@ -208,6 +213,7 @@ class(crsc96_small$q2)
 class(crsc96_small$sexq)
 
 mean(crsc96_small$sexq)
+mean(crsc96_small$q2)
 
 ```
 
@@ -245,6 +251,11 @@ crsc96_small <-
   mutate(q1_ter = factor(q1, 
                          labels = c("totally agree", "agree somewhat", "DK/NA", "disagree somewhat", "totally disagree")))
 
+crsc96_small <-
+  crsc96_small %>% 
+  mutate(q1_classe = factor(q1,
+                            labels = c("ca", "pa", "NSP", "pd", "cd")))
+
 
 freq(crsc96_small$q1_ter)
 
@@ -281,6 +292,7 @@ freq(crsc96_small$q1_new)
 Supposons que nous voulons scinder la variable age en deux catégorie, alors on peut utiliser la commande `if_else`
 
 ```{r}
+
 crsc96_small <-
   crsc96_small %>% 
   mutate(age2 = if_else(age >= 35, "adulte", "jeune"))
@@ -316,10 +328,10 @@ crsc96_small <-
   crsc96_small %>% 
   mutate(age3 = case_when(
     age <= 25 ~ "jeune",
-    age >25 & age <= 40 ~ "adulte",
+    age > 25 & age <= 40 ~ "adulte",
     age > 40 ~ "senior"))
 
-
+class(crsc96_small$age3)
 
 crsc96_small <- 
   crsc96_small %>% 
@@ -329,7 +341,7 @@ crsc96_small <-
     age > 40 ~ "senior"
   )))
   
-
+class(crsc96_small$age3bis)
 
 crsc96_small <- 
   crsc96_small %>% 
@@ -376,8 +388,8 @@ crsc96_small <-
   mutate(age5 = factor(case_when(
     age < 20 ~ 1,
     age >= 20 & age < 34 ~ 2,
-    age >= 35 & age <59 ~ 3,
-    age >=60 ~ 4), labels = c("adolescent", "jeune", "adulte", "ainé")
+    age >= 35 & age < 59 ~ 3,
+    age >= 60 ~ 4), labels = c("adolescent", "jeune", "adulte", "ainé")
   ))
 
 class(crsc96_small$age5)
@@ -569,8 +581,7 @@ age_posit <-
             age_max = max(age))
 
 age_posit
-
-
+age_posit
 
 age_position <- 
   crsc96_small %>% 
@@ -695,6 +706,8 @@ age_dispersion_sexe
 
 ```{r}
 
+freq(crsc96_small$q2)
+?ctable
 ctable(crsc96_small$sexq, crsc96_small$q2, "no")
 
 
