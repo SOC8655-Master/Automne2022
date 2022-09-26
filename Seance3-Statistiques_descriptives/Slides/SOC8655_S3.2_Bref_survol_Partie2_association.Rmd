@@ -1,6 +1,6 @@
 ---
-title: "Séance 2: Bref Survol de l'analyse descriptive"
-subtitle: "Partie 1"
+title: "Séance 3: Bref Survol de l'analyse descriptive"
+subtitle: "Partie 2: Association entre variables"
 author: "Visseho Adjiwanou, PhD."
 institute: "Département de Sociologie - UQAM"
 #date: "`r format(Sys.time(), '%d %B %Y')`"
@@ -25,7 +25,7 @@ header-includes:
 
 <!--http://glaner.eklablog.com/distinguer-causalite-et-correlation-pour-ne-pas-se-faire-manipuler-a118169660-->
 
-8. A faire pour la semaine prochaine
+4. A faire pour la semaine prochaine
 
 
 
@@ -35,7 +35,7 @@ Statistiques bivariées
 ## Introduction
 
 - Le cours précédent nous a permis de décrire les caractéristiques d'un échantillon en analysant ses paramètres de positions et de dispersions. 
-- Mais, en tant que sociologues, nous allons loin que cela. Ce qui nous intéresse, ce sont les relations causales dans lesquelles nous faisons l’hypothèse qu'une variable indépendante affecte une variable dépendante
+- Mais, en tant que sociologues, nous allons loin que cela. Ce qui nous intéresse, ce sont les relations causales dans lesquelles nous faisons l’hypothèse qu'une variable indépendante affecte une variable dépendante.
 
 ## Introduction 
 
@@ -48,7 +48,7 @@ Statistiques bivariées
     - Est-ce que l'augmentation du salaire minimum réduit l'activité économique?
     - Est-ce le statut marital influe sur le bonheur?
     
-- La réponse à ces questions va au- delà des logiciels statistiques. Elle commence et finit avec vous.
+- La réponse à ces questions va au-delà des logiciels statistiques. Elle commence et finit avec vous.
 - les logiciels/statistiques ne nous donnent qu'une indication.
 
 ## Conditions de la causalité
@@ -56,7 +56,7 @@ Statistiques bivariées
 - L'une des conditions de la causalité est l'existence d'association entre la variable indépendante et la variable dépendante.
 - L'analyse de cette association dépend du type des variables indépendantes et dépendantes
     1. Deux variables factorielles ou catégorielles (nominale ou ordinale) : Recours aux tableaux bivariés
-    2. Variable dépendante continue  (ratio ou d'intervalle) et variable indépendante factorielle : Différences de moyennes: Analyse de la variance (ANOVA)
+    2. Variable dépendante continue (ratio ou d'intervalle) et variable indépendante factorielle : Différences de moyennes: Analyse de la variance (ANOVA)
     3. Deux variables continues : Technique de régression
     
 - Les graphiques permettent aussi de mettre en exergue ces relations. 
@@ -90,15 +90,17 @@ Tableaux bivariés
 - Les variables indépendantes sont mises en ligne
 - L'interprétation fait référence à l'utilisation de fréquences marginales
 
-Remarque: Dans votre livre de cours, les colonnes et les lignes sont renversées. Ce n'est pas grave du moment où on 
+Remarque: Dans votre livre de cours, les colonnes et les lignes sont renversées. Ce n'est pas grave du moment où on comprend la logique
 
 ## Tableau croisé, effectif marginal, pourcentage marginal, pourcentage ligne, pourcentage colonne 
 
 
-![](/Users/visseho/OneDrive - UQAM/Cours/Images_cours/tableau_croise1.jpg)
-<!--
+<!--![](/Users/visseho/OneDrive - UQAM/Cours/Images_cours/tableau_croise1.jpg)-->
+
+
 ```{r tc1, echo=FALSE,  out.width = '100%'}
-knitr::include_graphics("/Users/visseho/OneDrive - UQAM/Cours/Images_cours/tableau_croise1.jpg")
+
+knitr::include_graphics("../Images/tableau_croise1.jpg")
 ```
 -->
 
@@ -115,34 +117,39 @@ knitr::include_graphics("/Users/visseho/OneDrive - UQAM/Cours/Images_cours/table
 
 - Existe-il une relation entre le lieu de résidence et la connaissance sur le VIH/Sida?
 
-![Tableau croisé](/Users/visseho/OneDrive - UQAM/Cours/Images_cours/tableau_croise2.jpg)
-<!--
+<!--![Tableau croisé](/Users/visseho/OneDrive - UQAM/Cours/Images_cours/tableau_croise2.jpg) -->
+
 
 ```{r tc2, echo=FALSE,  out.width = '100%'}
-knitr::include_graphics("/Users/visseho/OneDrive - UQAM/Cours/Images_cours/tableau_croise2.jpg")
+
+knitr::include_graphics("../Images/tableau_croise2.jpg")
+
 ```
--->
+
 
 ## Exemple
 - Mauvais tableau de pourcentage
 
-![](/Users/visseho/OneDrive - UQAM/Cours/Images_cours/tableau_croise3.jpg)
-<!--
+<!--![](/Users/visseho/OneDrive - UQAM/Cours/Images_cours/tableau_croise3.jpg)-->
+
+
 ```{r tc3, echo=FALSE,  out.width = '100%', fig.align='center'}
-knitr::include_graphics("/Users/visseho/OneDrive - UQAM/Cours/Images_cours/tableau_croise3.jpg")
+knitr::include_graphics("../Images/tableau_croise3.jpg")
 ```
--->
+
 
 ## Exemple
 
 - **Bon tableau**
 
-![](/Users/visseho/OneDrive - UQAM/Cours/Images_cours/tableau_croise4.png)
-<!--
+<!--![](/Users/visseho/OneDrive - UQAM/Cours/Images_cours/tableau_croise4.png)-->
+
+
 ```{r tc4, echo=FALSE,  out.width = '100%', fig.align='center'}
-knitr::include_graphics("/Users/visseho/OneDrive - UQAM/Cours/Images_cours/tableau_croise4.png")
+
+knitr::include_graphics("../Images/tableau_croise4.png")
 ```
--->
+
 
 - **Mauvaise interprétation**: «Parmi les femmes vivant en zone rurale, seules 37,9% ont une connaissance approfondie du sida et 72,1% non; par conséquent, vivre dans des zones rurales vous rend moins susceptible d'avoir une connaissance complète du SIDA.
 
@@ -152,13 +159,13 @@ knitr::include_graphics("/Users/visseho/OneDrive - UQAM/Cours/Images_cours/table
 
 - **Bon tableau**
 
-![](/Users/visseho/OneDrive - UQAM/Cours/Images_cours/tableau_croise4.png)
+<!--![](/Users/visseho/OneDrive - UQAM/Cours/Images_cours/tableau_croise4.png)-->
 
-<!--
+
 ```{r tc5, echo=FALSE,  out.width = '70%', fig.align='center'}
-knitr::include_graphics("tableau_croise4.png")
+
+knitr::include_graphics("../Images/tableau_croise4.png")
 ```
--->
 
 - **Correcte interprétation**: La conclusion selon laquelle le lieu de résidence a un effet sur la connaissance du SIDA doit reposer sur une comparaison entre zones urbaines et rurales. Plus précisément, nous comparons les 54,6% avec les 37,9%. On note que les femmes en zones urbaines sont plus susceptibles que les femmes en zones rurales d’avoir une connaissance approfondie du sida. 
 - La comparaison des sous-groupes est donc essentielle pour la lecture d'un tableau explicatif à deux variables.
@@ -174,25 +181,24 @@ Il existe trois type de relation entre les variables
 1. **Relation positive** : est une relation dans laquelle les scores les plus élevés d'une variable sont associées aux scores les plus élevés de l'autre variable
   - Exemple?
 
-![](/Users/visseho/OneDrive - UQAM/Cours/Images_cours/positive.jpg)
+<!--![](/Users/visseho/OneDrive - UQAM/Cours/Images_cours/positive.jpg)-->
 
-<!--
-```{r positive, echo=FALSE,  out.height = '50%', fig.align='center'}
-knitr::include_graphics("/Users/visseho/OneDrive - UQAM/Cours/Images_cours/positive.jpg")
+```{r positive, echo=FALSE,  out.width = '40%', fig.align='center'}
+knitr::include_graphics("../Images/positive.jpg")
 ```
--->
+
 
 ## Direction de la relation
 
 2. Dans une **relation négative** les scores les plus élevés d'une variable sont liés aux scores les plus faibles de l'autre.
   - Exemple?
 
-![](/Users/visseho/OneDrive - UQAM/Cours/Images_cours/negative.jpg)
-<!--
-```{r negative, echo=FALSE,  out.height = '60%', fig.align='center'}
-knitr::include_graphics("/Users/visseho/OneDrive - UQAM/Cours/Images_cours/negative.jpg")
+<!--![](/Users/visseho/OneDrive - UQAM/Cours/Images_cours/negative.jpg)-->
+
+```{r negative, echo=FALSE,  out.width = '50%', fig.align='center'}
+knitr::include_graphics("../Images/negative.jpg")
 ```
--->
+
 
 ## Direction de la relation
 
@@ -200,12 +206,12 @@ knitr::include_graphics("/Users/visseho/OneDrive - UQAM/Cours/Images_cours/negat
   - A souvent la forme d'un **V** ou d'un **V renversé**
   - Exemple?
 
-![](/Users/visseho/OneDrive - UQAM/Cours/Images_cours/curvilineaire.png)
-<!--
+<!--![](/Users/visseho/OneDrive - UQAM/Cours/Images_cours/curvilineaire.png)-->
+
 ```{r curvilineaire, echo=FALSE,  out.width = '60%', fig.align='center'}
-knitr::include_graphics("/Users/visseho/OneDrive - UQAM/Cours/Images_cours/curvilineaire.png")
+knitr::include_graphics("../Images/curvilineaire.png")
 ```
--->
+
 
 ## Problèmes avec les tableaux bivariés
 
@@ -216,42 +222,42 @@ knitr::include_graphics("/Users/visseho/OneDrive - UQAM/Cours/Images_cours/curvi
     - Problème : perte d'information 
 
 
-Direction de la relation
+Intensité de la relation
 ==================================================================
 
 ## Intensité de la relation
 
 - Une relation peut-être nulle
 
-![](/Users/visseho/OneDrive - UQAM/Cours/Images_cours/association_nulle.png)
-<!--
+<!--![](/Users/visseho/OneDrive - UQAM/Cours/Images_cours/association_nulle.png)-->
 
-```{r, echo=FALSE,  out.width = '60%', fig.align='center'}
-knitr::include_graphics("/Users/visseho/OneDrive - UQAM/Cours/Images_cours/association_nulle.png")
+
+```{r, echo=FALSE,  out.width = '70%', fig.align='center'}
+knitr::include_graphics("../Images/association_nulle.png")
 ```
--->
+
 
 ## Intensité de la relation
 
 - Une relation peut-être modérée
 
-![](/Users/visseho/OneDrive - UQAM/Cours/Images_cours/association_moderee.png)
-<!--
-```{r, echo=FALSE,  out.width = '60%', fig.align='center'}
-knitr::include_graphics("/Users/visseho/OneDrive - UQAM/Cours/Images_cours/association_moderee.png")
+<!--![](/Users/visseho/OneDrive - UQAM/Cours/Images_cours/association_moderee.png)-->
+
+```{r, echo=FALSE,  out.width = '70%', fig.align='center'}
+knitr::include_graphics("../Images/association_moderee.png")
 ```
--->
+
 
 ## Intensité de la relation
 
 - ou forte
 
-![](/Users/visseho/OneDrive - UQAM/Cours/Images_cours/association_forte.png)
-<!--
-```{r, echo=FALSE,  out.width = '60%', fig.align='center'}
-knitr::include_graphics("/Users/visseho/OneDrive - UQAM/Cours/Images_cours/association_forte.png")
+<!--![](/Users/visseho/OneDrive - UQAM/Cours/Images_cours/association_forte.png)-->
+
+```{r, echo=FALSE,  out.width = '70%', fig.align='center'}
+knitr::include_graphics("../Images/association_forte.png")
 ```
--->
+
 
 ## Intensité de la relation
 
@@ -268,7 +274,7 @@ Chi-carré
 - Jusque là, nous avons pu voir l'association au sein de nos données
 - Mais ces données proviennent d'un échantillon unique
 - Comment s'assurer que ce résultat ne change pas si nous changeons d'échantillon?
-- C'est-à-dire qu'il ne soit dû qu'au hazard?
+- C'est-à-dire qu'il ne soit dû qu'au hasard?
 - Autrement, comment s'assurer que la relation est aussi vraie au sein de la population?
 
 ## Logique des tests statistiques
@@ -276,14 +282,14 @@ Chi-carré
 - Déterminer la probabilité de découvrir une relation dans notre échantillon quand il y en a au sein de la population.
 - Si cette probabilité est petite (1/20 ou 5%, d'òu l'idée du seuil de 5%), et si nous découvrons une relation au sein de l'échantillon, nous pourrons conclure qu'il existe probablement une relation dans la population.
 - Alors il s'agit de tester la supposition qu'il n'existe pas de relation dans la population. On appelle cela l'**hypothèse nulle**, notée $H_0$.
-- Ainsi, rejeter l'hypoyhèse nulle, revient à dire qu'il existe une relation dans la population. 
+- Ainsi, rejeter l'hypothèse nulle, revient à dire qu'il existe une relation dans la population. 
 - On parle de relation **statistiquement significative**
 
 ## Logique des tests statistiques
 
 - A l'inverse, si les chances de trouver une relation dans l'échantillon alors qu'il n'y en a pas dans la population sont élevées (supérieures à 1 sur 20), nous NE pouvons croire en toute confiance à l'existence d'une relation dans la population.
 - La relation trouvée au sein de l'échantillon est probablement dûe au hasard seul.
-- Dans ce cas, nous disons que nous NE rejetons PAS l'hypthèse nulle
+- Dans ce cas, nous disons que nous NE rejetons PAS l'hypothèse nulle
 - Il n'y a pas de relation au sein de la population. 
 
 REmarque: On dit **ne pas rejeter l'hypothèse nulle** et non  **accepter l'hypothèse nulle**.
@@ -305,7 +311,15 @@ REmarque: On dit **ne pas rejeter l'hypothèse nulle** et non  **accepter l'hypo
 - Erreur de type II ou erreur **bêta** : Non rejet de l'hypothèse nulle alors qu'elle est fausse. La probabilité de l'erreur de type II n'est pas par contre (1-$\alpha$)
 - Si les chances de l'erreur de type I augmentent, les chances de l'erreur de type II diminuent et vice versa
 
-![Erreurs de type I et de type II](/Users/visseho/OneDrive - UQAM/Cours/Images_cours/erreur.png)
+<!--![Erreurs de type I et de type II](/Users/visseho/OneDrive - UQAM/Cours/Images_cours/erreur.png)-->
+
+```{r, echo=FALSE,  out.width = '60%', fig.align='center'}
+knitr::include_graphics("../Images/erreur.png")
+
+```
+
+
+
 
 ## Logique des tests statistiques
 
@@ -339,7 +353,14 @@ $$f_a = (\frac{\text{Total de la colonne}}{N})*(\text{Total de la rangée})$$
 
 ## Exemple
 
-![Attitude face à la violence selon le niveau d'instruction (en fréquences))](/Users/visseho/OneDrive - UQAM/Cours/Images_cours/chideux.png)
+<!--![Attitude face à la violence selon le niveau d'instruction (en fréquences))](/Users/visseho/OneDrive - UQAM/Cours/Images_cours/chideux.png)-->
+
+
+```{r , echo=FALSE,  out.width = '80%', fig.align='center'}
+
+knitr::include_graphics("../Images/chideux.png")
+```
+
 
 ## Exemple
 
@@ -347,7 +368,8 @@ Tableau des fréquences anticipées
 
 - S'il n'y avait pas de relation entre les deux variables, on devrait s'attendre à ce que le tableau soit comment?
 
-Différence de moyennes
+
+Association entre une variable quantitative (dépendante) et une variable qualitative (indépendante)
 ========================================================
 
 ## Différence de moyennes
@@ -356,7 +378,7 @@ On recourt à la différence de moyenne dans le cas où:
 
 - La variable indépendante est dichotomique (homme/femme, jeune/vieux, marié/célibataire) 
 
-- La variable dépendantes est continue (ratio/intervalle)
+- La variable dépendantes est quantitative (ratio/intervalle)
 
 Par exemple:
 - Analyser l'association entre le genre/sexe et le revenu
@@ -368,15 +390,15 @@ Par exemple:
 - S'apprécie mieux avec un diagramme appelé diagrammes en boîtes. (deuxième partie du cours)
 
 
-Ce qu'on n'a pas vu
+## Analyse de la variance
+
+
+
+## Association entre une variable quantitative (indépendante) et une variable qualitative (dépendante)
+
+
+
+Association entre deux variables quantitatives
 ========================================================
 
-## Ce qu'on n'a pas vu
-
-- Significativité statistique d'une association
-- Mesure de l'intensité de l'association
-- La causalité (l'association n'est/n'implique pas la causalité (Page 144 - 145, Fox)
-
-
-LAB 6
-========================================================
+## Régression

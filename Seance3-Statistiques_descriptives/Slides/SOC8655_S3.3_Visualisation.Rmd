@@ -1,15 +1,15 @@
 ---
-title: 'Séance 3: Visualisation avec ggplot'
+title: 'Séance 3.3: Visualisation avec ggplot'
 author: "Visseho Adjiwanou, PhD."
 institute: "Département de Sociologie - UQAM"
 date: "`r format(Sys.time(), '%d %B %Y')`"
 output:
+  slidy_presentation: default
+  ioslides_presentation: default
   beamer_presentation:
     colortheme: beaver
     fonttheme: structurebold
     theme: Ilmenau
-  slidy_presentation: default
-  ioslides_presentation: default
 header-includes:
   - \usepackage{color}
 ---
@@ -71,7 +71,7 @@ Type de graphiques pour les distributions univariées et bivariées
 
 
 ```{r graphique1, echo=FALSE, out.width = '80%', fig.align='center'}
-knitr::include_graphics("graphique1.jpg")
+knitr::include_graphics("../Images/graphique1.jpg")
 ```
 
 
@@ -80,7 +80,7 @@ knitr::include_graphics("graphique1.jpg")
 - Graphiques pour representer l'association entre deux variables  
 
 ```{r graphique2, echo=FALSE, out.width = '80%', fig.align='center'}
-knitr::include_graphics("graphique2.jpg")
+knitr::include_graphics("../Images/graphique2.jpg")
 ```
 
 
@@ -93,7 +93,7 @@ ggplot
 * La forme générale d'un code de graphique est le suivant:
 
 ```{r ggplot, echo=FALSE,  out.width = '100%'}
-knitr::include_graphics("ggplot_forme_generale.jpg")
+knitr::include_graphics("../Images/ggplot_forme_generale.jpg")
 ```
 
 1. **ggplot** spécifie que vous utiliser la commande ggplot. C'est à ce niveau que vous spécifier les données que vous voulez utiliser.
@@ -107,7 +107,7 @@ knitr::include_graphics("ggplot_forme_generale.jpg")
 * La forme générale d'un code de graphique est le suivant:
 
 ```{r ggplot1, echo=FALSE,  out.width = '100%'}
-knitr::include_graphics("ggplot_forme_generale.jpg")
+knitr::include_graphics("../Images/ggplot_forme_generale.jpg")
 ```
 
 2. **geom_function**, contient plusieurs fonctions pour spécifier le type de graphique que vous voulez faire. Le type de graphique indique le nombre de paramètres à inclure.
@@ -122,7 +122,7 @@ knitr::include_graphics("ggplot_forme_generale.jpg")
 
 ```{r ggplot2, echo=FALSE,  out.width = '100%'}
 
-knitr::include_graphics("ggplot_forme_generale.jpg")
+knitr::include_graphics("../Images/ggplot_forme_generale.jpg")
 
 ```
 
@@ -139,8 +139,9 @@ Exemples: Visualiser la distribution univariée
 
 ```{r, warning=FALSE, results='hide', message=FALSE}
 library(tidyverse)
+library(summarytools)
 
-dhs_ipv <- read_csv("dhs_ipv.csv")
+dhs_ipv <- read_csv("../Data/dhs_ipv.csv")
 
 dhs_ipv <-
   dhs_ipv %>% 
@@ -161,7 +162,7 @@ dhs_ipv <-
 
 ```{r, warning=FALSE, results='hide', message=FALSE}
 
-crsc96 <- read_csv("cora-crsc1996-E-1996_F1.csv")
+crsc96 <- read_csv("../Data/cora-crsc1996-E-1996_F1.csv")
 crsc96_small <-
   crsc96 %>% 
   select(sexq, region, age, ageq, q1, q2, q3, q4, q44, q95) %>% 
@@ -212,7 +213,7 @@ ggplot(crsc96_small) +
 ## Exemple: histogramme
 - Voici ce que vous obtenez si je ne les mets pas.
 
-```{r}
+```{r, fig.align='center'}
 
 ggplot(dhs_ipv) +
   geom_histogram(aes(x = beat_burnfood))
@@ -234,9 +235,9 @@ ggplot(crsc96_small) +
   geom_bar(aes(x = q2_new))
 
 
-ggplot(crsc96_small) +
-  group_by(sexq) +
-  geom_bar(aes(x = q2_new))
+#ggplot(crsc96_small) +
+#  group_by(sexq) +
+#  geom_bar(aes(x = q2_new))
 
 homme <-
   crsc96_small %>% 
@@ -308,6 +309,7 @@ ggplot(crsc96_small) +
  
 * La boîte à moustaches représente un autre moyen de visualiser les distributions d'une variable numérique.
 * Une boîte à moustaches visualise **la médiane**, **les quartiles** et **l'écart-interquartile** sous la forme d'un seul objet.
+
 ```{r, out.width = '50%', message = FALSE, warning=FALSE, fig.align='center'}
 
 ggplot(crsc96_small) + 
@@ -317,9 +319,9 @@ ggplot(crsc96_small) +
 
 ## Exemple: Diagramme de quartile ou boîte à moustaches
 
-* C'est particulièrement utile lorsque vous **comparez la distribution de plusieurs variables** en les plaçant côte à côte. 
+- C'est particulièrement utile lorsque vous **comparez la distribution de plusieurs variables** en les plaçant côte à côte. 
 
-* `geom_boxplot` permet de représenter des boîtes à moustaches. On lui passe en **y** (axe des ordonnées) la variable dont on veut étudier la répartition (variable quantitative), et en **x** (axe des abscisses) la variable contenant les classes qu’on souhaite comparer (variable qualitative). 
+- `geom_boxplot` permet de représenter des boîtes à moustaches. On lui passe en **y** (axe des ordonnées) la variable dont on veut étudier la répartition (variable quantitative), et en **x** (axe des abscisses) la variable contenant les classes qu’on souhaite comparer (variable qualitative). 
 
 
 Exemples: Visualiser la distribution bivariée
@@ -335,8 +337,8 @@ ggplot(crsc96_small) +
 
 ```
 
-* Ce graphique nous donne pour chaque sexe, le nombre de personne qui sont dans chaque catégorie de la variable dépendante.
-* Il a cependant un problème, c'est difficile de comparer le nombres bruts. Il faut des pourcentages.
+- Ce graphique nous donne pour chaque sexe, le nombre de personne qui sont dans chaque catégorie de la variable dépendante.
+- Il a cependant un problème, c'est difficile de comparer le nombres bruts. Il faut des pourcentages.
 
 
 ## Croisement de deux variables qualitatives
@@ -347,6 +349,7 @@ ggplot(crsc96_small) +
   geom_bar(aes(x = sexe, fill = q2_new), position = "fill")  
 
 ```
+
 - On voit clairement la différence d'opinion entres les hommes et les femmes.
 
 
@@ -408,7 +411,8 @@ b <- ggplot(dhs_ipv) +
   geom_boxplot(aes(x = region, y = beat_burnfood))
 b
 ```
-* Note : x doit être une variable qualitative, et y une variable quantitative.
+
+- Note : x doit être une variable qualitative, et y une variable quantitative.
 
 
 ## Exemple: Diagramme de quartile 
@@ -463,15 +467,16 @@ Remarques
 ========================================================
 
 ## Remarques
+
 - Les annotations graphiques sont très utiles pour mettre en évidence les messages clés.
-- Dans un bulletin ou un rapport statistique, tous les graphiques doivent être étiquetés comme des figures et numérotés, en fonction de leur ordre d'apparition.
-- Ecrire clairement les titres : préciser la région et la période.
-- Soyez concis, en nommant les principaux axes du graphique.
-- Le texte du graphique doit être horizontal.
-- Si les étiquettes ne tiennent pas dans l’espace requis, transposez le graphique ou convertissez les unités.
-   - Elles doivent être concises et pertinentes.
-   - Placez les sur le graphique aussi près que possible des points de données qui vous intéressent.
-- Indiquer la source
+>- Dans un bulletin ou un rapport statistique, tous les graphiques doivent être étiquetés comme des figures et numérotés, en fonction de leur ordre d'apparition.
+>- Ecrire clairement les titres : préciser la région et la période.
+>- Soyez concis, en nommant les principaux axes du graphique.
+>- Le texte du graphique doit être horizontal.
+>- Si les étiquettes ne tiennent pas dans l’espace requis, transposez le graphique ou convertissez les unités.
+   >- Elles doivent être concises et pertinentes.
+   >- Placez les sur le graphique aussi près que possible des points de données qui vous intéressent.
+>- Indiquer la source
 
 ## Remarques
 
@@ -479,14 +484,14 @@ https://slideplayer.fr/slide/10114066/
 
 ## Pour aller plus loin
 
-* Plus dans aes : **mappage** : * c'est une mise en relation entre un **attribut graphique du geom** et une variable du tableau de données.
+- Plus dans aes : **mappage** : * c'est une mise en relation entre un **attribut graphique du geom** et une variable du tableau de données.
   - Changer les couleurs (*color*), la taille (*size*), la position (*position*), la transparence (*alpha*), le remplissage (*fill*)
 
-* **Facets** : le **faceting** permet d’effectuer plusieurs fois le même graphique selon les valeurs d’une ou plusieurs variables qualitatives (notre *group_by*): facet_wrap, facet_grid
+>- **Facets** : le **faceting** permet d’effectuer plusieurs fois le même graphique selon les valeurs d’une ou plusieurs variables qualitatives (notre *group_by*): facet_wrap, facet_grid
 
-* Les **scales** : ils permettent de modifier la manière dont un attribut graphique va être relié aux valeurs d’une variable, et dont la légende correspondante va être affichée. 
+>- Les **scales** : ils permettent de modifier la manière dont un attribut graphique va être relié aux valeurs d’une variable, et dont la légende correspondante va être affichée. 
 
-* Les **thèmes** : ils permettent de contrôler l’affichage de tous les éléments du graphique qui ne sont pas reliés aux données : **titres**, **grilles**, **fonds**, etc.
+>- Les **thèmes** : ils permettent de contrôler l’affichage de tous les éléments du graphique qui ne sont pas reliés aux données : **titres**, **grilles**, **fonds**, etc.
 https://ggplot2.tidyverse.org/reference/theme.html
 
 
@@ -542,17 +547,16 @@ Ressources
 ========================================================
 
 ## Ressources
-* https://www.google.com/search?q=ggplot+theme%2C+dont+show+legend&oq=ggplot+theme%2C+dont+show+legend&aqs=chrome..69i57j0.7717j0j4&sourceid=chrome&ie=UTF-8
-* https://juba.github.io/tidyverse/08-ggplot2.html#
-  * Fortement recommandé
-* https://www.rstudio.com/resources/cheatsheets/
+- https://www.google.com/search?q=ggplot+theme%2C+dont+show+legend&oq=ggplot+theme%2C+dont+show+legend&aqs=chrome..69i57j0.7717j0j4&sourceid=chrome&ie=UTF-8
+- https://juba.github.io/tidyverse/08-ggplot2.html#
+  - Fortement recommandé
+- https://www.rstudio.com/resources/cheatsheets/
   
-* http://r4ds.had.co.nz/data-visualisation.html#aesthetic-mappings
-* http://r-statistics.co/Top50-Ggplot2-Visualizations-MasterList-R-Code.html
-* http://www.cookbook-r.com/Graphs/
+- http://r4ds.had.co.nz/data-visualisation.html#aesthetic-mappings
+- http://r-statistics.co/Top50-Ggplot2-Visualizations-MasterList-R-Code.html
+- http://www.cookbook-r.com/Graphs/
 
-* http://www.ggplot2-exts.org/gallery/
-  * Si vous y trouver de la passion...
+
 
 
 

@@ -1,0 +1,21 @@
+---
+title: "Seance 3.0: Bref Survol de l'analyse descriptive"
+subtitle: "Résumé"
+author: "Vissého Adjiwanou, PhD."
+date: "`r format(Sys.time(), '%d %B %Y')`"
+output:
+  beamer_presentation:
+    colortheme: beaver
+    fonttheme: structurebold
+    theme: AnnArbor
+  ioslides_presentation: default
+  slidy_presentation: default
+---
+
+## Résumé
+
+```{r tc1, echo=FALSE,  out.width = '100%'}
+
+knitr::include_graphics("../Images/s2206_corr1.png")
+
+```

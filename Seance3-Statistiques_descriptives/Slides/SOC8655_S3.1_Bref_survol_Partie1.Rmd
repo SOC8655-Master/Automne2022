@@ -1,6 +1,6 @@
 ---
-title: "Séance 2: Bref Survol de l'analyse descriptive"
-subtitle: "Partie 1"
+title: "Séance 3: Bref Survol de l'analyse descriptive"
+subtitle: "Partie 1: description univariée"
 author: "Visseho Adjiwanou, PhD."
 institute: "Département de Sociologie - UQAM"
 #date: "`r format(Sys.time(), '%d %B %Y')`"
@@ -92,7 +92,7 @@ Deux branches des statistiques:
 
 1. $\color{red}{\text{Statistiques descriptives}}$ : méthodes résumant l'information afin de la rendre plus intelligible, plus utile ou plus aisément communicable. 
 
-  - Exemple: Age moyen des étudiants de ma classe.
+    - Exemple: Age moyen des étudiants de ma classe.
 
   - Cependant, il y a perte d'information.
 
@@ -100,7 +100,7 @@ Deux branches des statistiques:
 
 ## Survol des statistiques
   
-2. $\color{red}{\text{Statistiques inférentielles}}$  renvoient aux procédures par lesquelles nous généralisons l'information concernant un échantillon à la population de laquelle fut tiré l'echantillon en question.
+2. $\color{red}{\text{Statistiques inférentielles}}$  renvoient aux procédures par lesquelles nous généralisons l'information concernant un échantillon à la population de laquelle fut tiré l'échantillon en question.
 
   - marge d'erreur; p value ou p <0,05; test de chi-carré, chi 2 ...
 
@@ -118,14 +118,14 @@ Deux branches des statistiques:
 
 3. $\color{red}{\text{Paramètre}}$ : résumé basé sur une population
 
-4. $\color{red}{\text{Statistique}}$ : caractéristique d'un échantillon
+4. $\color{red}{\text{Statistique (3e définition du mot)}}$ : caractéristique d'un échantillon
 
-  - Exemple : âge moyen (paramètre si calculé sur toute la population et statistique si calculé à partir d'un échantillon)
+  - Exemple : âge moyen (paramètre si calculé sur toute la population) et statistique (si calculé à partir d'un échantillon)
 
 
 ## Les variables 
 
-- Une $\color{red}{\text{variable}}$ est une caracteristique ou une propriété quelconque dont la valeur diffère d'un cas à l'autre.
+- Une $\color{red}{\text{variable}}$ est une caractéristique ou une propriété quelconque dont la valeur diffère d'un cas à l'autre.
 
 - Elles se retrouvent souvent en colonnes dans les fichiers de données
 - $\color{red}{\text{Echelle}}$ : série des valeurs possibles d'une variable.
@@ -133,7 +133,7 @@ Deux branches des statistiques:
 
 ## Les niveaux de mesures
 
-Quatre catégories de variables selon la façon dont elles sont mésurées:
+Quatre catégories de variables selon la façon dont elles sont mesurées:
 
 1. $\color{red}{\text{Variables nominales}}$ : se mesure de telle façon que ses valeurs ou ses attributs diffèrent les uns des autres. Les valeurs ne peuvent pas être disposées selon un ordre logique ou naturel. 
 
@@ -145,7 +145,7 @@ Quatre catégories de variables selon la façon dont elles sont mésurées:
 2. $\color{red}{\text{Variable ordinale}}$ : variables dont les valeurs peuvent êtres ordonnées.
 
   - classe sociale
-  - Quintile de revenu
+  - quintile de revenu
 
 Remarques: 
 
@@ -154,7 +154,7 @@ Remarques:
   
 ## Les niveaux de mesures
 
-Quatre catégories de variables selon la façon dont elles sont mésurées:
+Quatre catégories de variables selon la façon dont elles sont mesurées:
 
 3. $\color{red}{\text{Variable d'intervalle}}$ a non seulement des valeurs qui peuvent être ordonnées, mais elle se mesure également à l'aune d'une unité de mesure fixe ou standard.
   - Température
@@ -200,7 +200,7 @@ knitr::include_graphics("../Images/resume_variable2.png")
 ## Les niveaux de mesures
 
   - Il est capital de distinguer le type de variable que vous utilisez pour être en mesure d'utiliser la bonne statistique.
-  - On vera l'application dans R.
+  - On verra l'application dans R.
   
 ## Catégories mutuelllement exclusives et collectivement exhaustives
 
@@ -212,6 +212,7 @@ Les valeurs des variables que vous définissez doivent être :
 Remarque: 
 
   - Quand vous créez de nouvelles variables, vous devez toujours tenir compte de cela.
+
 
 Validité et fiabilité (validity and reliability)
 =======================================================
@@ -231,7 +232,7 @@ Validité et fiabilité (validity and reliability)
   > - d'utiliser une variété de mesures qui peuvent être analysées indépendamment ou 
   > - combinées en une seule mesure globale (ou composite). 
 
-> - Par exemple, de nombreux sociologues utilisent une combinaison de revenu, d'éducation et de profession pour déterminer le statut socioéconomique global du répondant. 
+> - Par exemple, de nombreux sociologues utilisent une combinaison de revenu, d'éducation et de profession pour déterminer le statut socio-économique global du répondant. 
 
 ## Validité / fiabilité
 
@@ -267,7 +268,7 @@ Validité et fiabilité (validity and reliability)
 - Dans certains cas, nos données sont agrégées (PIB par pays par exemple)
 
   - Données écologique si l'unité d'agrégation est l'espace
-  - Donne lieu à des erreures écologiques: inférer sur les individus les résultats agrégés.
+  - Donne lieu à des erreurs écologiques: inférer sur les individus les résultats agrégés.
   
 
 Statistiques descriptives
@@ -409,7 +410,7 @@ knitr::include_graphics("../Images/barre.jpg")
 
 Les variables continues (intervalle/ratio) sont décrites numériquement par :
 
-1. des **paramétres de position**
+1. des **paramètres de position**
   - *moyenne*
   - percentiles, dont :
       - *médiane*
@@ -518,9 +519,9 @@ Pour la semaine prochaine
 2. **Lectures Facultatives (important pour mieux assimiler le cours)**
   - Kieran (https://socviz.co/lookatdata.html#what-makes-bad-figures-bad
   
-  - Wickham(https://r4ds.had.co.nz/data-visualisation.html) 
+  - Wickham (https://r4ds.had.co.nz/data-visualisation.html) 
   
-  - Wickham(https://r4ds.had.co.nz/exploratory-data-analysis.html)
+  - Wickham (https://r4ds.had.co.nz/exploratory-data-analysis.html)
 
 3. **Datacamp**
 - Introduction à Tidyverse
