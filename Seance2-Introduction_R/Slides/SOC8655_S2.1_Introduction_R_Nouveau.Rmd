@@ -4,12 +4,12 @@ author: "Visseho Adjiwanou, PhD."
 institute: "SICSS-Montréal"
 #date: "`r format(Sys.time(), '%d %B %Y')`"
 output:
-  ioslides_presentation: default
   slidy_presentation: default
   beamer_presentation:
     colortheme: beaver
     fonttheme: structurebold
     theme: Ilmenau
+  ioslides_presentation: default
 header-includes:
   - \usepackage{color}
 ---
@@ -19,7 +19,7 @@ header-includes:
 
 ```{r, out.width='70%', echo = FALSE, fig.align = 'center'}
 
-knitr::include_graphics("/Users/visseho/OneDrive - UQAM/Cours/Images_cours/joke2.png")
+knitr::include_graphics("../Images//joke2.png")
 
 ```
 

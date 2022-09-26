@@ -5,11 +5,11 @@ author: "Visseho Adjiwanou, PhD."
 institute: "Département de Sociologie - UQAM"
 #date: "`r format(Sys.time(), '%d %B %Y')`"
 output:
+  slidy_presentation: default
   beamer_presentation:
     colortheme: beaver
     fonttheme: structurebold
     theme: AnnArbor
-  slidy_presentation: default
   ioslides_presentation: default
 header-includes:
   - \usepackage{color}

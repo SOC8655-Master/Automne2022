@@ -284,7 +284,24 @@ para_position <- bind_rows(position_all_region, position_all)
 ```
 
 
-On peut mieux organiser ces données:
+On peut mieux organiser ces données, c'est-à-dire "tidyr".
+
+http://vita.had.co.nz/papers/tidy-data.pdf
+
+```{r}
+
+knitr::include_graphics("../Images/tidy_data_logics.jpg")
+
+```
+
+tidyr — ensemble de fonctions pour vous aider à ranger vos données. Il a 5 catégories principalement:
+
+1. Pivoting → pivot_longer() & pivot_wider()
+2. Rectangling → unnest_longer(), unnest_wider(), hoist()
+3. Nesting → nest() & unnest()
+4. Splitting and combining columns → separate(),extract(), unite()
+5. Missing Values→ complete(), drop_na(), fill(), replace_na()
+
 
 ```{r}
 
@@ -306,6 +323,9 @@ ggplot(tidy_para_position) +
   geom_col(aes(x = region, y = moyen)) +
   facet_wrap(~ variable)
 
+
+df <- data.frame(x = c(NA, "a1b", "c4d", "e9g"))
+df %>% separate(x, c("A","B"), sep = "[0-9]")
 
 ```
 
@@ -427,4 +447,7 @@ ggplot(dhs_subset, aes( x = mean_year, y = mean_bf)) +
 ## Votre interpretation (texte)
 
 Le graphique chronologique ne montre pas de tendance à la baisse des attitudes envers la violence domestique dans aucune des régions. Cependant, chaque année varie en fonction des pays qu’elle représente. Ce graphique ne donne donc pas une image précise de l’évolution des attitudes à l’égard de la violence domestique.
+
+
+
 

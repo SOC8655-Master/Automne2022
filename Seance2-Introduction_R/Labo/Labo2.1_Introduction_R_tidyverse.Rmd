@@ -1,0 +1,714 @@
+---
+title: "Labo2.1 - Introduction à R"
+subtitle: "Tidyverse"
+author: "Visseho Adjiwanou, PhD."
+institute: "Département de Sociologie - UQAM"
+date: "`r format(Sys.time(), '%d %B %Y')`"
+output:
+  slidy_presentation: default
+  beamer_presentation:
+    colortheme: beaver
+    fonttheme: structurebold
+    theme: Ilmenau
+  ioslides_presentation: default
+header-includes:
+  - \usepackage{color}
+---
+
+## Plan
+
+- Introduction à tidyverse: manipulation de données
+- Analyse univariée avec summarytools et tidyverse
+- Analyse bivariée: tableau avec summarytools
+- Analyse bivariée: graphique avec ggplot2 (tidyverse)
+
+
+## Introduction
+
+Quand les chercheurs vont collecter les données, il ne mesure pas souvent la même variable de trois manières différentes (nominale, ordinale, ratio, intervalle). Non, ils/elles choisissent leur echelle de mesure avant d'aller sur le terrain. Aussi, pour ce labo, on a besoin de plusieurs bases de données qui ont l'information recherchée.
+
+Nous allons travailler avec 
+- les données de l'enquête sociale du Canada de 1995 "cora-crsc1996-E-1996_F1.csv" et
+- les données sur la violence de votre devoir
+
+
+
+Introduction à Tidyverse
+========================================================
+
+
+## Processus d'analyse des données
+
+<!--
+```{r}
+library(knitr)
+include_graphics("/Users/visseho/OneDrive - UQAM/Cours/Images_cours/r4ds.jpg")
+
+```
+-->
+
+## Packages de Tidyverse
+
+```{r}
+
+#install.packages("tidyverse")
+library(tidyverse)
+
+```
+
+
+## Processus d'analyse des données
+Chaque élément est associé à un `package` donné.
+
+1. Importer                                         (**readr**)
+2. Préparation des données (data wrangling)
+    - Arranger                                        (**tidyr**) 
+    - Transformer                                     (**dplyr**)
+3. Analyse des donnés
+    - Visualisation                                   (**ggplot2**)
+    - Modélisation
+4. Communication                                    (**rmarkdown**: ceci n'est pas un package de tidyverse)
+
+
+PS. Intéressant sur data wrangling
+https://www.lemagit.fr/conseil/Quest-ce-que-le-Data-Wrangling
+
+## Processus d'analyse des données
+
+- Les autres packages de tidyverse
+    - **sringr** : pour travailler avec les données caractères
+    - **forcat** : pour travailler avec les facteurs : http://perso.ens-lyon.fr/lise.vaudor/manipulation-de-facteurs-avec-forcats/
+    - **purrr** : pour travailler avec les fonctions
+    - **tibble** : transformer les données en tribble.
+  
+La documentation est éparse sur chacun de ces packages.
+
+
+## Processus d'analyse des données
+ 
+ Et finalement deux autres packages que nous utiliserons:
+    - **haven**, **rio** ou **foreign** pour importer des données d'autres formats (sav, dta...)
+    - **Summarytools** pour les tableaux croisés
+    - **pander** pour le formatage des tableaux
+
+Manipulation des données
+========================================================
+
+## Maintenant, on va travailler avec une base de donnée plus simple.
+
+- Il s'agit du CROP Socio-Cultural Survey de 1996
+- Dans cette partie, nous allons apprendre à :
+    - Selectionner les variables 
+    - Sélectionnez les observations
+    - Réorganiser les données
+    - Créer de nouvelles variables avec des fonctions de variables existantes (mutate ())
+    - Recoder des variables existantes
+
+
+## Dressons la table
+
+```{r}
+
+# Effacer votre environnement
+
+rm(list = ls())
+
+# Installer les packages dont vous avez besoin
+
+  #install.packages("tidyverse")
+# install.packages("summarytools")
+
+# Charger les packages
+
+library(tidyverse)
+library(summarytools)
+
+```
+
+## Téléchargement de la base de données
+
+```{r}
+
+getwd()
+
+crsc96 <- read_csv("../Data/cora-crsc1996-E-1996_F1.csv")
+
+
+
+
+#crsc96 <- read_csv("/Users/visseho/OneDrive - UQAM/SICSS_2021_Montreal/Cours/Semaine1_Formation_Intensive_R/Jour2_Manipulation/Données/cora-crsc1996-E-1996_F1.csv")
+
+```
+
+## Sélectionnons les données qui nous intéressent
+
+```{r }
+
+crsc96_small <-
+  crsc96 %>% 
+  select(sexq, region, age, ageq, q1, q2, q3, q4, q44, q95)
+
+#crsc96_small 
+glimpse(crsc96_small)
+head(crsc96_small)
+
+```
+
+
+## Sélectionner les observations
+
+```{r}
+ctable(crsc96_small$age, crsc96_small$sexq, "no")
+
+crsc96_small_homme <-
+  crsc96_small %>% 
+  filter(sexq == 1 & age >= 35)
+
+freq(crsc96_small$age)
+
+freq(crsc96_small_homme$age)
+freq(crsc96_small_homme$sexq)
+
+ctable(crsc96_small_homme$age, crsc96_small_homme$sexq, "no")
+
+```
+
+
+## Toutes ces étapes peuvent se réduire à:
+
+```{r}
+
+crsc96_small_homme_general <-
+  crsc96 %>% 
+  select(sexq, region, age, ageq, q1, q4, q44, q95) %>% 
+  filter(sexq == 1 & age >= 35)
+
+```
+
+## Subset dans base R vous permet de faire les deux choses en méme temps
+
+```{r}
+
+crsc_base <-
+crsc96 %>% 
+  subset(sexq == 1 & age >= 35, select = c(sexq, region, age, ageq, q1, q4, q44, q95))
+
+```
+
+
+## Classe des variables
+
+```{r}
+
+
+
+class(crsc96_small$q2)
+#freq(crsc96_small$q1)
+
+class(crsc96_small$sexq)
+
+mean(crsc96_small$sexq)
+
+```
+
+- Allons voir si cette variable est vraiment numérique.
+
+## Recodage et création de variables factorielles
+
+- La création de nouvelles variables se fait avec la commande `mutate`
+
+```{r}
+
+crsc96_small <-
+  crsc96_small %>%
+  mutate(age_carre = age*age)
+  
+
+class(crsc96_small$q1)
+
+crsc96_small <-
+  crsc96_small %>% 
+  mutate(q1_bis = factor(q1))
+
+class(crsc96_small$q1)
+class(crsc96_small$q1_bis)
+
+
+mean(crsc96_small$q1)
+mean(crsc96_small$q1_bis)
+
+freq(crsc96_small$q1_bis)
+
+
+crsc96_small <-
+  crsc96_small %>% 
+  mutate(q1_ter = factor(q1, 
+                         labels = c("totally agree", "agree somewhat", "DK/NA", "disagree somewhat", "totally disagree")))
+
+
+freq(crsc96_small$q1_ter)
+
+crsc96_small <- 
+  crsc96_small %>% 
+  mutate(q1_4 = factor(q1, 
+                       labels = c("td", "ud", "nsp", "ude", "td")))
+
+
+
+crsc96_small <-
+  crsc96_small %>% 
+  mutate(q1 = factor(q1, 
+                         labels = c("agree somewhat", "totally agree", "DK/NA", "disagree somewhat", "totally disagree")))
+
+
+
+
+
+crsc96_small <-
+  crsc96_small %>% 
+  mutate(q1_new = factor(q1, 
+                         labels = c("totally agree", "agree somewhat", "DK/NA", "disagree somewhat", "totally disagree")))
+
+
+class(crsc96_small$q1_new)
+
+freq(crsc96_small$q1_new)
+
+```
+
+## If_else pour créer des variables binaires ou dichotomiques
+
+Supposons que nous voulons scinder la variable age en deux catégorie, alors on peut utiliser la commande `if_else`
+
+```{r}
+crsc96_small <-
+  crsc96_small %>% 
+  mutate(age2 = if_else(age >= 35, "adulte", "jeune"))
+
+class(crsc96_small$age2)
+
+
+
+freq(crsc96_small$age2)
+
+# je veux qu'il soit factoriel
+
+crsc96_small <-
+  crsc96_small %>% 
+  mutate(age2_bis = factor(if_else(age >= 35, "adulte", "jeune")))
+
+# deuxième manière
+
+crsc96_small <-
+  crsc96_small %>% 
+  mutate(age2 = as.factor(age2))
+
+class(crsc96_small$age2_bis)
+freq(crsc96_small$age2_bis)
+
+```
+
+## Commande case_when pour des cas plus généraux
+
+```{r}
+
+crsc96_small <-
+  crsc96_small %>% 
+  mutate(age3 = case_when(
+    age <= 25 ~ "jeune",
+    age >25 & age <= 40 ~ "adulte",
+    age > 40 ~ "senior"))
+
+
+
+crsc96_small <- 
+  crsc96_small %>% 
+  mutate(age3bis = factor(case_when(
+    age <= 25 ~ "jeune",
+    age > 25 & age  <= 40 ~ "adulte",
+    age > 40 ~ "senior"
+  )))
+  
+
+
+crsc96_small <- 
+  crsc96_small %>% 
+  mutate(age3bis1 = factor(case_when(
+    age <= 25 ~ "jeune",
+    age > 25 & age  <= 40 ~ "adulte",
+    age > 40 ~ "senior"
+  )))
+
+
+
+crsc96_small <-
+  crsc96_small %>% 
+  mutate(age4 = case_when(
+    age < 20 ~ "adolescent",
+    age >= 20 & age < 34 ~ "jeune",
+    age >= 35 & age <59 ~ "adulte",
+    age >=60 ~ "ainé"
+  ))
+
+class(crsc96_small$age4)
+freq(crsc96_small$age4)
+
+crsc96_small <-
+  crsc96_small %>% 
+  mutate(age4_bis = case_when(
+    age < 20 ~ 1,
+    age >= 20 & age < 34 ~ 2,
+    age >= 35 & age <59 ~ 3,
+    age >=60 ~ 4
+  ))
+
+class(crsc96_small$age4_bis)
+
+
+```
+
+## Pour le rendre comme une variable catégorielle
+
+```{r}
+
+crsc96_small <-
+  crsc96_small %>% 
+  mutate(age5 = factor(case_when(
+    age < 20 ~ 1,
+    age >= 20 & age < 34 ~ 2,
+    age >= 35 & age <59 ~ 3,
+    age >=60 ~ 4), labels = c("adolescent", "jeune", "adulte", "ainé")
+  ))
+
+class(crsc96_small$age5)
+freq(crsc96_small$age5)
+
+```
+
+En le créant sous forme de variable factorielle, systématiquement le tableau est ordonné selon les catégories de la variable. Remarquez la différence avec le tableau précédent.
+
+## Finalement, on peut créer la variable age en le scindant en 5 catégories
+
+
+```{r}
+
+freq(crsc96_small$age)
+
+
+crsc96_small <-
+  crsc96_small %>% 
+  mutate(age6 = ntile(age, 5))
+
+class(crsc96_small$age6)
+freq(crsc96_small$age6)
+
+```
+
+## Je peux donc utiliser ntile en combinaison avec factor pour créer une variable factorielle
+
+```{r}
+
+crsc96_small <-
+  crsc96_small %>% 
+  mutate(age6 = factor(ntile(age, 5), labels = c("g1", "g2", "g3", "g4", "g5")))
+
+class(crsc96_small$age6)
+freq(crsc96_small$age6)
+
+```
+
+## Application
+
+- Créer la variable age au carré nommé **age_square**
+- Recode la variable q2 en trois catégories (**agree**, **dk**, et **disagree**) (variable factorielle)
+- Créer une nouvelle variable qui permet de savoir combien de personnes sont dans le groupe d'âge [25, 35]
+
+## Solution - application
+
+```{r}
+
+crsc96_small <-
+  crsc96_small %>% 
+  mutate(age_square = age^2,
+         q2_3 = factor(case_when(
+           q2 == 1 | q2 == 2 ~ 1,
+           q2 == 3 ~ 2,
+           q2 == 4 | q2 == 5 ~ 3), labels = c("agree", "dk", "disagree")),
+         age_groupe = between(age, 25, 34))
+
+class(crsc96_small$age_groupe)
+freq(crsc96_small$age_groupe)
+freq(crsc96_small$q2_3) 
+
+```
+
+
+Analyse univariée 
+========================================================
+
+## Introduction
+
+
+Les objectifs de la statistique descriptive sont de :
+
+- définir le ou les groupes étudiées (population ou échantillon)
+- définir le codage des observations
+- définir la présentation des données : numérique et/ou graphique
+- réduire les données à quelques indicateurs statistiques synthétiques
+
+## La forme compte autant que le contenu
+
+Tidyverse et base R peuvent vous permettre de calculer des fréquences et pourcentages, mais le format de résultat n'est pas similaire à ce qui est produit par exemple par SPSS et Stata. Pour contrer cela, nous allons utiliser Summarytools. Il en existe plusieurs autres qui peuvent faire les mêmes tableaux. Voir ce post: https://dabblingwithdata.wordpress.com/2018/01/02/my-favourite-r-package-for-summarising-data/
+
+
+## Distribution de fréquences et de pourcentage
+
+```{r}
+
+nombre_sexe <-
+  crsc96_small %>% 
+  count(sexe = sexq)
+
+nombre_sexe
+
+nombre_age4 <-
+  crsc96_small %>% 
+  count(age = age4)
+
+nombre_age4
+
+nombre_age4 <-
+  nombre_age4 %>% 
+  mutate(proportion = n / sum(n),
+         pourcentage = n / sum(n)*100)
+
+nombre_age4
+```
+
+
+## Calculer des proportions
+
+```{r}
+
+proportion1 <-
+  crsc96_small %>% 
+  count(sexe = sexq, age = age4) %>% 
+  mutate(proportion = n / (sum(n)))
+proportion1
+
+```
+
+## Calculer des proportions
+
+```{r}
+# proportion
+
+proportion2 <-
+  crsc96_small %>% 
+  group_by(sexq) %>% 
+  count(age = age4) %>% 
+  mutate(proportion = n / (sum(n)))
+proportion2
+
+```
+
+# FIN
+
+## Avec le package Summarytools
+
+```{r}
+
+freq(crsc96_small$sexq)
+freq(crsc96_small$age4)
+freq(crsc96_small$region)
+
+freq(crsc96_small$age)
+```
+
+
+## Statistiques univariées 
+
+La commande summary nous donne une première indication sur l'ensemble des variables de notre base de données.
+Il faut préter attention aux variables manquantes.
+D'où proviennent les données manquantes dans **age4** et **age5**
+
+```{r}
+
+summary(crsc96_small)
+summary(crsc96_small$age)
+```
+
+## Paramètres de position
+
+```{r}
+
+age_moyen <- mean(crsc96_small$age)
+age_moyen
+
+age_mediane <- median(crsc96_small$age)
+age_mediane
+
+```
+
+Cette approche n'est pas la bonne car elle nous demande beaucoup de coding (avec la création de plusieurs objets)
+
+## Statistiques univariées
+La fonction **summarise** de tidyverse permet de calculer l'ensemble des indicateurs dont nous avons besoin.
+Dans toute étude, il est important de résumé l'information contenue dans les variables pour se faire une première idée.
+
+
+## Meilleure approche
+
+```{r}
+
+age_posit <-
+  crsc96_small %>% 
+  summarise(age_moyen = mean(age),
+            age_median = median(age),
+            age_min = min(age),
+            age_max = max(age))
+
+age_posit
+
+
+
+age_position <- 
+  crsc96_small %>% 
+  summarise(age_moyen = mean(age),
+            age_median = median(age),
+            age_Q1 = quantile(age, prob = 0.25),
+            age_Q3 = quantile(age, prob = 0.75))
+
+age_position
+
+```
+
+## Mode
+
+Il n'y a aucune fonction qui permet de calculer directement le mode. Alors, il faut la créer soi-même.
+
+```{r}
+
+getmode <- function(v) {
+   uniqv <- unique(v)
+   uniqv[which.max(tabulate(match(v, uniqv)))]
+}
+
+
+age_position <- 
+  crsc96_small %>% 
+  summarise(age_moyen = mean(age),
+            age_median = median(age),
+            age_Q1 = quantile(age, prob = 0.25),
+            age_mode = getmode(age),
+            age_max = max(age))
+
+age_position
+
+freq(crsc96_small$age)
+```
+
+## Statistique par groupe
+
+Nous pouvons aussi regarder ces données selon le sexe des individus
+
+```{r}
+
+age_position_sexe <- 
+  crsc96_small %>% 
+  group_by(sexq) %>% 
+  summarise(age_moyen = mean(age),
+            age_median = median(age),
+            age_Q1 = quantile(age, prob = 0.25),
+            age_Q3 = quantile(age, prob = 0.75),
+            age_min = min(age),
+            age_max = max(age))
+age_position_sexe
+
+```
+
+## Utilisation de l'objet créé
+
+```{r}
+
+age_position_sexe <-
+  age_position_sexe %>% 
+  mutate(écart = age_moyen - age_median)
+
+age_position_sexe
+```
+
+
+## Une solution avec summarytools
+
+```{r}
+
+crsc96_small_1 <-
+  crsc96_small %>% 
+  select(age, q1, q2)
+
+descr(crsc96_small_1)
+
+```
+
+Il m'en donne plus que j'en ai besoin.
+
+## Summarytools
+
+
+```{r}
+
+descriptive1 <- descr(crsc96_small_1, stats = c("mean", "med", "Q1", "Q3", "min", "max"), na.rm = TRUE, round.digits = 2, transpose = TRUE, style = 'rmarkdown', plain.ascii = FALSE, weights = NA)
+
+descriptive1
+
+```
+
+
+## Paramètres de dispersion
+
+Exercice: Trouver les statistiques des paramètres de dispersion et calculer les pour la variable **age**. Désagréger les résultats aussi par sexe.
+
+## Remarques
+
+1. Tous les objets que vous créez, vous pouvez les manipuler à votre guise
+
+2. Les variables que vous créez, vous pouvez les réutiliser juste après
+
+3. Interprétations des résultats
+
+
+```{r}
+
+age_dispersion_sexe <- 
+  crsc96_small %>% 
+  group_by(sexq) %>% 
+  summarise(age_variance = var(age),
+            age_ecart = sd(age))
+
+age_dispersion_sexe
+
+```
+
+
+## tableau croisé
+
+```{r}
+
+ctable(crsc96_small$sexq, crsc96_small$q2, "no")
+
+
+ctable(crsc96_small$sexq, crsc96_small$q2, "c")
+
+ctable(crsc96_small$sexq, crsc96_small$q2, "r")
+
+ctable(crsc96_small$sexq, crsc96_small$q2, "no")
+?ctable
+
+```
+
+Plus avec summarytools:
+
+https://cran.r-project.org/web/packages/summarytools/vignettes/Introduction.html
+
+
