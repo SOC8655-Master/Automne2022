@@ -35,10 +35,12 @@ Introduction
 - Dans ce chapitre, nous considérons la causalité, l’un des concepts les plus centraux des sciences sociales quantitatives. 
 
 > - Une grande partie de la recherche en sciences sociales s'intéresse aux effets causaux de diverses politiques et autres facteurs sociétaux. 
+
+<!--
 > - Par exemple: 
   >  - Est-ce que le vaccin A protège contre la maladie X?
   >  - Les classes de petite taille augmentent-elles les résultats des tests standardisés des élèves? 
-  >  - Les soins de santé universels amélioreraient-ils la santé et les finances des pauvres?
+  >  - Les soins de santé universels amélioreraient-ils la santé et les finances des pauvres? -->
 
 ## Introduction
 

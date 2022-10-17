@@ -307,5 +307,5 @@ SATE_femme  = 9.9 - 6.6 = 3.3%
 
 SATE_homme = 8.9 - 5.8 = 3.1%
 
-On voit ici que la discxrimination ethnique est pareille pour les hommes et les femmes.
+On voit ici que la discrimination ethnique est pareille pour les hommes et les femmes.
 

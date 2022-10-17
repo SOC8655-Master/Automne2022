@@ -64,7 +64,7 @@ knitr::include_graphics("../Images/minimum-wage.jpg")
 ```
 
 
-## Données
+## Données (mettre la)
 
 ```{r, minwage, echo=FALSE}
 
