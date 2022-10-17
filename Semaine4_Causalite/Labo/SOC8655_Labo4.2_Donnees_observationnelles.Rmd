@@ -1,0 +1,294 @@
+---
+title: "SOC8655: Labo 4: Causalité"
+subtitle: "Données observationnelles"
+author: "Visseho Adjiwanou, PhD."
+institute: "Département de Sociologie - UQAM"
+date: "`r format(Sys.time(), '%d %B %Y')`"
+output: html_document
+---
+
+# Labo 4.2: Données observationnelles
+
+## Introduction
+
+Cet exemple est basé sur l'étude:
+
+**David Card and Alan Krueger** (1994) “Minimum wages and employment: A case
+study of the fast-food industry in New Jersey and Pennsylvania.” American Economic Review, vol. 84, no. 4,
+pp. 772–793.
+
+https://en.wikipedia.org/wiki/David_Card
+
+
+
+- Débat actuel: augmentation du salaire minimum fédéral
+- De nombreux économistes estiment que cet effet sera négatif:
+    - surtout pour les pauvres
+    - aussi pour toute l'économie
+- Difficile de randomiser l'augmentation du salaire minimum
+
+## Données
+
+- Deux chercheurs en sciences sociales ont testé cette technique en utilisant des chaînes de restauration rapide au New-Jersey (NJ) et en Pennsylvanie (PA).
+    - En 1992, le salaire minimum dans le New Jersey a augmenté de 4,25 dollars à 5,05 dollars
+    - En Pennsylvanie, il est demeuré à 4,25 $
+- NJ et PA (est) sont similaires
+- Les chaînes de restauration rapide au NJ et en PA sont similaires: prix, salaires, produits, etc.
+- Quel est l'impact de l'augmentation du salaire minimum au NJ?
+
+Name                              Description
+--------------------------------- -----------------------------------------------------
+`chain`                           Name of fastfood restaurant chain
+                                  **Nom de la chaîne de restauration rapide**
+`location`                        Location of restaurants (centralNJ, northNJ, PA, shoreNJ, southNJ)
+                                  **Localisation des restaurants**
+`wageBefore`                      Wage before the minimum wage increase
+                                  **Salaire avant l'augmentation du salaire minimum**
+`wageAfter`                       Wage after the minimum wage increase
+                                  **Salaire après l'augmentation du salaire minimum**
+`fullBefore`                      Number of fulltime employees before the minimum wage increase
+                                  **Nombre d'employés à temps plein avant l'augmentation du salaire minimum**
+`fullAfter`                       Number of fulltime employees after the minimum wage increase
+                                  **Nombre d'employés à temps plein après l'augmentation du salaire minimum**
+`partBefore`                      Number of parttime employees before the minimum wage increase
+                                  **Nombre d'employés à temps partiel avant l'augmentation du salaire minimum**
+`partAfter`                       Number of parttime employees after the minimum wage increase
+                                  **Nombre d'employés à temps partiel après l'augmentation du salaire minimum**
+
+
+
+```{r minimum-wage, echo=FALSE, fig.cap="", out.width = '80%'}
+knitr::include_graphics("../Images/minimum-wage.jpg")
+```
+
+
+## Données
+
+```{r, minwage, echo=FALSE}
+
+rm(list = ls())
+
+library(tidyverse)
+library(summarytools)
+
+data("minwage", package = "qss")
+
+head(minwage)
+
+```
+
+## ## Solution 1: Comparaison transversale (Cross-section comparison)
+
+- Variable dépendante: proportion de la main-d'oeuvre à temps plein.
+- Comparaison transversale
+
+Comme les données sont désagrégées pour NJ par régions, nous devons d'abord créer une nouvelle variable pour l'état.
+Nous devons également vérifier si la loi a eu un impact en vérifiant si le salaire a changé après la loi.
+
+Maintenant, nous pouvons vérifier si le taux d'emploi est plus bas dans le New Jersey après la politique suggérée par la théorie économique.
+Pour ce faire, nous pouvons comparer le taux d'emploi entre NJ et PA après la politique.
+Mais quelle devrait être la variable dépendante? Emploi total, proportion du temps plein?
+
+Ici, nous utilisons la proportion de temps plein comme variable dépendante. Quel est le problème de l'emploi total?
+
+```{r, echo=FALSE}
+
+# La proportion de temps plein est-elle plus élevée à New Jersey après
+
+minwage <-
+  minwage %>% 
+  mutate(state = if_else(location == "PA", "PA", "NJ"))
+
+  # Calcul de la variable dépendante: proportion fulltime
+minwage <-
+minwage %>%
+  mutate(totalAfter = fullAfter + partAfter,
+         fullPropAfter = fullAfter / totalAfter)
+
+# Proportion moyenne de temps plein pour chaque État
+
+full_prop_by_state <-
+  minwage %>%
+  group_by(state) %>%
+  summarise(fullPropAfter = mean(fullPropAfter))
+full_prop_by_state
+
+
+```
+
+## Effet de la loi
+
+
+```{r}
+
+# Difference entre NJ et PA
+
+# Première manière
+
+diff1 <- full_prop_by_state[[1, 2]] - full_prop_by_state[[2, 2]]
+diff1
+
+  #full_prop_by_state$fullPropAfter[1] - full_prop_by_state$fullPropAfter[2] 
+
+
+# Deuxième manière de faire 
+
+pivot_wider(full_prop_by_state, names_from = state, values_from = fullPropAfter) %>%
+  mutate(diff = NJ - PA)
+
+
+
+
+```
+
+Le résultat montre que le taux d'emploi moyen augmente de 4% dans le New Jersey après l'introduction de la loi. Pouvons-nous dire que c'est l'impact de la nouvelle loi?
+
+
+## Confounding bias / Biais de confusion
+
+L'hypothèse importante des études observationnelles est que le groupe de traitement et le groupe témoin doivent être comparables en ce qui concerne tout ce qui concerne le résultat autre que le traitement. Il est difficile de conclure que cette hypothèse est vraie dans cette étude.
+
+Par exemple, s'il y a une industrie concurrente pour les travailleurs peu qualifiés dans le New Jersey mais qu'une telle industrie n'existe pas en PA. Si tel est le cas, les restaurants des deux États ne sont pas comparables et les restaurants PA ne peuvent pas servir de groupe de contrôle valide pour les restaurants du New Jersey. Le NJ peut encore avoir un taux d'emploi à temps plein plus élevé, même en l'absence d'augmentation, afin d'attirer les travailleurs peu qualifiés. Plus généralement, toute autre différence qui existe entre les restaurants de restauration rapide dans les deux États avant l'application de la loi NJ fausserait notre inférence si elles sont également des résultats liés. Les raisons qui expliquent pourquoi le salaire minimum est augmenté dans le NJ mais pas en PA peuvent également expliquer la différence des résultats. L'existence possible d'un biais confondant est la raison derrière l'existence du mantra populaire, *"L'association n'implique pas nécessairement la causalité" *
+
+Diverses solutions existent que nous verrons tout au long des cours. En voici quelques-uns pour commencer.
+
+**1. Sous-classification**
+
+L'idée est de rendre les groupes de traitement et de contrôle aussi similaires que possible en les comparant au sein d'un sous-ensemble d'observations défini par des valeurs partagées dans des variables de prétraitement ou une sous-classe. Ici, nous sous-classons par type de restaurants. Quelle autre variable pourrait être intéressant à utiliser?
+
+```{r}
+## Sous-classification
+
+## Proportion de chaque chaîne de restauration rapide dans chaque état
+
+prop_chain <-
+minwage %>% 
+  group_by(state) %>% 
+  count(chain) %>% 
+  mutate(prop_chain = n/sum(n))
+prop_chain
+
+## Pourquoi ne pas mettre ces informations dans un graphique? Voyons voir
+
+ggplot(prop_chain) +
+  geom_point(aes(x = chain, y = prop_chain, color = state)) +
+  coord_flip()                                                        
+  
+## Effet par chaîne
+
+full_prop_by_state_chain <-
+  minwage %>%
+  group_by(state, chain) %>%
+  summarise(fullPropAfter = mean(fullPropAfter))
+full_prop_by_state_chain
+
+pivot_wider(full_prop_by_state_chain, names_from = state, values_from = fullPropAfter) %>%
+  mutate(diff = NJ - PA)
+
+
+# Ici aussi, on peut calculer la différence
+
+ggplot(full_prop_by_state_chain) +
+  geom_point(aes(x = chain, y = fullPropAfter, color = state)) +
+  coord_flip()
+
+```
+
+## Solution 2: Avant et après
+
+Dans les études observationnelles, les données collectées au fil du temps sont une source précieuse d'informations. Les mesures multiples prises au fil du temps sur les mêmes unités sont appelées *données longitudinales ou données de panel*. Les données longitudinales donnent souvent une comparaison plus crédible des groupes de traitement et de contrôle que les données transversales car les premières contiennent des informations supplémentaires sur les changements au fil du temps.
+
+L'avantage de cette conception est que tout facteur de confusion spécifique à chaque état est maintenu constant car la comparaison est effectuée dans NJ. L'inconvénient est que des facteurs de confusion variant dans le temps peuvent biaiser l'inférence qui en résulte. Si, par exemple, il y a une tendance temporelle à la hausse dans l'économie locale qui améliore les salaires et l'emploi et n'est pas causée par l'augmentation du salaire minimum.
+
+
+```{r, echo=FALSE}
+## Before-and-after 
+
+minwage <-
+  minwage %>% 
+  mutate(fullPropBefore = fullBefore / (fullBefore + partBefore))
+
+avant_apres <-
+  minwage %>% 
+  filter(state == "NJ") %>% 
+  summarise(PropBefore = mean(fullPropBefore),
+            PropAfter = mean(fullPropAfter), 
+            diff_bef_aft_NJ = mean(fullPropAfter) - mean(fullPropBefore))
+
+avant_apres
+```
+
+
+## 3. Double différences
+
+
+La conception de différence de différence étend la conception avant et après pour remédier au biais de confusion dû aux tendances temporelles. L'hypothèse clé derrière la conception DiD est que la variable de résultat suit une tendance parallèle en l'absence de traitement.
+
+```{r, echo=FALSE}
+
+did <- 
+  minwage %>% 
+  group_by(state) %>% 
+  summarise(diff = mean(fullPropAfter) - mean(fullPropBefore))
+did
+
+
+# Effet 
+
+did$diff[1] - did$diff[2]
+
+# Plus directement
+
+did_direct <- 
+  minwage %>% 
+  group_by(state) %>% 
+  summarise(diff = mean(fullPropAfter) - mean(fullPropBefore))%>% 
+  pivot_wider(names_from =state, values_from = diff) %>% 
+  mutate(diff_in_diff = NJ - PA)
+did_direct
+
+```
+
+
+## Enfin, mettons cela dans un graphique
+Créons un seul jeu de données avec les valeurs moyennes de chaque état avant et après pour regarder visuellement chacune de ces conceptions.
+
+```{r}
+
+minwage
+
+full_prop_by_state <-
+  minwage %>%
+  group_by(state) %>%
+  summarise_at(vars(fullPropAfter, fullPropBefore), mean) %>% 
+  pivot_longer(cols = c("fullPropAfter", "fullPropBefore"), names_to = "period", values_to = "fullProp") %>% 
+  mutate(period = recode(period, fullPropAfter = 1, fullPropBefore = 0))
+
+full_prop_by_state
+
+ggplot(full_prop_by_state) +
+  geom_point(aes(x = period, y = fullProp, color = state)) +
+  geom_line(aes(x = period, y = fullProp, color = state)) +
+  scale_x_continuous(breaks = c(0, 1), labels = c("Before", "After"))
+
+?scale_x_continuous()
+?summarise_at()
+```
+
+
+## Conclusion : Résumé de trois stratégies d'identification
+
+**Comparaison des sections transversales**
+- Comparer les unités traitées avec les unités de contrôle après le traitement
+- Hypothèse: les unités traitées et de contrôle sont comparables
+- Possibilité de confusion spécifique à l'unité
+
+**Comparaison avant et après**
+- Comparez les mêmes unités avant et après le traitement
+- Hypothèse: pas de confusion variant dans le temps
+
+**Différence dans les différences**
+- Hypothèse: tendance temporelle parallèle
+- Selon cette hypothèse, il tient compte des facteurs de confusion à la fois spécifiques à l'unité et variant dans le temps
+
+**Aucune des approches n'est meilleure. Elles nécessitent des hypothèses différentes.**

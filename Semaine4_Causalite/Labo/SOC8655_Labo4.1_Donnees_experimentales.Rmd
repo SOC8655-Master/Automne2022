@@ -1,0 +1,234 @@
+---
+title: "SOC8655: Labo 4: Causalité"
+subtitle: "Données expérimentales"
+author: "Visseho Adjiwanou, PhD."
+institute: "Département de Sociologie - UQAM"
+date: "`r format(Sys.time(), '%d %B %Y')`"
+output: html_document
+---
+
+
+# 1. Association
+
+  - Pierotti, Rachel. (2013). "[Increasing Rejection of Intimate Partner Violence: Evidence of Global Cultural Diffusion](http://dx.doi.org/10.1177/0003122413480363)." *American Sociological Review*, 78: 240-265. 
+
+Nous utilisons les données des enquêtes démographiques et de santé (EDS), qui représentent un ensemble de plus de 300 enquêtes représentatives à l'échelle nationale, régionale et résidentielle menées dans des pays en développement du monde entier depuis 1992.
+
+## Association 
+
+Name                Description
+---------------     ---------------------------------------------------------
+`beat_burnfood`     Pourcentage de femmes dans chaque pays qui 
+                    pensent qu'un mari a le droit de battre sa femme 
+                    si elle brûle la nourriture (quantitative)
+`beat_burnfood_cat` Variable beat_bunfood en 4 catégories (qualitative)
+`no_media`          Pourcentage de femmes dans chaque pays qui ont 
+                    rarement accès un journal, une radio ou une
+                    télévision (quantitative)
+`no_media_cat`      Variable no_media en 3 catégories (qualitative)
+`country`           pays
+
+
+## Association 
+
+```{r, echo=FALSE, out.width = '75%', echo=FALSE, warning=FALSE, message=FALSE}
+
+getwd()
+library(tidyverse)
+library(summarytools)
+
+dhs_ipv <- read_csv("../dhs_ipv.csv")
+
+dhs_ipv <-
+  dhs_ipv %>% 
+ # select(beat_burnfood!= "NA") %>% 
+  mutate(beat_burnfood_cat = factor(ntile(beat_burnfood, 4), labels = c('Très faible', 'Faible', 'Élevé', 'Très élevé')),
+         beat_goesout_cat = factor(ntile(beat_goesout, 4), labels = c('Très faible', 'Faible', 'Élevé', 'Très élevé')),
+         no_media_cat = factor(ntile(no_media, 3), labels = c('Riche', 'Moyen', 'Pauvre'))) 
+
+head(dhs_ipv)
+```  
+
+## Association
+
+- Résumé de l'information contenue dans la base de donnée
+
+```{r, out.width = '65%', echo=FALSE}
+
+summary(dhs_ipv)
+
+```
+
+## Association 
+
+- Association entre deux variables qualitatives
+
+```{r, echo=FALSE, out.width = '75%', warning=FALSE, message=FALSE}
+
+ggplot(dhs_ipv) +
+  geom_bar(aes(x = no_media_cat, fill = beat_burnfood_cat), position = "dodge") +
+  ggtitle("Association entre ouverture aux médias et acceptation de la violence conjugale") +
+  xlab("Type de pays selon l'ouverture aux médias") +
+  ylab("Effectif") +
+  theme_bw()
+
+```  
+
+## Association 
+
+  - Représentation graphique (boxplot) dans le cas d'une variable qualitative et d'une variable quantitative
+  
+```{r, out.width = '70%', message = FALSE, echo=FALSE, warning=FALSE}
+
+ggplot(dhs_ipv) +
+  geom_boxplot(aes(x = no_media_cat, y = beat_burnfood, color = no_media_cat)) +
+  ggtitle("Association entre ouverture aux médias et acceptation de la violence conjugale") +
+  xlab("Type de pays selon l'ouverture aux médias") +
+  ylab("% qui estime qu'une femme doit être battue (beat_burnfood)") 
+
+```  
+
+
+## Association 
+
+  - Représentation linéaire (scatterplot) et de calcul d'indicateurs (corrélation de Pearson): dans le cas de deux variables quantitatives.
+
+```{r, out.width = '75%', message = FALSE, warning=FALSE, echo=FALSE}
+
+ggplot(dhs_ipv, aes(x = no_media, y = beat_burnfood)) +
+  geom_point() 
+
+```
+
+
+
+## Association 
+
+```{r, out.width = '75%', message = FALSE, warning=FALSE, echo=FALSE}
+
+
+colors()
+
+letters <- letters
+letters
+couleur <- colors()
+couleur
+
+ggplot(dhs_ipv, aes(x = no_media, y = beat_burnfood)) +
+  geom_point(aes(color = region)) +
+  geom_smooth(aes(color = region), method = lm, se = FALSE,  formula = y ~ x)
+
+```
+
+# 2. Causalité à partir de données expérimentales
+
+Comment est prouvé la discrimination sur le marché du travail? 
+- Voir présentation de Michele.
+
+
+## Exemple 1 discrimination raciale sur le marché du travail
+
+- Données
+
+Chaque package contient =des données pour pouvoir tester facilement les fonctions du package. Ici, nous allons utiliser les données **resume** du package qss.
+
+Voici les informations de cette base de données:
+
+Variable                  Description
+------------------------- -----------------------------------------------------
+`firstname`               first name of the fictitious job applicant
+                          **prénom du candidat fictif**
+`sex`                     sex of applicant (female or male)
+                          **sexe**
+`race`                    race of applicant (black or white)
+                          **Ethnicité**
+`call`                    whether a callback was made (1 = yes, 0 = no)
+                          **si un rappel a été effectué**
+
+```{r, echo=FALSE}
+#install.packages("qss")
+#install.packages("devtools")
+
+#library("devtools")
+#install_github("kosukeimai/qss-package", build_vignettes = TRUE)
+
+library(qss)
+
+data("resume", package = "qss")
+#data(package = "summarytools")
+
+# resume <- read_csv("resume.csv")        # What you will do to import the data (remember your directory)
+head(resume) 
+
+```
+
+## Informations sur les variables de l'étude
+
+- Sexe
+
+```{r, out.width = '80%'}
+
+freq(resume$sex)
+
+```
+
+- Ethnicité
+
+```{r, out.width = '80%'}
+
+freq(resume$race)
+
+```
+
+- Variable dépendante: rappel
+
+```{r, out.width = '80%',}
+
+freq(resume$call)
+
+```
+
+## Y'a-t-il discrimination ou pas?
+
+```{r, out.width = '80%',}
+
+discrimination <- ctable(resume$race, resume$call, "r")
+discrimination
+```
+
+- SATE = 9,65 - 6,45 = 3,2%
+
+On peut cependant penser que les deux groupes n'étaient pas identiques au début. Par exemople, si on a utilisé plus de noms féminins que de nom masculin. 
+
+## Est-ce que les deux groupes étaient similaires au début?
+
+```{r, out.width = '80%',}
+
+ctable(resume$race, resume$sex)
+
+``` 
+
+Le résultat ne peut s'expliquer par une variable de confusion comme le sexe.
+Quelle autre variable de confusion peut-expliquer ce résultat?
+
+
+```{r}
+
+resume_femme <- 
+  resume %>% 
+  filter(sex == "female")
+
+
+resume_homme <-
+  resume %>% 
+  filter(sex == "male")
+  
+discrimination_femme <- ctable(resume_femme$race, resume_femme$call, "r")
+discrimination_femme
+
+discrimination_homme <- ctable(resume_homme$race, resume_homme$call)
+discrimination_homme
+```
+SATE_femme  = 9.9 - 6.6 = 3.3%
+
+SATE_homme = 8.9 - 5.8 = 3.1%
