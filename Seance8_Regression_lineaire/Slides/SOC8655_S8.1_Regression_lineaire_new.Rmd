@@ -1,0 +1,811 @@
+---
+title: 'Séance 8.1: Regression linéaire simple et multiple'
+author: "Visseho Adjiwanou, PhD."
+institute: "SICSS - Montréal"
+date: "`r format(Sys.time(), '%d %B %Y')`"
+output:
+  beamer_presentation:
+    colortheme: beaver
+    fonttheme: structurebold
+    theme: Antibes
+  slidy_presentation: default
+  ioslides_presentation: default
+---
+
+
+## Plan de présentation
+
+- Introduction
+- Exemple: L'histoire de deux universités
+- Présentation du modèle de régression
+- Présentation graphique
+
+
+## Introduction
+
+- Lorsque la voie de l'assignation aléatoire est bloquée, nous cherchons d'autres voies vers la connaissance causale. 
+- Manipulés avec habileté, les outils métriques autres que l'assignation aléatoire peuvent avoir une grande partie du pouvoir de **révélation de la causalité** d'une véritable expérience. 
+- Le plus élémentaire de ces outils est la **régression**, qui permet de comparer les sujets traités et les sujets témoins qui présentent les **mêmes caractéristiques observées**. 
+- Les concepts de régression sont fondamentaux et ouvrent la voie aux outils plus élaborés. 
+
+## Introduction
+
+- L'inférence causale basée sur la régression repose sur l'hypothèse selon laquelle, **lorsque les variables clés observées ont été rendues égales entre les groupes de traitement et de contrôle, le biais de sélection provenant de ce que nous ne pouvons pas voir est également éliminé**. 
+
+
+## Exemple : L'histoire de deux universités
+
+- Est-ce que le fait d'aller dans une université privée est payant?
+
+    - Frais de scolarité et d'inscription au collège privé en 2012-2013 = environ 29 000 
+    - Frais de scolarité et d'inscription au collège public en 2012-2013 = environ 9 000. 
+
+## Exemple : L'histoire de deux universités
+
+- Un enseignement privé d'élite peut être meilleur à bien des égards : 
+
+    - Petites classes
+    - Meilleures installations sportives
+    - Corps enseignant plus distingué 
+    - Étudiants plus intelligents. 
+
+- Mais 20 000 dollars par année d'étude, c'est une grande différence:  Est-ce la peine?
+
+## Exemple : L'histoire de deux universités
+
+<!-- - Ainsi, lorsque nous nous demandons si les frais de scolarité dans les écoles privées valent la peine d'être payés, nous nous concentrons sur les gains potentiels dont bénéficient ceux qui fréquentent les universités privées d'élite. Les gains plus élevés ne sont pas la seule raison pour laquelle vous pourriez préférer un établissement privé d'élite à votre école publique locale. De nombreux étudiants rencontrent leur futur conjoint et nouent des amitiés durables pendant leurs études.  -->
+
+- Qu'est-ce qu'une école privée peut vous apporter?
+
+    - Meilleur salaire plus tard
+    - L'argent n'est pas tout, mais, comme l'a observé Groucho Marx : "L'argent vous libère de faire des choses que vous n'aimez pas. Comme je n'aime pas faire presque tout, l'argent est pratique." 
+    - Rencontrer son futur conjoint
+    - Nouer des amitiés durables
+
+- Lorsque les familles investissent 100 000 dollars supplémentaires ou plus dans le capital humain, il est probable que les gains anticipés soient plus élevés. 
+
+
+## Exemple : L'histoire de deux universités
+
+- Comment savoir si ça vaut la peine?
+
+- Combien un diplômé de 40 ans, né dans le Massachusetts et ayant étudié à Harvard, aurait gagné s'il était allé à l'Université du Massachusetts (U-Mass). 
+
+
+## Exemple : L'histoire de deux universités
+
+- Les comparaisons des revenus entre ceux qui ont fréquenté différents types d'écoles révèlent invariablement des écarts importants en faveur des anciens élèves des collèges d'élite. 
+
+## Exemple : L'histoire de deux universités
+
+- Pourquoi ce résultat est biaisé:
+
+    - Les diplômés de Harvard ont généralement de meilleures notes au lycée et de meilleurs résultats au SAT, 
+    - Ils sont plus motivés 
+    - Ils ont peut-être d'autres compétences et talents. 
+    - Ceux/celels qui parviennent à aller à Harvard constituent un groupe spécial et sélect. 
+<!--    - En revanche, l'université de Massachusetts accepte et accorde même des bourses d'études à presque tous les candidats du Massachusetts ayant obtenu des résultats décents aux tests de dixième année. -->
+
+==> Nous devons donc nous attendre à ce que les comparaisons de revenus entre les alma mater soient contaminées par un biais de sélection. 
+
+## Exemple : L'histoire de deux universités
+
+- Nous avons également vu que ce type de biais de sélection est éliminé par l'affectation aléatoire. 
+- Malheureusement, le bureau d'admission de Harvard n'est pas encore prêt à confier ses décisions d'admission à un générateur de nombres aléatoires.
+- La question de savoir si la sélectivité des collèges est importante doit être résolue à l'aide des données générées par les décisions de routine en matière de candidature, d'admission et d'inscription prises par les étudiant.es et les universités de divers types.
+- Données observationnelles: non issues de l'expérimentation
+
+## Exemple : L'histoire de deux universités
+
+- Pouvons-nous utiliser ces données pour imiter l'essai randomisé que nous aimerions mener dans ce contexte ? 
+>- Pas à la perfection, certes, mais nous pourrons peut-être nous en approcher. 
+>- La clé de cette compréhension est le fait que de nombreuses décisions et choix, y compris ceux liés à la fréquentation universitaire, impliquent une certaine quantité de variations fortuites générées par des considérations financières, des circonstances personnelles et le calendrier.
+
+## Exemple : L'histoire de deux universités
+
+
+<!-- La sérendipité est le don, grâce à une observation surprenante et une explication juste, de faire des trouvailles. Plus précisément, c'est la faculté de découvrir, d'inventer ou de créer... ce qui n'était pas recherché à l'origine. -->
+
+- La sérendipité peut être exploitée dans un échantillon de candidats, qui pourraient facilement aller dans un sens ou dans l'autre. 
+- Est-ce que quelqu'un admis à Harvard va vraiment à son école publique locale à la place? 
+- Comment joue la sérendipité ? 
+    - Nancy a grandi au Texas, donc l'Université du Texas (UT) était son école publique.      - Le campus phare de l'UT à Austin est classé "très compétitif" dans le classement de Barron, mais ce n'est pas Harvard. 
+    - UT est cependant beaucoup moins cher que Harvard. 
+    - Admise à la fois à Harvard et à l'UT, Nancy a choisi l'UT plutôt que Harvard 
+
+<!-- parce que le bureau d'admission de l'UT, soucieux d'augmenter les scores SAT moyens sur le campus, a offert à Nancy et à quelques autres candidats exceptionnels une aide financière particulièrement généreuse, que Nancy a acceptée avec plaisir.-->
+
+## Exemple : L'histoire de deux universités
+
+- Quelles sont les conséquences de la décision de Nancy d'accepter l'offre d'UT et de refuser celle d'Harvard ? 
+    - Les choses se sont plutôt bien passées pour Nancy malgré son choix de UT plutôt que Harvard 
+    - Elle est professeur d'économie dans une autre école de l'Ivy League en Nouvelle-Angleterre. 
+
+- Ce seul exemple ne permet pas de concluire. Mais, vous voyez l'idée. 
+- Nancy est son propre "contrefactuel", mais pas tout à fait.
+
+## Exemple : L'histoire de deux universités
+
+- Mandy a obtenu son baccalauréat de l'Université de Virginie, son école publique d'origine, déclinant les offres de Duke, Harvard, Princeton et Stanford. 
+- Aujourd'hui, Mandy enseigne à Harvard.
+
+- Un échantillon de deux est encore petit pour une inférence causale fiable. 
+
+## Exemple : L'histoire de deux universités
+
+- Nous aimerions comparer de nombreuses personnes comme Mandy et Nancy à de nombreuses autres personnes similaires qui ont choisi des collèges et des universités privés. 
+- A partir de comparaisons de groupes plus larges, nous pouvons espérer tirer des leçons générales. 
+- Cependant, l'accès à un large échantillon ne suffit pas. 
+
+    - La première et la plus importante étape dans notre effort pour isoler la composante fortuite du choix de l'école est de **maintenir constantes** les différences les plus évidentes et les plus importantes entre les élèves qui fréquentent les écoles privées et publiques. 
+    - De cette manière, nous espérons (mais ne pouvons pas promettre) rendre les autres choses égales (ceteris paribus).
+
+## Exemple : L'histoire de deux universités
+
+- Voici un petit exemple numérique pour illustrer l'idée ceteris paribus. 
+- Supposons que les seules choses qui comptent dans la vie, du moins en ce qui concerne vos revenus, sont vos scores SAT et où vous allez à l'école. 
+- Considérez Uma et Harvey, qui ont tous deux des scores combinés en lecture et en mathématiques de 1 400 au SAT (sur 1600 au total). 
+- Uma est allée à U-Mass
+- Harvey est allé à Harvard 
+- Nous commençons par comparer les revenus d'Uma et de Harvey. Parce que nous avons supposé que tout ce qui compte pour les revenus en plus du choix du collège est le score SAT combiné, Uma contre Harvey est une comparaison ceteris paribus.
+
+## Exemple : L'histoire de deux universités
+
+- En pratique, bien sûr, la vie est plus compliquée. 
+- Ce simple exemple suggère une complication importante : 
+
+    - Uma est une jeune femme et 
+    - Harvey est un jeune homme. 
+
+## Exemple : L'histoire de deux universités
+
+- Les femmes ayant des qualifications éducatives similaires gagnent souvent moins que les hommes
+    - En raison de la discrimination ou 
+    - Du temps passé hors du marché du travail pour avoir des enfants. 
+    
+==> Le fait que Harvey gagne 20% de plus qu'Uma peut être l'effet d'une éducation supérieure à Harvard, mais cela pourrait tout aussi bien refléter un écart salarial entre hommes et femmes généré par d'autres choses.
+
+## Exemple : L'histoire de deux universités
+
+- Nous aimerions démêler **l'effet Harvard pur** de ces autres choses. 
+- C'est facile si la seule autre chose qui compte est le sexe : 
+    - remplacez Harvey par une étudiante de Harvard, Hannah, qui a également un SAT combiné de 1400, et comparer Uma et Hannah. 
+
+## Exemple : L'histoire de deux universités
+
+- Parce que nous recherchons des conclusions générales qui vont au-delà des histoires individuelles, nous recherchons de nombreux contrastes similaires de même sexe et de même SAT dans les deux écoles. 
+>- Autrement dit, nous calculons la différence de revenus moyens entre les étudiants de Harvard et U-Mass avec le même sexe et les mêmes scores SAT. 
+>- La moyenne de toutes ces différences spécifiques à un groupe entre Harvard et U-Mass est notre première tentative pour estimer l'effet causal d'une éducation à Harvard. 
+>- Il s'agit d'un estimateur d'appariement économétrique qui contrôle - c'est-à-dire maintient fixe - les scores de sexe et SAT. 
+>- En supposant que, sous réserve du sexe et des scores SAT, les étudiants qui fréquentent Harvard et U-Mass ont un potentiel de revenus similaire, cet estimateur capture l'effet causal moyen d'un diplôme de Harvard sur les revenus.
+
+
+## Matchmaker
+
+- Les revenus ne se limitent pas au sexe, aux écoles et aux scores SAT. 
+
+- Étant donné que les décisions de fréquentation des collèges ne sont pas attribuées au hasard, nous devons contrôler tous les facteurs qui déterminent à la fois les décisions de fréquentation et les revenus ultérieurs. 
+
+>- Ces facteurs incluent les caractéristiques des étudiants: 
+    >- la capacité d'écriture, 
+    >- la diligence, 
+    >- les liens familiaux, ...
+
+>- Le contrôle d'un tel éventail de facteurs semble intimidant : les possibilités sont pratiquement infinies et de nombreuses caractéristiques sont difficiles à quantifier. 
+
+## Matchmaker
+
+- Stacy Berg Dale et Alan Krueger (2002) ont trouvé un raccourci intelligent et convaincant. 
+- Au lieu d'identifier tout ce qui pourrait avoir de l'importance pour le choix du collège et les revenus, ils travaillent avec une mesure récapitulative clé : les caractéristiques des collèges auxquels les étudiants ont postulé et ont été admis.
+
+## Matchmaker
+
+- Considérez à nouveau l'histoire d'Uma et Harvey: 
+    - Tous deux ont postulé et ont été admis à U-Mass et Harvard. 
+    - Le fait qu'Uma ait postulé à Harvard suggère qu'elle a la motivation pour y aller, tandis que son admission à Harvard suggère qu'elle a la capacité d'y réussir, tout comme Harvey. C'est du moins ce que pense le bureau d'admission de Harvard, et ils ne sont pas facilement dupes. 
+    
+## Matchmaker
+
+- Uma opte néanmoins pour une éducation à U-Mass moins chère. 
+>- son choix pourrait être attribuable à des facteurs qui ne sont pas étroitement liés au potentiel de revenus d'Uma, 
+  >- Un oncle qui a réussi qui est allé à U-Mass 
+  >- Un meilleur ami qui a choisi U-Mass
+  >- Uma a raté la date limite pour la Bourse du club Rotary qui aurait financé l'éducation à Harvard. 
+>- Si de tels événements fortuits ont été décisifs pour Uma et Harvey, alors les deux font un bon match.
+
+## Matchmaker
+
+- Dale et Krueger ont analysé un grand ensemble de données appelé College and Beyond (C&B). 
+- Cet ensemble de données contient des informations sur des milliers d'étudiants inscrits dans un groupe de collèges et d'universités américains modérément à hautement sélectifs 
+    >- Des informations d'enquête recueillies auprès des étudiants au moment où ils ont passé le SAT, environ un an avant leur entrée à l'université, 
+    >- et des informations recueillies en 1996, longtemps après que la plupart d'entre eux aient obtenu leur diplôme universitaire. 
+
+## Matchmaker
+
+- L'analyse se concentre ici sur les étudiants qui se sont inscrits en 1976 et qui travaillaient en 1995 . 
+
+- Collèges et Universités 
+    - Université privées prestigieuses: Université de Pennsylvanie, Princeton et Yale ; 
+    - Nombre de collèges privés plus petits: Swarthmore, Williams et Oberlin ; 
+    - Quatre universités publiques (Michigan, Université de Caroline du Nord, Penn State et Université de Miami en Ohio). 
+
+- Les résultats moyens (1978) au SAT dans ces écoles allaient d'un minimum de 1 020 à Tulane à un maximum de 1 370 à Bryn Mawr. 
+- En 1976, les frais de scolarité étaient aussi bas que 540 dollars à l'Université de Caroline du Nord et aussi élevés que 3 850 dollars à Tufs.
+
+## Matchmaker
+
+- Le tableau 1 détaille une version simplifiée de la stratégie d'appariement de Dale et Krueger, dans une configuration que nous appelons la "matrice d'appariement des collèges". - Ce tableau présente les demandes d'admission, les admissions et les décisions d'inscription pour une liste (inventée) de neuf étudiants, chacun d'entre eux ayant posé sa candidature à trois écoles choisies parmi une liste imaginaire de six. 
+- Trois des six écoles figurant dans le tableau sont publiques (All State, Tall State et Altered State) et trois sont privées (Ivy, Leafy et Smart). 
+- Cinq de nos neuf élèves (numéros 1, 2, 4, 6 et 7) ont fréquenté des écoles privées. Le salaire moyen dans ce groupe est de 92 000 dollars. 
+- Les quatre autres, dont le revenu moyen est de 72 500 dollars, ont fréquenté une école publique. 
+
+- Quel est l'effet du fait de fréquenter une école privée?
+
+
+## Tableau hypothétique
+
+       Private                        Publique
+       ------------------------------ ----------------------------------------
+G  Et. Ivy       Leafy      Smart     A_state   T_state   Altered 1996_earning
+-- --- --------- ---------- --------- --------- --------- ------- ------------
+A  1             Rejet      **Admis**           Admis             130000
+   2             Rejet      **Admis**           Admis             100000
+   3             Rejet      Admis               **Admis**         110000
+B  4   **Admis**                      Admis               Ad       60000
+   5   Admis                          Admis               **Ad**   30000
+C  6             **Admis**  Admis     Admis                       115000
+   7             **Admis**  Admis     Admis                         75000
+D  8   Rejet                          **Admis** Admis               90000
+   9   Rejet                          Admis     **Admis**           60000
+-- --- --------- ---------- --------- --------- --------- ------- ------------
+
+## Commentaire du tableau
+
+- Quel est l'effet du fait de fréquenter une école privée?
+
+ 
+```{r}
+
+moy_private <- (130000 + 100000 + 60000 + 115000 + 75000)/5
+moy_private
+moy_public <- (110000 + 30000 + 90000 + 60000)/4
+moy_public
+Effet1_ <- moy_private - moy_public
+Effet1_
+  
+```
+
+## Commentaire tableau
+
+- Groupe A: (110000 + 100000)/2 - 110000 = -5000
+>- Groupe B: 60000 - 30000 = 30000 - Cet écart suggère un avantage substantiel des écoles privées.
+>- Groupe C: Non informatif
+>- Groupe D: Non informatif
+
+<!--
+Les élèves du tableau 2.1 sont répartis en quatre groupes définis par l'ensemble des écoles auxquelles ils ont postulé et ont été admis. Au sein de chaque groupe, les étudiants sont susceptibles d'avoir des ambitions professionnelles similaires, tout en étant jugés d'aptitudes similaires par le personnel chargé des admissions dans les écoles où ils ont postulé. Les comparaisons au sein d'un groupe devraient donc être beaucoup plus comparables que les comparaisons non contrôlées portant sur tous les étudiants.
+
+Les trois élèves du groupe A ont postulé à deux écoles privées, Leafy et Smart, et à une école publique, Tall State. Bien que ces étudiants aient été refusés à Leafy, ils ont été admis à Smart et Tall State. Les étudiants 1 et 2 ont choisi Smart, tandis que l'étudiant 3 a opté pour Tall State. Les étudiants du groupe A ont des revenus élevés, et viennent probablement de familles de la classe moyenne supérieure (un signal ici est qu'ils ont postulé à plus d'écoles privées que publiques). L'étudiant 3, bien qu'admis à Smart, a opté pour Tall State, moins cher, peut-être pour économiser l'argent de sa famille (comme nos amies Nancy et Mandy). Bien que les élèves du groupe A aient bien réussi, avec des revenus moyens élevés et un taux élevé de fréquentation d'écoles privées, au sein du groupe A, le différentiel entre les écoles privées est négatif : (110 + 100)/2 - 110 = -5, autrement dit, un écart de -5 000 dollars.
+
+La comparaison dans le groupe A est l'une des nombreuses comparaisons appariées possibles dans le tableau. Le groupe B comprend deux étudiants, chacun ayant fait une demande d'admission dans une école privée et deux écoles publiques (Ivy, All State et Altered State). Les étudiants du groupe B ont des revenus moyens inférieurs à ceux du groupe A. Tous deux ont été admis dans les trois écoles auxquelles ils ont postulé. Le numéro 4 s'est inscrit à Ivy, tandis que le numéro 5 a choisi Altered State. La différence de revenus est ici de 30 000 $ (60 - 30 = 30). Cet écart suggère un avantage substantiel des écoles privées.
+
+Le groupe C comprend deux étudiants qui ont postulé à une seule école (Leafy), où ils ont été admis et inscrits. Les revenus du groupe C ne révèlent rien sur les effets de la fréquentation d'une école privée, car les deux élèves de ce groupe ont fréquenté une école privée. Les deux étudiants du groupe D ont postulé à trois écoles, ont été admis dans deux d'entre elles et ont fait des choix différents. Mais ils ont choisi All State et Tall State, deux écoles publiques, de sorte que leurs gains ne révèlent rien non plus. -->
+
+
+## Commentaire tableau
+
+- Les groupes A et B sont ceux où l'action se situe dans notre exemple, puisque ces groupes comprennent des élèves des écoles publiques et privées qui ont postulé et ont été admis dans le même ensemble d'écoles. 
+- Pour générer une estimation unique qui utilise toutes les données disponibles, nous faisons la moyenne des estimations spécifiques au groupe. 
+- La moyenne de -5 000 dollars pour le groupe A et de 30 000 dollars pour le groupe B est de 12 500 $. 
+- Il s'agit d'une bonne estimation de l'effet de la fréquentation d'une école privée sur les gains moyens, car, dans une large mesure, elle contrôle les choix et les capacités des candidats.
+
+## Commentaire tableau
+
+- La moyenne simple des différences de traitement-contrôle dans les groupes A et B n'est pas la seule comparaison bien contrôlée qui peut être calculée à partir de ces deux groupes. 
+- Par exemple, nous pourrions construire une moyenne pondérée qui reflète le fait que le groupe B comprend deux étudiants et que le groupe A en comprend trois. 
+- La moyenne pondérée dans ce cas est calculée comme suit (3/5 * -5 000) + (2/5 * 30 000) = 9 000.
+
+- En mettant l'accent sur des groupes plus grands, ce schéma de pondération utilise les données plus efficacement et peut donc générer un résumé statistiquement plus précis de l'écart entre les revenus privés et publics.
+
+## Commentaire tableau
+
+- Le point le plus important dans ce contexte est la nature des comparaisons appariées sous-jacentesdes, pommes avec des pommes et des oranges avec des oranges. 
+- Les pommes du groupe A sont comparées aux autres pommes du groupe A, tandis que les oranges du groupe B ne sont comparées qu'aux autres oranges du groupe B. 
+- En revanche, les comparaisons naïves qui comparent simplement les revenus des élèves des écoles privées et publiques génèrent un écart beaucoup plus important de 19 500 dollars lorsqu'elles sont calculées en utilisant les neuf élèves du tableau. 
+- Même calculées pour les cinq élèves des groupes A et B, les comparaisons non contrôlées génèrent un écart de 20 000 dollars (20 = 110 + 100 + 60)/3 - (110 + 30)/2). 
+
+## Commentaire tableau
+
+- Ces comparaisons non contrôlées beaucoup plus importantes reflètent un biais de sélection : 
+    - les étudiants qui postulent et sont admis dans des écoles privées ont des revenus plus élevés partout où ils ont finalement choisi d'aller.
+
+- La preuve d'un biais de sélection émerge d'une comparaison des revenus moyens entre (plutôt qu'au sein des) groupes A et B. 
+- Les revenus moyens dans le groupe A, où les deux tiers postulent aux écoles privées, sont d'environ 107 000 dollars. 
+- Les revenus moyens dans le groupe B, où les deux tiers postulent pour les écoles publiques, ne sont que de 45 000 dollars. 
+- Nos comparaisons au sein des groupes révèlent qu'une grande partie de ce manque à gagner n'est pas liée aux décisions de fréquentation universitaire des étudiants. 
+- La différence entre les groupes s'explique par une combinaison d'ambition et de capacité
+
+<!--, comme en témoignent les décisions de candidature et l'ensemble des écoles dans lesquelles les étudiants ont été admis.-->
+
+
+## Conclusion
+
+1. Nous avons estimé 5 mesures de l'effet de l'école privée. Mais, pas toutes ces mesures sont pas une bonne estimation de l'effet. C'est quoi un bon estimateur?
+
+2. Quel outil disposons-nous pour estimer cet effet correctement? 
+
+
+## Régression
+
+- La régression est l'outil que les maîtres s'emparent en premier, ne serait-ce que pour servir de référence à des stratégies empiriques plus élaborées.
+
+- Bien que la régression soit une chose aux multiples splendeurs, nous la considérons comme un entremetteur automatisé. Plus précisément, les estimations de régression sont des moyennes pondérées de comparaisons appariées multiples du type construit pour les groupes dans notre matrice d'appariement stylisée. 
+
+## Régression
+
+- Les ingrédients clés de la recette de régression sont :
+
+    - la variable dépendante, dans ce cas, les revenus de l'étudiant i plus tard dans la vie, également appelée variable de résultat (notée Yi) ;
+    - la variable de traitement, en l'occurrence une variable fictive qui indique les étudiants ayant fréquenté un collège ou une université privée (notée Pi) ; et
+    - un ensemble de variables de contrôle, en l'occurrence des variables qui identifient des ensembles d'écoles dans lesquelles les élèves ont postulé et ont été admis.
+
+## Régression
+
+- Dans notre matrice d'appariement, les cinq élèves des groupes A et B apportent des données utiles, tandis que les élèves des groupes C et D peuvent être écartés. 
+>- Une seule variable indiquant les élèves du groupe A nous indique dans lequel des deux groupes se trouvent les élèves restants. 
+>- La variable que nous appellerons Ai, est notre seul contrôle. 
+>- Notez que Pi et Ai sont des variables dichotomiques, c'est-à-dire qu'elles sont égales à 1 pour indiquer des observations dans un état ou une condition spécifique, et à 0 sinon.
+>- Le modèle de régression dans ce contexte est une équation reliant la variable de traitement à la variable dépendante tout en maintenant les variables de contrôle fixes en les incluant dans le modèle. 
+
+## Régression
+
+- Avec une seule variable de contrôle, Ai, la régression d'intérêt peut s'écrire :
+
+$$Y_i = \alpha + \beta *P_i + \gamma * A_i + \epsilon_i$$
+
+
+## Régression
+
+- L'analyse de régression attribue des valeurs aux paramètres du modèle de manière à rendre Y chapeau aussi proche que possible de Y. 
+- Ceci est accompli en choisissant des valeurs qui minimisent la somme des résidus au carré, ce qui conduit au surnom de moindres carrés ordinaires (OLS) pour les estimations résultantes. 
+- En exécutant cette minimisation dans un échantillon particulier, on dit que nous estimons les paramètres de régression.
+
+$$\alpha = 40000$$
+$$\beta = 10000$$
+$$\gamma = 60000$$
+
+<!--
+La distinction entre la variable de traitement, Pi, et la variable de contrôle, Ai, dans l'équation (2.2) est conceptuelle et non formelle ; rien dans l'équation (2.1) n'indique lequel est lequel. Votre question de recherche et votre stratégie empirique justifient le choix des variables et déterminent le rôle qu'elles jouent.
+
+
+L'analyse de régression attribue des valeurs aux paramètres du modèle de manière à rendre Y chapeau aussi proche que possible de Y. Ceci est accompli en choisissant des valeurs qui minimisent la somme des résidus au carré, ce qui conduit au surnom de moindres carrés ordinaires (OLS) pour les estimations résultantes. En exécutant cette minimisation dans un échantillon particulier, on dit que nous estimons les paramètres de régression.
+
+Les estimations de régression (et les erreurs types associées utilisées pour quantifier leur variance d'échantillonnage) sont facilement construites à l'aide d'ordinateurs et de logiciels économétriques. La simplicité des calculs et l'interprétation conceptuelle des estimations de régression en tant que moyenne pondérée des différences spécifiques au groupe sont deux des raisons pour lesquelles nous régressons. La régression a également deux autres avantages. Premièrement, c'est une convention parmi les maîtres de rapporter des estimations de régression dans presque toutes les enquêtes économétriques sur les effets de causalité, y compris celles impliquant des variables de traitement qui prennent plus de deux valeurs. Les estimations de régression fournissent une référence simple pour les techniques plus sophistiquées. Deuxièmement, dans certaines circonstances, les estimations de régression sont efficaces en ce sens qu'elles fournissent les estimations les plus précises statistiquement des effets causaux moyens que nous pouvons espérer obtenir à partir d'un échantillon donné.
+
+-->
+
+
+
+Régression - forme générale
+=====================================
+
+
+## Définition
+
+- Le modèle de **régression linéaire simple** peut être utilisé pour étudier la relation entre deux variables, la variable dépendante (Y) et la variable indépendante (X), comme l'exemple dont nous venons de parler.
+- On parle de **régression linéaire multiple** dans le cas où il y a au moins 2 **variables indépendantes**.
+
+## Spécification
+
+- Nous avons {Yi, Xi}, un échantillon de Y et X
+- Nous sommes intéressés à **"expliquer Y en termes de X"** ou à **"étudier comment Y varie avec les changements de X"**
+- Modèle
+
+$$Y = \alpha + \beta X + \epsilon $$
+ 
+  - Y = variable dépendante | variable à expliquer
+ 
+  - X = variable indépendante | variable explicative | prédicteur
+ 
+  - ($\alpha$, $\beta$) = coefficients à déterminer (on dit à estimer) | paramètres du modèle
+ 
+  - $\epsilon$ = erreurs| termes d'erreur de moyenne nulle (unobserved error / disturbance error )
+
+
+## Interprétation
+
+$$ Y = \alpha + \beta X + \epsilon $$
+ou une formulation alternative:
+
+$$ E(Y|X) = \alpha + \beta X $$
+
+- $\alpha + \beta X$ : moyenne de Y étant donnée la valeur de X 
+- $\alpha$ : la valeur de Y quand X est zéro
+- $\beta$ : augmentation de Y associée à une augmentation d'une unité de X
+
+## D'où vient le epsilon
+
+1. Omission de l'influence d'innombrables évènements fortuits
+    - Autres covariables importantes (influences systématiques)
+      Etat nutritionnel de la mère
+    - Autres petites variables non significatives avec une très légère influence irrégulière
+
+2. Erreur de mesure
+    - Dans la variable dépendante
+    - Dans la variable indépendante (plus problématique)
+
+3. Indétermination humaine
+
+    - Le comportement humain est tel que les actions entreprises dans des circonstances identiques différeront de manière aléatoire
+
+## Spécification
+
+```{r rline, echo=FALSE, fig.cap="", out.width = '100%'}
+knitr::include_graphics("../Images/regression_line.png")
+```
+
+- $\beta_{0}$ = intersection à l'origine (intercept)
+- $\beta_{1}$ = pente (slope) 
+
+
+## Méthodes d'estimation
+
+- Il existe de nombreux estimateurs présentant des caractéristiques différentes susceptibles de résoudre l'équation 1. 
+
+- La tâche de l'économètre est de trouver le meilleur **estimateur**. 
+
+- Les deux approches les plus importantes sont:
+
+    1. Méthodes des moindres carrés: dans le cas d'une régression linéaire simple, il s'agit de trouver la meilleure ligne qui décrit de manière appropriée le nuage de points {Yi, Xi}.
+
+    2. Approche du maximum de vraisemblance
+
+<!--
+## Méthodes des moindres carrées ordinaires: Hypothèses
+
+numéro    | Hypothèses            | Formules               | Violations
+----------:-----------------------:------------------------:-------------
+1         |Y est une fonction linéaire  | $$Y = \alpha + \beta X + \epsilon$$ | Mauvais régresseurs
+          |d'un X, plus une perturbation    |        |Non-linéarité
+          |                                 |        |Changer les paramètres
+-->
+
+## Méthodes d'estimation
+
+- Estimer les paramètres du modèle à partir des données {$X_i, Y_i$}
+- ($\hat{\alpha}, \hat{\beta}$) : Coefficients estimés
+- $\hat{Y} = \hat{\alpha} +  \hat{\beta} X$ : Valeur prédite (predicted/fitted value)
+- $\hat{\
+epsilon} = Y - \hat{Y}$ : Résidus (residuals)
+
+## Méthode d'estimation: moindres carrées ordinaires
+
+- Minimiser la somme des carrées des résidus (SSR) : $$ SSR = \sum_{i=1}^n\hat{\epsilon}^2  = \sum_{i=1}^n(Y_i - \hat{\alpha} +  \hat{\beta X_i})^2 $$
+- Solution
+- Coefficients estimés : $$\hat{\alpha} = \bar{Y} -  \hat{\beta} \bar{X}$$
+
+$$\hat{\beta} = \frac{\sum_{i=1}^n(Y_i - \bar{Y})(X_i - \bar{X})}{\sum_{i=1}^n(X_i - \bar{X})^2}$$
+
+- la droite des moindres carrées passe toujours par les points ($\bar{X}, \bar{Y}$)
+- $\hat{Y} = \bar{Y}$
+- la moyenne des résidus est toujours égale à zéro
+
+
+Régression linéaire multiple
+========================================================
+
+
+## Introduction
+
+- La régression linéaire simple ne permet pas de déduire une causalité: la réalité est plus complexe
+- Permet de comprendre le concept de régression
+- En cas de plus d'une variable indépendante, on parle de régression linéaire multiple
+
+## Spécification
+
+$$ Y_i = \alpha + \beta_1 X_{1i} +  \beta_2 X_{2i} + ...+\beta_k X_{ki} +\epsilon_i$$
+Où $\epsilon_i$ suit une loi normale de moyenne 0 et de variance $\sigma^2$. On a k indépendantes variables pour n observations ${(Y_i, X_{11}, X_{12}, ..., X_{1k}), ..., (Y_n, X_{n1}, X_{n2}, ..., X_{nk})}$.
+
+Exemple:
+  - Y peut être le poids à la naissance
+  - X1 l'age de la mère à la naissance de l'enfant
+  - X2 le sexe de l'enfant
+
+## Spécification
+
+$$ Y_i = \alpha + \beta_1 X_{1i} +  \beta_2 X_{2i} + ...+\beta_k X_{ki} +\epsilon_i$$
+
+- Votre tâche: estimer l’effet de chaque variable X spécifique sur Y, en contrôlant l’effet des autres.
+- Cette équation peut être récrite :
+
+$Y_1 = \alpha + \beta_1 X_{11} + \beta_2 X_{21} + ... + \beta_k X_{k1} + \epsilon_1$
+$Y_2 = \alpha + \beta_1 X_{12} + \beta_2 X_{22} + ... + \beta_k X_{k2} + \epsilon_2$
+...
+$Y_n = \alpha + \beta_1 X_{1n} + \beta_2 X_{2n} + ... + \beta_k X_{kn} + \epsilon_n$
+
+Cette façon d’écrire les équations est difficile à manipuler:
+
+Notation matricielle: $Y = X\beta + \epsilon$
+
+## Spécification
+
+
+
+```{r, echo=FALSE, out.width="80%"}
+
+knitr::include_graphics("../Images/matrice_regression.png")
+
+```
+
+Estimation des paramètres
+======================================================
+
+## Hypothèses
+
+
+
+```{r, echo=FALSE, out.width="80%"}
+knitr::include_graphics("../Images/hypotheses_regression.png")
+```
+
+## Estimation des paramètres
+
+- Les paramètres inconnus:
+  - k (beta) + 1 (alpha) paramètres
+  - $\sigma^2$
+
+- Estimation par les moindres carrés ordinaires ou la méthode des maximums de vraisemblance: Plus difficile à estimer.
+
+
+## Estimation
+
+- On démontre que :
+
+$\beta^* = (X^{'}X)^{-1}(X^{'}Y)$
+
+Variance-covariance de $\beta^* = \sigma^2(X^{'}X)^{-1}$
+
+Mais encore une fois, $\sigma^2$ n'est pas connu. Il est remplacé par:
+
+$s^2 = e^{'}e/(T-k)$
+
+avec (e = Y-Y')
+
+
+
+Estimation avec R
+========================================================
+
+## Estimation sous R: forme générale
+
+**lm**(**formula**, **data**, subset, weights, na.action,
+   method = "qr", model = TRUE, x = FALSE, y = FALSE, qr = TRUE,
+   singular.ok = TRUE, contrasts = NULL, offset, ...)
+   
+- lm : pour dire que vous estimez un modèle linéaire. A l'intérieur, vous devez spécifier :
+
+1. Formula: elle comprend trois éléments :
+  - la variable dépendante: le premier élément dans la parenthèse. Il doit s'agir d'une variable qui est continue.
+  - le tilde (~) qui sépare la variable dépendante des variables indépendantes
+  - les éléments après le ~, ce sont les variables indépendantes. Elles doivent être séparées par des +.
+
+## Estimation sous R: forme générale
+
+2. Data: Vous devez ensuite spécifier les données sur lesquelles vous faites votre régression.
+
+Ces deux éléments sont les plus importants: ils sont obligatoires.
+
+## Estimation sous R: forme générale
+
+```{r}
+?lm()
+```
+
+
+Solution graphique
+========================================================
+
+
+## Exemple : Violence et accès à l'information
+
+Nom             Description
+---------------  --------------------------------------------------------------
+`beat_goesout`   Pourcentage de femmes dans chaque pays qui pensent qu'un mari
+                  a le droit de battre sa femme si elle sort sans le lui dire.
+`beat_burnfood`  Pourcentage de femmes dans chaque pays qui pensent qu'un mari 
+                  a le droit de battre sa femme si elle brûle sa nourriture.  
+`no_media`       Pourcentage de femmes dans chaque pays qui ont rarement accès
+                 à un journal, une radio ou une télévision.
+`sec_school`     Pourcentage de femmes dans chaque pays ayant un niveau
+                  d'éducation secondaire ou supérieur.
+`year`           Année de l'enquête
+`region`         Région du monde
+`country`        pays
+---------------  --------------------------------------------------------------
+
+## Dressons la table
+
+```{r}
+
+rm(list = ls())
+
+library(tidyverse)
+dhs_ipv <- read_csv("../Data/dhs_ipv.csv")
+
+```
+
+## Quelques informations sur les données
+
+```{r}
+
+head(dhs_ipv)
+
+```
+
+## Quelques informations sur les données
+
+```{r}
+
+glimpse(dhs_ipv)
+
+```
+
+## Quelques informations sur les données
+
+```{r, size="small"}
+
+summary(dhs_ipv)
+
+```
+
+## Association entre beat_burnfood et niveau d'éducation
+
+```{r, warning=FALSE, message=FALSE, out.height='80%', out.width='60%'}
+
+ggplot(dhs_ipv) +
+  geom_point(aes(x = sec_school, y = beat_burnfood), color = "blue") +
+  geom_text(aes(x = sec_school, y = beat_burnfood, label = country), size = 2)
+
+```
+
+
+## Association entre beat-burnfood et niveau d'éducation
+
+```{r, warning=FALSE, message=FALSE, out.height='80%', out.width='60%'}
+
+ggplot(dhs_ipv) +
+  geom_point(aes(x = sec_school, y = beat_burnfood)) +
+  geom_abline(aes(intercept = 38, slope = -2), color = "red")
+
+```
+
+- Est-ce que c'est la meilleure droite qui indique la relation entre `beat_burnfood` et `sec_school`?
+- Pourquoi pas?
+
+
+## Association entre beat-burnfood et niveau d'éducation
+
+
+```{r, warning=FALSE, message=FALSE, out.height='80%', out.width='60%'}
+
+ggplot(dhs_ipv) +
+  geom_point(aes(x = sec_school, y = beat_burnfood)) +
+  geom_abline(aes(intercept = 38, slope = -2), color = "red") +
+  geom_abline(aes(intercept = 35, slope = -1.5), color = "green") 
+
+
+```
+
+- Est-ce plus tôt celle-ci? Pourquoi?
+
+
+## Association entre beat-burnfood et niveau d'éducation
+
+- Maintenant, simulons un ensemble de droites pour voir si la meilleure candidate figure parmi elles.
+- Pour ce faire, je crée 150 intersections (intercept) et 150 pentes (slopes), selon une loi uniforme.
+- On parle de loi uniforme quand tous les éléments ont les mêmes probabilités d'être choisis.
+(Dire qu'une variable aléatoire X suit une loi uniforme sur l'intervalle [a, b]) signifie que sa densité f est la fonction constante égale à 1/(b-a).
+
+## Association entre beat-burnfood et niveau d'éducation
+
+```{r, warning=FALSE, message=FALSE, out.height='80%', out.width='60%'}
+
+#library(modelr)
+
+set.seed(2001)
+models <- tibble(
+  a = runif(150, -20, 40),
+  b = runif(150, -5, 5)
+)
+models
+```
+
+## Voyons les distributions de a
+
+
+```{r, warning=FALSE, message=FALSE, out.height='80%', out.width='60%'}
+
+ggplot(models, aes(x = a, y = ..density..)) +
+  geom_histogram()
+
+```
+
+## Voyons les distributions de b
+
+
+```{r, warning=FALSE, message=FALSE, out.height='80%', out.width='60%'}
+
+ggplot(models, aes(x = b, y = ..density..)) +
+  geom_histogram()
+
+```
+
+
+## Association entre beat-burnfood et niveau d'éducation
+
+```{r, warning=FALSE, message=FALSE, out.height='80%', out.width='60%'}
+
+ggplot(dhs_ipv) +
+  geom_point(aes(x = sec_school, y = beat_burnfood)) +
+  geom_abline(data = models, aes(intercept = a, slope = b), alpha = 1/4)
+
+```
+
+## Association entre beat-burnfood et niveau d'éducation
+
+```{r, warning=FALSE, message=FALSE, out.height='80%', out.width='60%'}
+
+ggplot(dhs_ipv) +
+  geom_point(aes(x = sec_school, y = beat_burnfood)) +
+  geom_abline(data = models, aes(intercept = a, slope = b, color = b), alpha = 1/4)
+  
+
+```
+
+## Association entre beat-burnfood et niveau d'éducation
+
+```{r, warning=FALSE, message=FALSE, out.height='80%', out.width='60%'}
+
+ggplot(dhs_ipv) +
+  geom_point(aes(x = sec_school, y = beat_burnfood)) +
+  geom_abline(data = models %>% filter(b < 0), aes(intercept = a, slope = b), alpha = 1/4) +
+  geom_abline(aes(intercept = 38, slope = -2), color = "red") +
+  geom_abline(aes(intercept = 35, slope = -1.5), color = "green")
+
+```
+
+## Association entre beat-burnfood et niveau d'éducation
+
+```{r, warning=FALSE, message=FALSE, warning = FALSE}
+
+graph1 <- ggplot(dhs_ipv) +
+  geom_point(aes(x = sec_school, y = beat_burnfood)) +
+  geom_abline(data = models %>% filter( b <0 ), aes(intercept = a, slope = b), alpha = 1/4) +
+  geom_abline(aes(intercept = 38, slope = -2), color = "red") +
+  geom_abline(aes(intercept = 35, slope = -1.5), color = "green") +
+  geom_smooth(aes(x = sec_school, y = beat_burnfood), method = "lm", se = FALSE, size = .5)
+
+```
+
+
+## Association entre beat-burnfood et niveau d'éducation
+
+
+```{r, warning=FALSE, message=FALSE, warning = FALSE}
+
+graph1
+
+```
+
+
+
+Labo
+============================================================
+
+## Interprétation des résultats
+
+- Variables continues
+- Variables dichotomiques
+- Variables catégorielles
+
+
