@@ -191,7 +191,7 @@ Exemples
 
 
 ```{r, out.width='80%', echo = FALSE, fig.align = 'center'}
-knitr::include_graphics("../Images/joke1.png")
+knitr::include_graphics("../../Images/joke1.png")
 ```
 
 
@@ -203,7 +203,7 @@ knitr::include_graphics("../Images/joke1.png")
 
 
 ```{r, out.width='80%', echo = FALSE, fig.align = 'center'}
-knitr::include_graphics("../Images/Blumenstock.jpg")
+knitr::include_graphics("../../Images/Blumenstock.jpg")
 
 ```
 
@@ -231,7 +231,7 @@ L'étude combine des données volumineuses (Big Data) avec des données d'enquê
 ## Prédire la pauvreté
 
 ```{r, out.width='80%', echo = FALSE, fig.align = 'center'}
-knitr::include_graphics("../Images/Matthews2.png")
+knitr::include_graphics("../../Images/Matthews2.png")
 
 ```
 
@@ -240,7 +240,7 @@ knitr::include_graphics("../Images/Matthews2.png")
 
 
 ```{r, out.width='80%', echo = FALSE, fig.align = 'center'}
-knitr::include_graphics("../Images/blum_pp.png")
+knitr::include_graphics("../../Images/blum_pp.png")
 
 ```
 
@@ -249,7 +249,7 @@ knitr::include_graphics("../Images/blum_pp.png")
 ## Prédire la pauvreté
 
 ```{r, out.width='80%', echo = FALSE, fig.align = 'center'}
-knitr::include_graphics("../Images/blum_pp2.png")
+knitr::include_graphics("../../Images/blum_pp2.png")
 
 ```
 

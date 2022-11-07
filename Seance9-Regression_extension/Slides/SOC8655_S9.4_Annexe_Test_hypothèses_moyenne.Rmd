@@ -1,0 +1,219 @@
+---
+title: "Séance 8.0: Test d'hypothèses"
+author: "Visseho Adjiwanou, PhD."
+date: "`r format(Sys.time(), '%d %B %Y')`"
+output:
+  beamer_presentation:
+    colortheme: beaver
+    fonttheme: structurebold
+    theme: Antibes
+  slidy_presentation: default
+  ioslides_presentation: default
+---
+
+
+
+Tests d'hypothèses 
+========================================================
+
+## Introduction
+
+En plus d'estimer les paramètres, les chercheur.es en statistiques sociales (économétriciens) souhaitent souvent :
+- construire des intervalles de confiance pour leurs estimations et 
+- tester des hypothèses concernant les paramètres. 
+
+- Comme dans le cas de l'estimation de paramètres, les tests d'hypothèses consistent à porter un jugement sur des aspects inconnus d'une population donnée sur la base d'informations d'échantillons. 
+
+- Dans le test d'hypothèse, nous voulons savoir si une déclaration sur la population est vraie ou fausse.
+
+## Conception et évaluation d'hypothèses
+
+- Une hypothèse est définie comme une hypothèse sur la population
+- Habituellement, l'hypothèse testable consiste à affirmer qu'un paramètre de population donné est égal à une valeur donnée - ou qu'il ne dépasse pas ou ne tombe pas en dessous d'une certaine valeur
+- Ceci s'appelle l'hypothèse nulle
+- L'hypothèse nulle étant une proposition testable, il doit exister une contre-proposition.
+- Cette contre-proposition s'appelle l'hypothèse alternative
+
+## Conception et évaluation d'hypothèses
+
+- Hypothèse nulle (H0)
+    - Doit être aussi précis que possible ==> simple
+    - La proposition que nous souhaitons réfuter
+
+- L’hypothèse nulle est considérée comme valide à moins que l’évidence ne jette un doute sérieux sur elle.
+- L'hypothèse nulle est à "rejeter" ou à "ne pas rejeter"
+- La conclusion devrait être "ne pas rejeter" au lieu de "accepter"
+
+## Conception et évaluation d'hypothèses
+
+- Exemple: test d'un nouveau médicament
+
+Un bon exemple de ceci est le test d'un nouveau médicament. Il existe une présomption évidente que le nouveau médicament fera mieux, par exemple en termes de pourcentage moyen de guérison, que l'ancien médicament ou le traitement utilisé, sinon les tests n'auraient aucun sens. Cependant, l'hypothèse nulle pour ce cas sera la proposition selon laquelle le nouveau médicament conduit au même (ou moins) de pourcentage moyen de guérison que l'ancien médicament; L'hypothèse alternative est que le pourcentage moyen est plus élevé pour le nouveau médicament.
+
+## Conception et évaluation d'hypothèses
+
+- Source d'hypothèse
+    - Normalement de la théorie
+      - Rarement le cas car les théories sont insuffisamment précises et détaillées pour conduire à des hypothèses
+      - La théorie spécifie généralement les relations entre les variables
+      - L’hypothèse nulle stipule généralement que la relation postulée n’existe pas
+  - Recourir à une théorie ad hoc, en utilisant votre bon sens
+  - L'échantillon ne doit jamais être utilisé pour formuler l'hypothèse nulle
+
+## Conception et évaluation d'hypothèses
+
+L'établissement de l'hypothèse nulle et de son alternative représente la première étape pour traiter un problème impliquant le test d'hypothèses. La prochaine étape consiste à concevoir un critère qui nous permettrait de décider si l'hypothèse nulle est ou non rejetée sur la base de preuves. Ce critère ou cette règle est en principe le même quel que soit le problème: il définit une statistique de test et une limite permettant de diviser l’espace échantillon en une région de rejet et une région de non-rejet. La statistique de test est simplement une formule nous indiquant comment confronter l'hypothèse nulle à la preuve.
+
+## Critère de test
+
+- Considérez que la moyenne de la variable $X = \mu_0$
+  - $H_0: \mu = \mu_0$
+  - $H_A: \mu \neq \mu_0$
+
+- Supposer que:
+  - X est normalement distribué
+  - La variance de X est $\sigma^2$, connue
+
+- La moyenne $\bar{X}$ de l'échantillon suit la loi normale $N(\mu_0, \sigma^2/n)$
+  - Si la moyenne $\bar{X}$ est "très différente" de $\mu_0$, rejetez $H_0$
+  - Si la moyenne n'est pas "très différente" de $\mu_0$, ne pas rejeter $H_0$
+
+- Qu'est-ce que cela signifie "très différent"
+
+<!--
+Les informations que nous recevrons de l'échantillon nous diront évidemment quelque chose sur la moyenne de la population; la question est de savoir comment utiliser cette information.
+Nous savons que la moyenne de l'échantillon présente certaines propriétés souhaitables en tant qu'estimateur de la moyenne de la population. Cela suggère que nous pourrions utiliser la moyenne de l'échantillon pour résumer les preuves de l'échantillon concernant la moyenne de la population. Alors un critère évident pour rejeter ou ne pas rejeter l'hypothèse nulle sera le suivant:
+Si la valeur de Xbar est très différente de µ0, rejetez l'hypothèse nulle; si ce n'est pas très différent, ne le rejetez pas.
+-->
+
+## Critère de test
+
+- Qu'est-ce que cela signifie "très différent"
+
+
+![](/Users/visseho/OneDrive - UQAM/Cours/Images_cours/zone_rejet.png)
+
+<!--
+Le critère précédent est clairement inutile pour définir la région critique et la région d'acceptation à moins d'indiquer avec précision les valeurs de Xbar à considérer comme «très différentes» de µ0 et celles qui ne le sont pas. Pour décider cela, nous devons considérer la distribution d'échantillonnage de Xbar. Xbar suit N (0, ∑2 / n). Bien entendu, la distribution normale allant de –infini à + infini, toute valeur de Xbar peut être observée quelle que soit la moyenne de la population. Toutefois, si la moyenne vraie est µ0, les valeurs de Xbar dans les intervalles proches de µ0 apparaîtront avec une probabilité plus grande que celles figurant dans les intervalles (de même longueur) plus éloignés de µ0. Il est donc naturel de considérer comme «très différentes de µ0» les valeurs de Xbar qui - si µ0 est la moyenne vraie - n'apparaissent que très rarement par hasard. Par «très rarement» on entend, du moins pour le moment, «avec une probabilité de 0,01»
+Si nous considérons l'hypothèse alternative, cela signifie que si l'hypothèse nulle ne tient pas, la vraie moyenne peut se situer de part et d'autre, les valeurs de Xbar seront beaucoup plus petites ou beaucoup plus grandes.
+Puisque nous avons décidé d'appeler un événement très improbable (c'est-à-dire très rare) s'il se produit avec une probabilité de seulement 0,01, cette probabilité doit être partagée également par des valeurs excessivement basses et excessivement élevées de Xbar. En d’autres termes, les limites doivent être définies de telle sorte que la probabilité que xbar soit excessivement faible est de 0,005 et que la probabilité que xbar soit excessivement élevée est également de 0,005.
+-->
+
+## Critère de test
+
+Définissons:
+
+- $\mu_L$ la valeur en dessous de laquelle la moyenne $\bar{X}$ serait considérée comme excessivement bas
+- $\mu_H$ la valeur au-dessus de laquelle la moyenne $\bar{X}$ serait considérée comme excessivement élevée
+
+Ceci implique que:
+
+- $P(\bar{X} < \mu_L) = 0.005$,
+- $P(\bar{X} > \mu_H) = 0.005$ et
+- $P(\mu_L < \bar{X} < \mu_H) = 0.99$
+
+## Critère de test
+
+$\bar{X} \sim N(\mu_0, \sigma^2/n)$ ==> $Z = \frac{\bar{X} - \mu_0}{\sqrt{\sigma^2/n}}= \frac{(\bar{X} - \mu_0)\sqrt{n}}{\sigma} \sim N(0, 1)$
+
+![](/Users/visseho/OneDrive - UQAM/Cours/Images_cours/zone_rejet.png)
+
+## Critère de test
+
+$\bar{X} \sim N(\mu_0, \sigma^2/n)$ ==> $Z = \frac{\bar{X} - \mu_0}{\sqrt{\sigma^2/n}}= \frac{(\bar{X} - \mu_0)\sqrt{n}}{\sigma} \sim N(0, 1)$
+
+![](/Users/visseho/OneDrive - UQAM/Cours/Images_cours/zone_rejet1.png)
+
+## Critère de test: Décision
+
+À partir des tables de distribution normales, nous trouvons:
+
+- $Z_L = -1,96$ et 
+- $Z_H = 1,96$
+
+Règle de décision:
+
+- Ne rejeter pas $H_0$ si $-1.96 \le \frac{(\bar{X} - \mu_0)\sqrt{n}}{\sigma} \le 1.96$
+
+## En conclusion
+
+- Préambule : Énoncez l'hypothèse maintenue [exemple: X est normalement distribué avec une variance égale à ...]
+
+## En conclusion
+
+- Préambule : Énoncez l'hypothèse maintenue [exemple: X est normalement distribué avec une variance égale à ...]
+- Étape 1: Énoncez l'hypothèse nulle ($H_0$) et l'hypothèse alternative ($H_A$)
+
+## En conclusion
+
+- Préambule : Énoncez l'hypothèse maintenue [exemple: X est normalement distribué avec une variance égale à ...]
+- Étape 1: Énoncez l'hypothèse nulle ($H_0$) et l'hypothèse alternative ($H_A$)
+- Étape 2: Sélectionner la statistique de test [Exemple: la moyenne $\bar{X}$ basée sur un échantillon de taille ...]
+
+## En conclusion
+
+- Préambule : Énoncez l'hypothèse maintenue [exemple: X est normalement distribué avec une variance égale à ...]
+- Étape 1: Énoncez l'hypothèse nulle ($H_0$) et l'hypothèse alternative ($H_A$)
+- Étape 2: Sélectionner la statistique de test [Exemple: la moyenne $\bar{X}$ basée sur un échantillon de taille ...]
+- Étape 3: Déterminez la distribution de la statistique du test sous l'hypothèse nulle [$\frac{(\bar{X} - \mu_0)\sqrt{n}}{\sigma} \sim N(0, 1)$]
+
+## En conclusion
+
+- Préambule : Énoncez l'hypothèse maintenue [exemple: X est normalement distribué avec une variance égale à ...]
+- Étape 1: Énoncez l'hypothèse nulle ($H_0$) et l'hypothèse alternative ($H_A$)
+- Étape 2: Sélectionner la statistique de test [Exemple: la moyenne $\bar{X}$ basée sur un échantillon de taille ...]
+- Étape 3: Déterminez la distribution de la statistique du test sous l'hypothèse nulle [$\frac{(\bar{X} - \mu_0)\sqrt{n}}{\sigma} \sim N(0, 1)$]
+- Étape 4: Choisir le niveau de significance et déterminer la zone d'acceptance et de rejet. [Ne rejeter pas $H_0$ si $-1.96 \le \frac{(\bar{X} - \mu_0)\sqrt{n}}{\sigma} \le 1.96$]
+
+## En conclusion
+
+- Préambule : Énoncez l'hypothèse maintenue [exemple: X est normalement distribué avec une variance égale à ...]
+- Étape 1: Énoncez l'hypothèse nulle ($H_0$) et l'hypothèse alternative ($H_A$)
+- Étape 2: Sélectionner la statistique de test [Exemple: la moyenne $\bar{X}$ basée sur un échantillon de taille ...]
+- Étape 3: Déterminez la distribution de la statistique du test sous l'hypothèse nulle [$\frac{(\bar{X} - \mu_0)\sqrt{n}}{\sigma} \sim N(0, 1)$]
+- Étape 4: Choisir le niveau de significance et déterminer la zone d'acceptance et de rejet. [Ne rejeter pas $H_0$ si $-1.96 \le \frac{(\bar{X} - \mu_0)\sqrt{n}}{\sigma} \le 1.96$]
+- Étape 5: Sélectionner un échantillon et évaluer le résultat
+
+## En conclusion
+
+- Préambule : Énoncez l'hypothèse maintenue [exemple: X est normalement distribué avec une variance égale à ...]
+- Étape 1: Énoncez l'hypothèse nulle ($H_0$) et l'hypothèse alternative ($H_A$)
+- Étape 2: Sélectionner la statistique de test [Exemple: la moyenne $\bar{X}$ basée sur un échantillon de taille ...]
+- Étape 3: Déterminez la distribution de la statistique du test sous l'hypothèse nulle [$\frac{(\bar{X} - \mu_0)\sqrt{n}}{\sigma} \sim N(0, 1)$]
+- Étape 4: Choisir le niveau de significance et déterminer la zone d'acceptance et de rejet. [Ne rejeter pas $H_0$ si $-1.96 \le \frac{(\bar{X} - \mu_0)\sqrt{n}}{\sigma} \le 1.96$]
+- Étape 5: Sélectionner un échantillon et évaluer le résultat
+- Étape 6: Concluire ["l’échantillon fournit (ne donne pas) des preuves contre l’hypothèse nulle". Pour distinguer les niveaux de signification de 5% et 1%, nous pouvons ajouter le mot **fort** après preuve lorsque vous utilisez le niveau de 1%.]
+
+
+## Exemple:
+
+EXEMPLE: Des études psychologiques indiquent que, dans la population en général, l'intelligence, mesurée par le QI, se distribue normalement avec une moyenne de 100 et un écart type de 16. Supposons que nous voulions tester si une sous-population donnée, par exemple, toutes les personnes qui utilisent la main gauche (Gauchers) se caractérisent par une moyenne différente. Comme hypothèse maintenue, nous supposons que l’intelligence parmi les gauchers est normalement distribuée avec le même écart type que celui de la population en général, c’est-à-dire 16. Appelons le QI moyen chez les gauchers $\mu$.
+
+## Exemple
+
+Un échantillon de 400 observations est prélevé. Le QI est de 99.
+
+- Étape 1: Hypothèse maintenue: $\bar{X} \sim N(\mu_0 = 100, \sigma^2 = 162)$
+- Étape 2: $H_0: \mu = 100$, $H_A \neq 100$
+- Étape 3: Sous $H_0$: $Z = \frac{(\bar{X}-100)*\sqrt{4000}}{16} \sim N(0,1)$
+- Étape 4: Décision: ne pas rejeter si $-1.96 \le Z \le 1.96$
+    - Niveau de signification à 5%
+
+RÉPONSE
+
+- Calculer les statistiques de test: $Z = \frac{(99-100)*\sqrt{4000}}{16} = -1.25$
+
+- Décision: ne pas rejeter $H_0$ car il est compris entre -1.96 et 1.96
+
+
+## Type d'erreur
+
+Chaque conclusion sur le test d'hypothèse peut englober deux types d'erreur:
+
+- Erreur de type I: rejetter $H_0$ alors qu’elle est vraie (erreur $\alpha$)
+
+- Erreur de type II: Ne pas rejeter $H_0$ alors qu’il est faux (erreur $\beta$)
+
+![Erreurs de type I et de type II](/Users/visseho/OneDrive - UQAM/Cours/Images_cours/erreur.png)
+
+

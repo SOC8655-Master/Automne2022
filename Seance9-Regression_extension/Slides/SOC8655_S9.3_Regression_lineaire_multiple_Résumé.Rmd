@@ -1,0 +1,615 @@
+---
+title: "Séance 9.0: Regression linéaire"
+subtitle: "Résumé"
+author: "Visseho Adjiwanou, PhD."
+date: "`r format(Sys.time(), '%d %B %Y')`"
+output:
+  slidy_presentation: default
+  beamer_presentation:
+    colortheme: beaver
+    fonttheme: structurebold
+    theme: Antibes
+  ioslides_presentation: default
+---
+
+
+## Plan de présentation
+
+1. Formulation
+2. Hypothèses
+3. Estimation
+4. Interprétation
+5. Tests d'hypothèses
+6. Diagnostiques et violation des hypothèses
+  - Interaction
+  - Paramètres changeant: Interaction
+  - Variables importantes omises
+7. Pour aller plus loin
+
+
+Formulation
+===============================================
+
+## Formulation: modèle linéaire simple
+
+- Nous avons $(Y_i, X_i)$, un échantillon de Y et X
+
+- Nous sommes intéressés à **"expliquer Y en termes de X"** ou à **"étudier comment Y varie avec les changements de X"**
+- Modèle
+
+$$Y = \alpha + \beta X + \epsilon $$
+ 
+  - ($\alpha$, $\beta$) = coefficients à déterminer (on dit à estimer) | paramètres du modèle
+ 
+  - $\epsilon$ = erreurs| termes d'erreur (unobserved error / disturbance error )
+
+- Exemple: $Revenu = \alpha + \beta Education + \epsilon$
+
+
+## Formulation: modèle linéaire multiple (extension du modèle simple)
+
+$$Y_i = \alpha + \beta_1 X_{1i} +  \beta_2 X_{2i} + ...+\beta_k X_{ki} +\epsilon_i$$
+
+- Où $\epsilon_i$ suit une loi normale de moyenne 0 et de variance $\sigma^2$. 
+- On a k variables indépendantes pour n observations ${(Y_i, X_{11}, X_{12}, ..., X_{1k}), ..., (Y_n, X_{n1}, X_{n2}, ..., X_{nk})}$.
+
+- Exemple: $Revenu = \alpha + \beta_1 Education + \beta_2 Sexe + \epsilon$
+
+## Votre rôle
+
+- Trouver les valeurs des paramètres 
+ - $\alpha$ 
+ - les k $\beta$
+ - et $\sigma$, la variance des termes d'erreurs
+ 
+
+2. Hypothèses
+============================================================
+
+## Hypothèses
+
+- Une hypothèse est une proposition ou un "dit" ou une explication que l'on se contente d'énoncer sans prendre position sur son caractère véridique, c'est-à-dire sans l'affirmer ou la nier. 
+- Proposition relative à l'explication de phénomènes naturels, admise **provisoirement** avant d'**être soumise au contrôle de l'expérience**.
+
+## Hypothèses
+
+- Dans le cadre des régressions, nous formulons des hypothèses pour pouvoir estimer nos paramètres. 
+- Il est donc normal que vous étudiez la vraissemblance de ces hypothèses après (disgnostiques) 
+- Hypothèses validées ==> vos paramètres estimés sont "bon"
+- Hypothèses non validées ==> Trouver d'autres estimateurs qui donnent de bons résultats.
+
+## Hypothèses
+- Les critères considérés comme bon sont:
+ - Coût de calcul, 
+ - $R^2$ le plus élevé, 
+ - Absence de biais, 
+ - Efficacité, 
+ - Erreur quadratique moyenne (MSE), 
+ - Propriétés asymptotiques
+
+
+## Hypothèses dans le cadre des modèles de régression linéaires
+
+```{r, out.width="80%", echo=FALSE}
+knitr::include_graphics("/Users/visseho/OneDrive - UQAM/Cours/Images_cours/hypotheses_regression.png")
+```
+ 
+
+3. Estimation 
+==========================================
+
+## Modèles linéaires simple
+
+$$\hat{\alpha} = \bar{Y} -  \hat\beta\bar{X}$$
+
+$$\hat{\beta} = \frac{\sum_{i=1}^n(Y_i - \bar{Y})(X_i - \bar{X})}{\sum_{i=1}^n(X_i - \bar{X})^2}$$
+
+$$s^2 = \frac{1}{n - 2} \sum(Y - \hat Y)^2$$
+
+
+## Modèles linéaires simples
+
+Paramètres  Estimés
+----------- --------------------------------------------------------
+$\alpha$    $\hat{\alpha} = \bar{Y} -  \hat{\beta} \bar{X}$
+$\beta$     $\hat{\beta} = \frac{\sum_{i=1}^n(Y_i - \bar{Y})(X_i - \bar{X})}{\sum_{i=1}^n(X_i - \bar{X})^2}$
+$\sigma$    Est biaisé, c'est-à dire sa moyenne # $\sigma^2$
+$s^2$       $\hat{\sigma^2} = \frac{1}{n - 2} \sum(Y - \hat Y)^2$  
+
+## Modèles linéaires simples
+
+- L'estimateur doit donner une estimation aussi de la variabilité des estimés
+- Il faut comprendre que si on retourne prendre les mesures de la variable dépendante sur les n échantillons, on trouvera des valeurs différentes de celles qu'on avait avant à cause de toute sorte d'erreurs
+- Ainsi, pour chacune de ces nouvelles échantillons (Xi, Yi), on trouvera de nouveaux estimés qui réflètent la relation entre les deux variables
+
+- Comme l'écart-type mesure la variabilité dans une distribution, l'**erreur-type** va mesurer la variabilité des estimés
+
+
+## Modèles linéaires simples
+
+Paramètres     Estimés de l'erreur-type
+-------------- -----------------------------------------------------
+$Var(\alpha)$  $\sigma^2(\frac{1}{n} + \frac{\bar {X^2}}{\sum(X_i - \bar X)^2})$
+$Var(\beta)$   $\frac{\sigma^2}{\sum(X_i - \bar X)^2}$
+
+
+## Modèles linéaires simples
+
+- On se rend compte que les variances estimées de alpha et beta contiennent une inconnue qui est $\sigma^2$
+- On connait toutefois l'estimé de $\sigma^2$
+- Il suffit donc de remplacer dans les formules de $Var(\alpha)$ et $Var(\beta)$, $\sigma^2$ par $\hat{\sigma^2} = \frac{1}{n - 2} \sum(Y - \hat Y)^2$
+- On obtient ainsi les estimés des variances de $\alpha$ et $\beta$
+
+
+## Modèles linéaires simples
+
+- Intervalle de confiances
+- On démontre que :
+- $\hat{\beta}$ suit une loi normale de moyenne $\beta$ et de variance $Var\hat{\beta}$
+- D'après les propriétés de la loi normale, on sait que 95% de la distribution va se trouver à plus ou moins 2 écart-types de la moyenne
+- Donc, l'intervalle de confiance à 95% de $\hat{\beta}$ vaut:
+
+$$\beta = \hat\beta \pm z_{0,025}SE $$
+
+- SE étant l'écart-type de la variance
+
+## Modèles linéaires simples
+
+- Intervalle de confiances
+- Si on remplace SE par son estimé, on obtient une loi de Student, ce qui fait que l'intervalle de confiance corrigé vaut:
+
+$$\beta = \hat\beta \pm t_{0,025}^{n-k}SE^* $$
+
+- J'appelle ici SE* quand on remplace sigma par on estimé.
+- t suit une loi de Student avec n-k dégrés de libertés
+
+## Modèles linéaires simples
+
+- Si la taille de l'échantillon est grande, il n'y a pas de différence entre les deux courbes
+
+```{r, echo=FALSE, out.width="80%", out.height="80%"}
+library(tidyverse)
+ggplot(data = data.frame(x = c(-4, 4)), aes(x)) +
+  stat_function(fun = dnorm, args = list(mean = 0, sd = 1), color = "red") +
+  stat_function(fun = dt, args = list(df = 2)) +
+  stat_function(fun = dt, args = list(df = 90), color = "blue")
+```
+
+
+## Modèles linéaires simples
+
+- Qualité du modèle : ou pourcentage de la variation de Y par rapport à sa moyenne qui est expliqué par le modèle $\hat Y$
+
+- Cette statistique s'appelle le coéfficient de détermination
+- Il s'obtient par la formule
+
+$$R^2 = \frac{\sum(\hat Y_i - \bar Y)^2}{\sum (Y_i - \bar Y)^2} $$
+
+- Le numérateur est appelé somme des carrés du modèle (en anglais, Regression Sum of Square - RSS)
+
+- Le dénominateur est appelé sommes des carrés totaux (en anglais, Total sum of square - TSS)
+
+
+## Modèles linéaires simples
+
+- Qualité du modèle : ou pourcentage de la variation de Y par rapport à sa moyenne qui est expliqué par le modèle $\hat Y$
+- $R^2$ peut s'écrire aussi sous la forme:
+
+$$R^2 = 1 - \frac{\sum(Y_i - \hat Y_i)^2}{\sum (Y_i - \bar Y)^2} $$
+
+- Le numérateur s'appelle somme de carré des erreurs
+- Ou encore 
+
+$$R^2 = 1 - \frac{\sum e_i^2}{\sum (Y_i - \bar Y)^2} $$
+
+
+## Modèles linéaires simples
+
+- Autre formulation de $\hat\beta$
+
+$$\hat{\beta} = \frac{\sum_{i=1}^n(Y_i - \bar{Y})(X_i - \bar{X})}{\sum_{i=1}^n(X_i - \bar{X})^2}$$
+
+- Il y a plusieurs formulations de $\hat\beta$
+
+1. $\hat\beta = \frac{COV(X, Y)}{Var(Y)}$
+
+2. $\hat{\beta} = \frac{\sum_{i=1}^n(Y_i - \bar{Y})X_i}{\sum_{i=1}^n(X_i - \bar{X})^2}$
+
+3. $\hat{\beta} = \frac{\sum_{i=1}^n(X_i - \bar{X})Y_i}{\sum_{i=1}^n(X_i - \bar{X})^2}$
+
+4. $\hat{\beta} = \frac{\sum_{i=1}^n y_i*x_i}{\sum_{i=1}^n x_i^2}$
+
+- Où $x_i = (X_i - \bar X)$ et $y_i = (Y_i - \bar Y)$
+
+
+## Modèles linéaires multiples
+
+$\beta^* = (X^{'}X)^{-1}(X^{'}Y)$
+
+$Variance-covariance(\hat\beta) = \sigma^2(X^{'}X)^{-1}$
+
+Mais encore une fois, $\sigma^2$ n'est pas connu. Il est remplacé par:
+
+$s^2 = e^{'}e/(T-k)$
+
+avec (e = Y-Y')
+
+
+4. Interprétation
+================================================
+
+## Interprétation (Modèle linéaire simple)
+
+- Pour les variables indépendantes de type ratio
+  - Une augmentation **d'une unité** de X entraîne une augmentation de $\hat\beta$ de Y
+- Pour la variables indépendantes de type nominal ou ordinal
+  - On considère un groupe comme la référence
+  - Comparativement aux individus du groupe de référence, les individus d'un autre groupe ont en moyenne une valeur de Y supérieure de $\hat\beta$.
+  - Les femmes ont en moyenne un revenu de 10k supérieur au revenu des hommes. Dans ce cas, $\hat\beta$ = 10k
+  
+## Interprétation (Modèle linéaire multiple)
+
+- Il faut interpréter en tenant compte des autres variables
+- On ajoutera alors l'expression additionne, "toutes choses étant égales par ailleurs" ou "ceteris paribus"
+- Autrement dit, en maintenant les autres variables constantes, quel est l'effet de la variable en considération sur la variable dépendante?
+- Une augmentation **d'une unité** de X entraîne une augmentation de $\hat\beta$ de Y, **toutes choses étant égales par ailleurs**.
+- Si vous n'ajoutez par cette expression, **votre interprétation est fausse**.
+
+## Interprétation en cas de changement d'échelle
+
+- Voici quelques transformations usuelles et leur interprétation
+
+
+![](/Users/visseho/OneDrive - UQAM/Cours/Images_cours/interpretation.png)
+
+
+## Interprétation en cas de changement d'échelle
+
+1. Augmentation d'une unité de X entraîne un changement (augmentation ou diminution) de Y de B1 unité (effet sur Y)
+2. Augmentation de 1% de X entraîne un changement de Y de (B1 / 100) unité (effet sur Y)
+3. Augmentation d'une unité de X entraîne un changement de 100*B1% de Y (changement en % sur Y)
+4. Augmentation de 1% de X entraine un changement de B1% de Y (changement en % sur Y)
+
+
+Tests d'hypothèses
+===================================================
+
+## Logique des tests statistiques
+
+>- Déterminer la probabilité de découvrir une relation dans notre échantillon quand il y en a au sein de la population.
+
+>- Si cette probabilité est petite (1/20 ou 5%, d'òu l'idée du seuil de 5%), et si nous découvrons une relation au sein de l'échantillon, nous pourrons conclure qu'il existe probablement une relation dans la population.
+
+>- A l'inverse, si les chances de trouver une relation dans l'échantillon alors qu'il n'y en a pas dans la population sont élevées (supérieures à 1 sur 20), nous NE pouvons croire en toute confiance à l'existence d'une relation dans la population.
+
+## Logique des tests statistiques
+
+```{r, echo=FALSE}
+bi <- qt(0.025, df=200)
+bs <- qt(0.975, df=200)
+
+acceptation_rejet <-
+  ggplot(data = data.frame(t = c(-4, 4)), aes(t)) +
+ # stat_function(fun = dt, args = list(df = 12), color = "blue") +
+  stat_function(fun = dt, args = list(df = 200), color = "red") +
+  stat_function(fun = dt, args = list(df = 200),
+                xlim = c(bs, 4),
+                geom = "area", fill = "lightblue") +
+  stat_function(fun = dt, args = list(df = 200),
+                xlim = c(-4, bi),
+                geom = "area", fill = "lightblue") +
+  geom_vline(aes(xintercept = bi), color = "blue") +
+  geom_vline(aes(xintercept = bs), color = "green") +
+  #geom_vline(aes(xintercept = -2.653868), color = "yellow") +
+  geom_segment(aes(x = bi, xend = bs, y = 0, yend = 0), 
+               arrow = arrow(length = unit(0.1,"cm"), ends = "both"), 
+               color = "black")  +
+  annotate(geom = "text", x = 0, y = 0.02, label = "Zone d'acceptation") +
+  theme(legend.position = "none")
+acceptation_rejet
+
+``` 
+
+## Distribution de Student
+
+![](/Users/visseho/OneDrive - UQAM/Cours/Images_cours/student.png)
+
+
+## Test de Student
+
+> 1. Posez votre hypothèse nulle (la variable X n'influence pas Y)
+> 2. Choisissez votre niveau de signification (par défaut 5%)
+> 3. Trouvez votre degré de liberté (taille de l'échantillon - le nombre paramètres du modèles)
+> 4. Trouvez les valeurs minimale et maximale du t de Student pour rejeter l'hypothèse nulle
+> 5. Calculez votre t de Student à partir de vos données selon la formule $\hat\beta/SE(\hat\beta)$
+> 6. Prendre une décision:
+  >- Si votre **t calculé** inférieur à la valeur minimale ou supérieur à la valeur maximale du **t de Student** ==> Rejeter l'hypothèse nulle
+  >- Si votre **t calculé** calculé se trouve à l'intérieur de l'intervalle ==> Vous ne pouvez pas rejeter l'hypothèse nulle
+
+
+## Différents tests d'hypothèses
+
+1. Est-ce que le modèle global est significatif, c'est-à dire est-ce que les variables que vous mettez dans votre modèle apportent une meilleure connaissance de la variable dépendante que ne le permet le modèle nul (sans variables indépendantes)?
+
+- Si le modèle n'est pas meilleur que le modèle nul, il n'est même pas nécessaire d'interpréter les coéficients estimés
+
+- C'est le cas général des tests statistiques qu'on verra au 3.
+
+## Différents tests d'hypothèses
+
+2. Est-ce qu'une variable a un effet sur la variable dépendante? ou de manière générale, est-ce que l'effet d'une certaine variable équivaut à une valeur donnée?
+- Est-ce que le niveau d'éducation a un effet significatif sur le revenu?
+- Est-ce que l'effet du niveau d'éducation sur le revenu est-il égal à 7000$
+
+- H0: Effet de l'éducation = 0
+- H1: Effet de l'éducation # 0
+
+- On fait dans ce cas un test de Student
+- Tous les logiciels statistiques vous donnent la réponse 
+
+## Différents tests d'hypothèses
+
+3. Est-ce que l'effet d'une variable est similaire à d'une autre? ou est-ce que l'effet d'une catégorie est similaire à l'effet d'une autre catégorie, ou d'autres combinaisons possibles
+
+- Est-ce que l'effet de l'éducation sur le revenu est similaire à l'effet de l'expérience?
+- Comparativement au groupe majoritaire, est-ce que les immigrants racisés ont un revenu plus faible similaire que les immigrants non-racisés?
+
+- H0: Effet des immigrants racisés = effet des immigrants non-racisés
+- H1: Effet des immigrants racisés # effet des immigrants non-racisés
+
+- On fait le test de Fisher
+
+
+6. Diagnostiques et violation des hypothèses
+=============================================================
+
+## Validité des hypothèses: analyse des résidus
+
+- Présenter un graphique des résidus par rapport aux valeurs prédites
+
+- Représenter les résidus par rapport à un régresseur spécifique (rvpplot)
+
+- Ce que ce graphique montre est une indication de:
+  - Non-linéarité
+  - Non-normalité de
+  - Hétéroscédasticité
+
+## Résidus versus les valeurs prédites de Y
+
+![](/Users/visseho/OneDrive - UQAM/Cours/Images_cours/validite1.png){width=80%}
+
+
+## Résidus versus une variable indépendante spécifique
+
+![](/Users/visseho/OneDrive - UQAM/Cours/Images_cours/validite2.png){width=80%}
+
+
+
+
+Violation des hypothèses
+=====================================================
+
+## Violation des hypothèses
+
+1. Non linéarité
+2. Biais de spécification
+3. Paramètres non constants
+4. Multicolinéarité
+5. Hétéroscédasticité / perturbations autocorrélées 
+
+## 1. Violation de l'hypothèse de linéarité: et si Y et X sont non linéaires?
+
+- Souvent en sciences sociales, la relation entre Y et X n'est pas connue à l'avance
+- Cette relation n'est pas toujours linéaire
+- Deux approches:
+  - Utiliser la régression non linéaire
+  - Transformez les dépendants et / ou les prédicteurs
+
+
+## 2. Biais de spécification
+
+1. Inclusion d'une variable indépendante non pertinente
+
+- Relation vraie $Y = \beta_0 + \beta_1  X_1 + \beta_2  X_2 + \epsilon$
+- Relation estimée: $Y = \beta_0 + \beta_1  X_1 + \beta_2  X_2 + \gamma Z +   \epsilon$
+- Z n'est pas pertinent
+
+**Conséquences**:
+
+- Les paramètres estimés et leur matrice de variance-covariance sont **sans biais**
+- À moins que le Z ne soit orthogonal aux autres X, la matrice de variance-covariance des paramètres estimés devient plus grande; l'estimateur OLS n'est pas aussi efficace.
+
+
+## 2. Biais de spécification: 
+
+2. Ommission de variables importantes
+
+- Relation vraie $Y = \beta_0 + \beta_1  X_1 + \beta_2  X_2 + \epsilon$
+
+- Relation estimée: $Y = \gamma_0 + \gamma_1  X_1  +   \epsilon$
+
+- Conséquences: En général $\gamma_0$ et $\gamma_1$ sont biaisés
+
+
+## 2. Biais de spécification: 
+
+2. Ommission de variables importantes
+
+- Exemples
+
+1. Est-ce que les pompiers détruisent les propriétés?
+  - Constat: Plus le nombre de pompiers sur un site est grand, plus le dommage est important
+  - D'où provient le problème?
+
+
+## 2. Biais de spécification: 
+
+2. Ommission de variables importantes: sens du biais
+
+![](/Users/visseho/OneDrive - UQAM/Cours/Images_cours/biais_omission.png){width=70%}
+
+- Il n'est pas toujours facile de savoir l'effet de de la variable omise ($\beta_2$), ni le sens de la corrélation entre (x1 et X2.
+
+## 2. Biais de spécification: 
+
+- Exemple: Prenez l'estimation de l'effet de l'éducation de la mère (X1) sur les résultats en math des enfants (Y). 
+
+- Si vous estimez uniquement ce modèle sans l'inclusion de l'effet de l'éducation du père (X2), l'effet de l'éducation de la mère est sûrement biaisé. Dans quelle direction? Pour le savoir, vous devez utiliser les informations du tableau précédent.
+
+- Voir mon papier: 
+
+- https://www-sciencedirect-com.proxy.bibliotheques.uqam.ca/science/article/pii/S027795361730727X?via%3Dihub
+
+- https://nouvelles.umontreal.ca/en/article/2018/01/31/better-educated-men-healthier-women-and-mothers-in-the-developing-world/
+
+
+## 2. Biais de spécification: 
+
+On sait que:
+
+- l'effet attendu de l'éducation du père sur les résultats en math des enfants est posititif ($\beta_2$) >0
+
+- l'éducation de la mère est positivement correlé avec l'éducation du père: les gens de même niveau social se rassemblent (se marient). C'est ce qu'on appelle homophilie. Autrremnt dit, les femmes éduquées vont plus se marier avec les hommes éduqués, et vice versa. Donc corr(X1, X2) est positif. 
+
+- Dans ce cas, l'effet de l'éducation de la mère est sûrement biaisé vers le haut, autrement dit, cet effet est plus élevé que l'effet qu'on aurait obtenu si on avait pris en compte l'éducation du père.
+
+## 2. Biais de spécification: 
+
+Trouver un cas où l'effet est sous-estimé
+
+## 2. Biais de spécification
+
+**Choix de variables**
+
+- Avoir toutes les variables possibles : prolèmes avec les variables non pertinentes
+- Sélection : problèmes d'omission de variables pertinentes
+
+- Le choix doit être basé sur la théorie
+- Si la théorie ne peut pas défendre l'utilisation d'une variable comme IV, elle ne doit pas être incluse comme variable indépendante
+
+
+## 3. Paramètres non constants (changeants)
+
+- L'effet de l'IV peut changer avec le temps ou d'une région à l'autre
+- Les paramètres peuvent être déterminés par d'autres variables externes
+- Ou peuvent-être aléatoires: régression multiniveaux
+- Dans ce cas, l'hypothèse de paramètres constants doit être libérée
+- Une régression spécifique dans chaque période ou dans chaque région doit être privilégiée.
+
+## Exemple
+
+
+$Salaire = \beta_0 + \beta_1Etude + \beta_2Experience + \beta_3Etude*Experience + \epsilon$
+
+- Si $\beta_3> 0$ alors une année d’expérience supplémentaire augmente l’effet de l’éducation de $\beta_3$
+
+- Si $\beta_3 <0$ alors une année d’expérience supplémentaire diminue l’effet de l’éducation de $\beta_3$
+
+- Si $\beta_3$ = 0 alors Aucune interaction entre les deux variables
+
+
+## Exemple
+
+![](/Users/visseho/OneDrive - UQAM/Cours/Images_cours/interaction3.png)
+
+
+## Interaction entre deux variables continues
+
+$Salaire = \beta_0 + \beta_1 Etude + \beta_2 Experience + \beta_3 Etude * Experience + \epsilon$
+
+- $\delta(Salaire) / \delta(Etude)$ =?
+- $\delta(Salaire) / \delta(Etude) = \beta_1^* + \beta_3^* Experience$
+- Il est donc clair que l’effet de l’étude sur les salaires dépend de la valeur de l’expérience.
+- Avoir le carré d'une variable dans une régression a la même interprétation
+
+
+## Interaction entre une variable continue et une variable dichotomique (dummy)
+
+- Considérez $salaire = \beta_0 + \beta_1 Etude + \beta_2Male + \epsilon$
+    - Aucun effet d'interaction
+
+- $Salaire = \beta_0 + \beta_1 Etude + \beta_2 Homme + \beta_3 Homme * Etude + \epsilon$
+    
+- L'effet de l'éducation est différent pour les hommes et les femmes
+- Pour les hommes: $salaire = \beta_0 + \beta_1 Etude + \beta_2 + \beta_3 Etude$
+- Pour les femmes: $salaire = \beta_0 + \beta_2 Etude$
+- Sans éducation, la différence entre le salaire des femmes et celui des hommes est $\beta_1$
+- Chaque année supplémentaire d'études, augmente cette différence de $\beta_3$
+
+## Interaction entre une variable continue et une variable dichotomique (dummy)
+
+![](/Users/visseho/OneDrive - UQAM/Cours/Images_cours/interaction4.png){width=70%}
+
+
+## 4. Multicollinéarité
+
+
+## 4. Multicollinéarité
+
+**Comment détecter la multicolinéarité**
+
+1. Analyse des résultats
+- Si les signes d'hypothèse ne sont pas trouvés dans les résultats de la régression, 
+- ou si les variables pertinentes ont des valeurs t non significatives, 
+- lorsque les résultats ont changé substantiellement avec la suppression de IV ou l'observation
+  - **Malheureusement, ces raisons sont non nécessaires ou suffisantes**
+
+## 4. Multicollinéarité
+
+**Comment détecter la multicolinéarité**
+
+2. Matrice de corrélation
+  - Détecter la corrélation entre deux variables spécifiques
+  - Des valeurs d'environ 0,8 ou 0,9 indiquent une corrélation élevée  
+  
+## 4. Multicollinéarité
+
+**Comment détecter la multicolinéarité**
+
+3. Facteurs d'inflation de variance, VIF
+
+- $Y = \beta_0 + \beta_1X_{1i} + \beta_2X_{2i} + ... + \beta_kX_{ki} + \epsilon$
+
+- Régresser chaque Xi sur les autres VI et obtenir le $R^2$ appelé $R^2_i$
+
+- $VIF_i = \frac{1}{(1-R^2_i)^)}$
+
+-  Si $VIF_i$ > 10 indique une colinéarité nuisible
+
+## 4. Multicollinéarité
+
+- Que faire en cas de multicolinéarité
+
+- Rien Si 
+  1. $R^2 > R^2_i$
+  2. les statistiques t sont toutes supérieures à 2
+
+- Incorporer des informations supplémentaires
+  1. Obtenez plus de données
+  2. Supprimer les variables (bonne si variable non pertinente)
+  3. Crér un index à partir de l'analyse factorielle, de l'analyse en composante principale ou par tout autre moyen
+  
+
+## 5. Hétéroscédasticité / perturbations autocorrélées  
+
+Hypothèse 3: les perturbations sont sphériques
+
+- Variance uniforme $E(\epsilon^2_i) = \sigma^2$
+- Non corrélés les uns aux autres $E(\epsilon_i\epsilon_j) = 0$, si i est différent de j
+
+- Si l'hypothèse 3 n'est pas respectée, la régression linéaire classique devient GLS: régression linéaire généralisée
+
+- $\beta_{OLS}$ n'est plus approprié, remplacez par $\beta_{GLS}$
+- $\beta_{OLS}$ sont non-baisés mais
+- Ne sont pas efficaces (grande variance)
+
+## 5. Hétéroscédasticité / perturbations autocorrélées  
+
+- Cas particulier des perturbations autocorrélées
+  - Plan d'échantillonnage en grappes : les individus du même cluster ne sont pas indépendants
+  - Donnés collectés sur les élèves de la même classe
+
+**Correction:**
+
+- Option (Cluster) dans la régression pour corriger l'erreur standard
+- Utilisation de la modélisation multiniveaux
