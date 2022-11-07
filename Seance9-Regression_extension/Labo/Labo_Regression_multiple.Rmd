@@ -274,6 +274,7 @@ summary(lm(m19 ~ relevel(v106, 3), data = poids1))
 
 ggplot(poids1) +
   geom_boxplot(aes(x = v106, y = m19))
+
 ```
 
 
@@ -313,8 +314,8 @@ summary(reg_int3)
 
 ## Shortcuts
 
-- a*b  = a + b + A:b
-- a*(b + c) = a+ B + c + a:b + a:c
+- a*b  = a + b + a:b
+- a*(b + c) = a + b + c + a:b + a:c
 - (a + b + c)^2 = a + b + c + a:b + a:c + b:c
 - a*b*c = a+b+c +a:b + a:c + b:c + a:b:c
 

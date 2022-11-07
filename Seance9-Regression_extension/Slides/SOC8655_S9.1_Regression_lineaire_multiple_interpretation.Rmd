@@ -321,7 +321,7 @@ Age                             0.261                   0.002
 
 >- Valeur de beta estimé: $\beta^*_{age} = 0,261 \neq 0$,  test possible pour voir si l'âge n'est pas lié à la parité
 
->- t calculé: $t^* = \frac{(\beta^*_{age} - 0)}{s^*_{\beta^*_{age}}}$ = (0.261-0)/0.002 = 130.5
+>- t calculé: $t^* = \frac{(\beta^*_{age} - 0)}{s_{\beta^*_{age}}}$ = (0.261-0)/0.002 = 130.5
 
 >- le t calculé: $t^*$ suit une loi de Student avec (6444 - (8 + 1)) = 6435 degrés de liberté
 
@@ -363,7 +363,7 @@ Conclusion: Une variable a un effet significatif si l'intervalle de confiance de
 
 - La formule de l'intervalle de confiance est:
 
-$$IC = \beta^*_s ± t_{\alpha}*s_{\beta^*}$$
+$$IC = \beta^*_s \pm t_{\alpha}*s_{\beta^*}$$
 $$[\beta^*_s - t_{\alpha}*s_{\beta^*}, \beta^*_s + t_{\alpha}*s_{\beta^*}]$$
 - Exemple: intervalle de confiance de $\beta^*_{age}$
 
@@ -492,7 +492,7 @@ $$F^* = \frac{[61414.84 - 59968.90)]/8}{59968.90/(6444 - 9)} = 19.39$$
 ## Exemple 2
 
 
-$$Parite_i = \alpha + \beta_1Urbain_i + \beta_2Primaire_i + \beta_3College_i + \beta_4Catholique_i + ... + \beta_8Age_i +\epsilon_i$$
+$$Parite_i = \alpha + \beta_1Urbain_i + \beta_2Prim_i + \beta_3Col_i + \beta_4Catho_i + ... + \beta_8Age_i +\epsilon_i$$
 
 
 - Hypothèse nulle: $H_0: \beta_2 = \beta_3$
@@ -501,11 +501,11 @@ $$Parite_i = \alpha + \beta_1Urbain_i + \beta_2Primaire_i + \beta_3College_i + \
 
 >- Hypothèse alternative: $H_A : \beta_2 \neq \beta_3$
 
->- RM: $Parite_i = \alpha + \beta_1*urbain_i + \beta_2(primaire_i + college_i) + \beta_4*catholique_i +...+ \beta_8*age_i +\epsilon_i$
+>- RM: $Parite_i = \alpha + \beta_1Urbain_i + \beta_2(primaire_i + college_i) + \beta_4*catholique_i +...+ \beta_8*age_i +\epsilon_i$
 
 >- Cacluler la nouvelle variable $educ = primaire_i + college_i$
 
->- Estimer le modèle RM: $Parite_i = \alpha + \beta_1*urbain_i + \beta_2(educ_i) + \beta_4*catholique_i +...+ \beta_8*age_i +\epsilon_i$
+>- Estimer le modèle RM: $Parite_i = \alpha + \beta_1Urbain_i + \beta_2(educ_i) + \beta_4Catho_i +...+ \beta_8Age_i +\epsilon_i$
 
 
 
@@ -526,11 +526,11 @@ $$F^* = \frac{[56164.15 - 55968.90)]/1}{55968.90/(6435)} = 22.45$$
   
 ## Exemple 3
 
-$$Parite_i = \alpha + \beta_1Urbain_i + \beta_2Primaire_i + \beta_3College_i + \beta_4Catholique_i +...+ \beta_8Age_i +\epsilon_i $$ 
+$$Parite_i = \alpha + \beta_1Urbain_i + \beta_2Prim_i + \beta_3Col_i + \beta_4Catho_i +...+ \beta_8Age_i +\epsilon_i $$ 
 
 - Hypothèse nulle : $H_0 = \beta_2 = 2 , \beta_3 = -5$
 
-- RM: $Parite_i = \alpha + \beta_1*urbain_i + 2*primaire_i - 5*college_i + \beta_4*catholique_i +...+ \beta_8*age_i +\epsilon_i$
+- RM: $Parite_i = \alpha + \beta_1Urbain_i + 2Prim_i - 5Col_i + \beta_4Catho_i +...+ \beta_8*age_i +\epsilon_i$
 
 
 >- Calculer une nouvelle variable dépendante: $Paritenew_i = Parite_i - 2*primaire_i + 5*college_i$
@@ -541,6 +541,7 @@ $$Parite_i = \alpha + \beta_1Urbain_i + \beta_2Primaire_i + \beta_3College_i + \
 ## Remarque sur F et t test
 
 - Le test t et le test F sont similaires pour le test d'hypothèse sur 1 paramètre
+
 >- Deux tests t sont différents d'un test F car les hypothèses nulles sont différentes
 >- Par exemple: $\beta_1$ et $\beta_2$ peuvent ne pas être significatifs à partir  du test t, mais être conjointement significatifs avec le F test
 >- SSR(RM) > SSR (UM)
@@ -551,8 +552,19 @@ $$Parite_i = \alpha + \beta_1Urbain_i + \beta_2Primaire_i + \beta_3College_i + \
 
 - Les degrés de liberté d'une statistique sont le nombre de grandeurs entrant dans le calcul de la statistique moins le nombre de contraintes reliant ces grandeurs. 
 - Par exemple, la formule utilisée pour calculer la variance de l'échantillon implique la statistique moyenne de l'échantillon. 
-- Cela impose une contrainte sur les données - étant donné la moyenne de l'échantillon, n'importe quel point de données peut être déterminé par les autres (N-1) points de données. - Par conséquent, seules des observations non contraintes (N-1) sont disponibles pour estimer la variance de l'échantillon; le degré de liberté de la statistique de variance de l'échantillon est (N-1).
+- Cela impose une contrainte sur les données - étant donné la moyenne de l'échantillon, n'importe quel point de données peut être déterminé par les autres (N-1) points de données.
+- Par conséquent, seules des observations non contraintes (N-1) sont disponibles pour estimer la variance de l'échantillon; le degré de liberté de la statistique de variance de l'échantillon est (N-1).
 
+## Références
 
+- Wonnacott & Wonnacott. 1995. Statistique. Chapitre 9: Tests d'hypothèses. 
+
+- Fox (p190-197)
+- Fox (207-224)
+- Fox (232-235
+- Fox (246-254
+- Fox (p258-270)
+- Fox (p385-417)
+- Fox (p429-436)
 
 

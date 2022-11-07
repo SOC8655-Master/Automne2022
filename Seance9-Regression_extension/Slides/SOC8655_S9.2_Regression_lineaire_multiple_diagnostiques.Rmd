@@ -60,7 +60,7 @@ knitr::include_graphics("../../Images/validite2.png")
 
 $$Y_i = 1 + x_i + \epsilon_i$$
 
-```{r, echo=FALSE, message=FALSE, warning=FALSE, out.width='70%'}
+```{r, echo=FALSE, message=FALSE, warning=FALSE, out.width='60%'}
 
 library(tidyverse)
 set.seed(12345)   #sets the seed for the random number generator
@@ -81,16 +81,16 @@ ggplot(data) +
 
 ```
 
-- On va que la variance de l'erreur est la même quelque soit la valeur de x.
+- On voit que la variance de l'erreur est la même quelque soit la valeur de x.
 - Nous sommes en présence de l'homoscédasticité.
 
 ## Exemple 2: Non linéarité
 
 - L'exemple suivant illustre l'aspect des résidus lorsqu'une forme fonctionnelle linéaire est utilisée alors que la véritable relation est, en fait, quadratique.
 
-$$ y_i = 15 - 4x_i^2 + \epsilon_i$$
+- $ y_i = 15 - 4x_i^2 + \epsilon_i$
 
-```{r, echo=FALSE, message=FALSE, warning=FALSE, out.width='70%'}
+```{r, echo=FALSE, message=FALSE, warning=FALSE, out.width='60%'}
 set.seed(12345)
 x <- runif(1000, -2.5, 2.5)
 e <- rnorm(1000, 0, 4)
@@ -114,6 +114,8 @@ ggplot(data2) +
 #     xlab="x", ylab="residuals",col="grey")
 ```
 
+<!--
+
 ## Exemple 3: Normalité des résidus
 
 <!-- Une autre hypothèse que nous aimerions tester est la normalité des résidus, qui garantit la fiabilité des tests d'hypothèse et des intervalles de confiance, même dans les petits échantillons. Cette hypothèse peut être évaluée en inspectant un histogramme des résidus, ainsi qu'en effectuant un test de Jarque-Bera, pour lequel l'hypothèse nulle est "La série est normalement distribuée". Ainsi, une petite valeur de p rejette l'hypothèse nulle, ce qui signifie que la série échoue au test de normalité. Le test de Jarque-Bera nécessite l'installation et le chargement du package tseries dans R. La figure 4.7 montre un histogramme et une distribution normale superposée pour le modèle linéaire de dépenses alimentaires. -->
@@ -129,6 +131,7 @@ ggplot(data3) +
 
 
 ```
+-->
 
 
 Violation des hypothèses
@@ -252,6 +255,8 @@ knitr::include_graphics("../../Images/interpretation.png")
 1. Est-ce que les pompiers détruisent les propriétés?
   - Constat: Plus le nombre de pompiers sur un site est grand, plus le dommage est important
   - D'où provient le problème?
+
+## 2. Biais de spécification: 
 
 2. Est que le nombre de livres à la maison augmente la réussite scolaire?
   - Constat: Plus il y a de livres à la maison, plus les enfants réussissent?

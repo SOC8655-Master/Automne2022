@@ -1,5 +1,5 @@
 ---
-title: 'Labo 4.2: Régression linéaire :Violence'
+title: 'Labo 8.2: Régression linéaire :Violence'
 author: "Visseho Adjiwanou, PhD."
 institute: "SICSS - Montréal"
 date: "`r format(Sys.time(), '%d %B %Y')`"

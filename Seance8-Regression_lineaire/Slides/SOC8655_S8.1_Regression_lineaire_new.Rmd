@@ -98,7 +98,9 @@ output:
 ## Exemple : L'histoire de deux universités
 
 - Pouvons-nous utiliser ces données pour imiter l'essai randomisé que nous aimerions mener dans ce contexte ? 
+
 >- Pas à la perfection, certes, mais nous pourrons peut-être nous en approcher. 
+
 >- La clé de cette compréhension est le fait que de nombreuses décisions et choix, y compris ceux liés à la fréquentation universitaire, impliquent une certaine quantité de variations fortuites générées par des considérations financières, des circonstances personnelles et le calendrier.
 
 ## Exemple : L'histoire de deux universités
@@ -174,9 +176,15 @@ output:
 ## Exemple : L'histoire de deux universités
 
 - Parce que nous recherchons des conclusions générales qui vont au-delà des histoires individuelles, nous recherchons de nombreux contrastes similaires de même sexe et de même SAT dans les deux écoles. 
+
 >- Autrement dit, nous calculons la différence de revenus moyens entre les étudiants de Harvard et U-Mass avec le même sexe et les mêmes scores SAT. 
+
 >- La moyenne de toutes ces différences spécifiques à un groupe entre Harvard et U-Mass est notre première tentative pour estimer l'effet causal d'une éducation à Harvard. 
->- Il s'agit d'un estimateur d'appariement économétrique qui contrôle - c'est-à-dire maintient fixe - les scores de sexe et SAT. 
+
+## Exemple : L'histoire de deux universités
+
+- Il s'agit d'un estimateur d'appariement économétrique qui contrôle - c'est-à-dire maintient fixe - les scores de sexe et SAT. 
+
 >- En supposant que, sous réserve du sexe et des scores SAT, les étudiants qui fréquentent Harvard et U-Mass ont un potentiel de revenus similaire, cet estimateur capture l'effet causal moyen d'un diplôme de Harvard sur les revenus.
 
 
@@ -187,9 +195,10 @@ output:
 - Étant donné que les décisions de fréquentation des collèges ne sont pas attribuées au hasard, nous devons contrôler tous les facteurs qui déterminent à la fois les décisions de fréquentation et les revenus ultérieurs. 
 
 >- Ces facteurs incluent les caractéristiques des étudiants: 
-    >- la capacité d'écriture, 
-    >- la diligence, 
-    >- les liens familiaux, ...
+
+>    - la capacité d'écriture, 
+>    - la diligence, 
+>    - les liens familiaux, ...
 
 >- Le contrôle d'un tel éventail de facteurs semble intimidant : les possibilités sont pratiquement infinies et de nombreuses caractéristiques sont difficiles à quantifier. 
 
@@ -207,18 +216,22 @@ output:
 ## Matchmaker
 
 - Uma opte néanmoins pour une éducation à U-Mass moins chère. 
+
 >- son choix pourrait être attribuable à des facteurs qui ne sont pas étroitement liés au potentiel de revenus d'Uma, 
-  >- Un oncle qui a réussi qui est allé à U-Mass 
-  >- Un meilleur ami qui a choisi U-Mass
-  >- Uma a raté la date limite pour la Bourse du club Rotary qui aurait financé l'éducation à Harvard. 
+
+>   - Un oncle qui a réussi qui est allé à U-Mass 
+>   - Un meilleur ami qui a choisi U-Mass
+>   - Uma a raté la date limite pour la Bourse du club Rotary qui aurait financé l'éducation à Harvard. 
+
 >- Si de tels événements fortuits ont été décisifs pour Uma et Harvey, alors les deux font un bon match.
 
 ## Matchmaker
 
 - Dale et Krueger ont analysé un grand ensemble de données appelé College and Beyond (C&B). 
 - Cet ensemble de données contient des informations sur des milliers d'étudiants inscrits dans un groupe de collèges et d'universités américains modérément à hautement sélectifs 
-    >- Des informations d'enquête recueillies auprès des étudiants au moment où ils ont passé le SAT, environ un an avant leur entrée à l'université, 
-    >- et des informations recueillies en 1996, longtemps après que la plupart d'entre eux aient obtenu leur diplôme universitaire. 
+
+>   - Des informations d'enquête recueillies auprès des étudiants au moment où ils ont passé le SAT, environ un an avant leur entrée à l'université, 
+>   - et des informations recueillies en 1996, longtemps après que la plupart d'entre eux aient obtenu leur diplôme universitaire. 
 
 ## Matchmaker
 
@@ -234,7 +247,12 @@ output:
 
 ## Matchmaker
 
-- Le tableau 1 détaille une version simplifiée de la stratégie d'appariement de Dale et Krueger, dans une configuration que nous appelons la "matrice d'appariement des collèges". - Ce tableau présente les demandes d'admission, les admissions et les décisions d'inscription pour une liste (inventée) de neuf étudiants, chacun d'entre eux ayant posé sa candidature à trois écoles choisies parmi une liste imaginaire de six. 
+- Le tableau 1 détaille une version simplifiée de la stratégie d'appariement de Dale et Krueger, dans une configuration que nous appelons la "matrice d'appariement des collèges".
+
+- Ce tableau présente les demandes d'admission, les admissions et les décisions d'inscription pour une liste (inventée) de neuf étudiants, chacun d'entre eux ayant posé sa candidature à trois écoles choisies parmi une liste imaginaire de six. 
+
+## Matchmaker
+
 - Trois des six écoles figurant dans le tableau sont publiques (All State, Tall State et Altered State) et trois sont privées (Ivy, Leafy et Smart). 
 - Cinq de nos neuf élèves (numéros 1, 2, 4, 6 et 7) ont fréquenté des écoles privées. Le salaire moyen dans ce groupe est de 92 000 dollars. 
 - Les quatre autres, dont le revenu moyen est de 72 500 dollars, ont fréquenté une école publique. 
@@ -278,6 +296,7 @@ Effet1_
 ## Commentaire tableau
 
 - Groupe A: (110000 + 100000)/2 - 110000 = -5000
+
 >- Groupe B: 60000 - 30000 = 30000 - Cet écart suggère un avantage substantiel des écoles privées.
 >- Groupe C: Non informatif
 >- Groupe D: Non informatif
@@ -322,7 +341,11 @@ Le groupe C comprend deux étudiants qui ont postulé à une seule école (Leafy
 - La preuve d'un biais de sélection émerge d'une comparaison des revenus moyens entre (plutôt qu'au sein des) groupes A et B. 
 - Les revenus moyens dans le groupe A, où les deux tiers postulent aux écoles privées, sont d'environ 107 000 dollars. 
 - Les revenus moyens dans le groupe B, où les deux tiers postulent pour les écoles publiques, ne sont que de 45 000 dollars. 
+
+## Commentaire tableau
+
 - Nos comparaisons au sein des groupes révèlent qu'une grande partie de ce manque à gagner n'est pas liée aux décisions de fréquentation universitaire des étudiants. 
+
 - La différence entre les groupes s'explique par une combinaison d'ambition et de capacité
 
 <!--, comme en témoignent les décisions de candidature et l'ensemble des écoles dans lesquelles les étudiants ont été admis.-->
@@ -352,6 +375,7 @@ Le groupe C comprend deux étudiants qui ont postulé à une seule école (Leafy
 ## Régression
 
 - Dans notre matrice d'appariement, les cinq élèves des groupes A et B apportent des données utiles, tandis que les élèves des groupes C et D peuvent être écartés. 
+
 >- Une seule variable indiquant les élèves du groupe A nous indique dans lequel des deux groupes se trouvent les élèves restants. 
 >- La variable que nous appellerons Ai, est notre seul contrôle. 
 >- Notez que Pi et Ai sont des variables dichotomiques, c'est-à-dire qu'elles sont égales à 1 pour indiquer des observations dans un état ou une condition spécifique, et à 0 sinon.
@@ -507,6 +531,7 @@ $$ Y_i = \alpha + \beta_1 X_{1i} +  \beta_2 X_{2i} + ...+\beta_k X_{ki} +\epsilo
 Où $\epsilon_i$ suit une loi normale de moyenne 0 et de variance $\sigma^2$. On a k indépendantes variables pour n observations ${(Y_i, X_{11}, X_{12}, ..., X_{1k}), ..., (Y_n, X_{n1}, X_{n2}, ..., X_{nk})}$.
 
 Exemple:
+
   - Y peut être le poids à la naissance
   - X1 l'age de la mère à la naissance de l'enfant
   - X2 le sexe de l'enfant
@@ -531,7 +556,7 @@ Notation matricielle: $Y = X\beta + \epsilon$
 
 
 
-```{r, echo=FALSE, out.width="80%"}
+```{r, echo=FALSE, out.width="70%"}
 
 knitr::include_graphics("../Images/matrice_regression.png")
 
@@ -571,6 +596,18 @@ $s^2 = e^{'}e/(T-k)$
 
 avec (e = Y-Y')
 
+
+## Estimation dans le cas d'un modèle linéaire simple
+
+- $\hat{\alpha} = \bar{Y} -  \hat{\beta} \bar{X}$
+
+- $\hat{\beta} = \frac{\sum_{i=1}^n(Y_i - \bar{Y})(X_i - \bar{X})}{\sum_{i=1}^n(X_i - \bar{X})^2}$
+
+- $\hat{Y} = \hat{\alpha} +  \hat{\beta} X$
+
+- Résidue: $\hat{\epsilon} = Y - \hat{Y}$
+
+- Variance estimée : $\hat{\sigma^2} = $ 
 
 
 Estimation avec R
