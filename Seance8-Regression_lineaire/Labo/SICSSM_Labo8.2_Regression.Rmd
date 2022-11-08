@@ -29,6 +29,7 @@ Name             Description
 `country`        pays
 ---------------  --------------------------------------------------------------
 
+## dresser la table
 
 ```{r}
 
@@ -39,9 +40,9 @@ rm(list = ls())
 library(tidyverse)
 library(summarytools)
 library(broom)
-dhs_ipv <- read_csv("../Données/dhs_ipv.csv")
+dhs_ipv <- read_csv("../Data/dhs_ipv.csv")
 
-summary(dhs_ipv)
+summary(dhs_ipv$beat_goesout)
 
 ```
 
@@ -50,6 +51,7 @@ summary(dhs_ipv)
 ## Effet du niveau de scolarisation sur l'attitude face à la violence
 
 ```{r}
+
 class(dhs_ipv$beat_burnfood)
 
 lm(beat_burnfood ~ sec_school, data = dhs_ipv)
@@ -60,7 +62,7 @@ Comment interprétez-vous ces résultats?
 
 **Interprétation**
 
-Une augmentation d'une unité du pourcentage de femmes ayant le niveau secondaire ou plus entraîne une diminution de 0,38 soit de 38% du pourcentage des femmes qui estiment qu'une femme doit être battue si elle brûle la nourriture.
+Une augmentation d'une unité du pourcentage de femmes ayant le niveau secondaire ou plus entraîne une diminution de 0,38 du pourcentage des femmes qui estiment qu'une femme doit être battue si elle brûle la nourriture.
 
 
 De manière générale, on dit:
@@ -95,6 +97,7 @@ summary(reg1)
 ```{r}
 
 reg2 <- lm(beat_burnfood ~  no_media, data = dhs_ipv)
+
 summary(reg2)
 
 ```
@@ -120,9 +123,13 @@ summary(reg3)
 ```{r}
 
 class(dhs_ipv$year)
+freq(dhs_ipv$year)
+
 dhs_ipv <-
   dhs_ipv %>% 
   mutate(year_binaire = factor(if_else(year <= 2010, "Avant 2010", "Apres 2010")))
+
+class(dhs_ipv$year_binaire)
 
 freq(dhs_ipv$year_binaire)
 
@@ -139,7 +146,8 @@ https://stackoverflow.com/questions/3872070/how-to-force-r-to-use-a-specified-fa
 ?relevel
 
 reg5 <- lm(beat_burnfood ~ relevel(year_binaire, ref = "Avant 2010"), data = dhs_ipv)
-coef(reg5)
+
+summary(reg5)
 
 ```
 
@@ -179,9 +187,9 @@ cor(dhs_ipv$sec_school, dhs_ipv$no_media, use = "pairwise.complete.obs")
 
 **Interprétation**
 
-**Toute choses étant égales par ailleurs (*ceteris paribus*)**, une augmentation d'une unité du pourcentage de femmes ayant le niveau secondaire ou plus entraîne une diminution de 0,103 soit de 10% du pourcentage des femmes qui estiment qu'une femme doit être battue si elle brûle la nourriture.
+**Toute choses étant égales par ailleurs (*ceteris paribus*)**, une augmentation d'une unité du pourcentage de femmes ayant le niveau secondaire ou plus entraîne une diminution de 0,103%  des femmes qui estiment qu'une femme doit être battue si elle brûle la nourriture.
 
-Pourquoi l'effet de l'éducation avait baissé? On avait trouvé avant une diminution de 38%.
+Pourquoi l'effet de l'éducation avait augmenté? On avait trouvé avant une diminution de 0,38%.
 
 Il faut regarder dans les hypothèses, celles qui peut avoir causer cela. 
 
@@ -190,7 +198,6 @@ Il faut regarder dans les hypothèses, celles qui peut avoir causer cela.
 knitr::include_graphics("/Users/visseho/OneDrive - UQAM/Cours/Images_cours/hypotheses_regression.png")
 ```
 
-![](/Users/visseho/OneDrive - UQAM/Cours/Images_cours/hypotheses_regression.png)
 
 
 ## Modèle général
