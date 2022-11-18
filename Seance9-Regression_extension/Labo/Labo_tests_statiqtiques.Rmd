@@ -1,5 +1,5 @@
 ---
-title: 'Test de chi-deux et test de student'
+title: 'Test statistiques'
 author: "Visseho Adjiwanou, PhD."
 date: "`r format(Sys.time(), '%d %B %Y')`"
 output:
@@ -46,7 +46,7 @@ Mieux, on va écrire ce modèle comme:
 $$Score_i = \beta_0 + \beta_1Math + \epsilon_i$$
 Puisque nous savons que la variable Domaine d'étude ne prend que deux valeurs.
 
-Ce que nous voulons tester est alors $\beta_1 = 0$
+Ce que nous voulons tester est alors $$\beta_1 = 0$$
 
 ## 3. Énoncer votre hypothèse nulle
 
@@ -54,17 +54,17 @@ Ce que nous voulons tester est alors $\beta_1 = 0$
 
 H0: Il n'y a pas de différence entre les capacités de pensée critique entre ceux qui font une majeure en mathématique et ceux qui font une majeure en philosophie (en termes statistiques, le score moyen chez les mathématiciens = score moyen chez les philosophes)
 
-H0 : $\mu_{philo} = \mu_{math}$ ou
+H0 : $$\mu_{philo} = \mu_{math}$$ ou
 
-H0 : $\mu_{philo} - \mu_{math} = 0$ 
+H0 : $$\mu_{philo} - \mu_{math} = 0$$
 
 
 ## 4. Test statistiques
 
-Sous l'hypothèse nulle, $\mu_1 - \mu_2 = 0$, la statistique $t = \frac{\bar{X}_1 - \bar{X}_2}{s_{\bar{X}_1 - \bar{X}_2}}$ suit une loi de Student à $(n_1-1) + (n_2 -1)$ degrés de liberté.
+Sous l'hypothèse nulle, $\mu_1 - \mu_2 = 0$, la statistique $$t = \frac{\bar{X}_1 - \bar{X}_2}{s_{\bar{X}_1 - \bar{X}_2}}$$ suit une loi de Student à $(n_1-1) + (n_2 -1)$ degrés de liberté.
 
 
-- Regardons à quoi ressemble la distribution de Students )comparativement à la distribution normale
+- Regardons à quoi ressemble la distribution de Students comparativement à la distribution normale
 
 ```{r}
 
@@ -173,8 +173,10 @@ degré de liberté = 28 + 19 - 2  = 45
 
 e. t lu
 
-t lu = 2.40 (avec la table de distribution de la loi de Student) 
+t lu = 2.704 (avec la table de distribution de la loi de Student) 
 On est conservateur en prenant 40 degrés de liberté.
+
+niveau de signification de 1%
 
 ```{r}
 knitr::include_graphics("../Images/Table_Student.png")
@@ -188,7 +190,7 @@ Vous pouvez aussi le calculer de cette manière:
 ```{r}
 
 t_lu <- qt(0.005, df=45)
-
+t_lu
 # qnorm(0.005)
 
 ```
@@ -201,7 +203,7 @@ t_lu: 0.005% de la distribution ont une valeur inférieur à la valeur trouvée
 
 f. Décision
 
-t calculé en valeur absolu = 1.31 < t lu = 2.40, on **ne peut pas rejeter** l'hypothèse nulle. Autrement dit, il n'existe pas d'association significative entre le domaine de formation et la capacité de raisonnement critique.
+t calculé en valeur absolu = 1.31 < t lu = 2.704, on **ne peut pas rejeter** l'hypothèse nulle. Autrement dit, il n'existe pas d'association significative entre le domaine de formation et la capacité de raisonnement critique.
 
 
 ## Utilisation de l'intervalle de confiance
@@ -323,7 +325,7 @@ acceptation_rejet <-
                 geom = "area", fill = "lightblue") +
   stat_function(fun = dt, args = list(df = 45),
                 xlim = c(bi, bs),
-                geom = "area", fill = "purple", alpha = 0.2) #+
+                geom = "area", fill = "purple", alpha = 0.2) +
   geom_abline(aes(slope = 0, intercept = -1.314578), color = "black")+
   theme(legend.position = "none")
 

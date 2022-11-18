@@ -47,14 +47,14 @@ library(ggpubr)         # help to combine figure
 #library(haven)
 library(broom)
 library(readstata13)
-library(stargazer)
+library(stargazer)  # huxtable
 library(modelsummary)
 library(summarytools)
 
 
 bmk <- read.dta13("/Users/visseho/OneDrive - UQAM/Cours/Bases_donnees/bmk.dta")
 
-
+summary(bmk)
 ```
 
 ## 2. Comprendre les données
@@ -62,6 +62,7 @@ bmk <- read.dta13("/Users/visseho/OneDrive - UQAM/Cours/Bases_donnees/bmk.dta")
 - D'où proviennent les données manquantes dans agedc?
 
 ```{r}
+
 head(bmk)
 glimpse(bmk)
 summary(bmk)
@@ -161,7 +162,7 @@ ggplot(bmk %>% filter(!is.na(twin) & !is.na(dead))) +
 
 bmk_old <- lm(formula = dead ~ twin, data = bmk)
 bmk_old
-
+summary(bmk_old)
 
 bmk_lpm <-
   bmk %>% 
