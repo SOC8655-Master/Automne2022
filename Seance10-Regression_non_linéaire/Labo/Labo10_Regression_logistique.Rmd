@@ -1,11 +1,80 @@
 ---
-title: 'Labo 9: Variables dépendentes dichotomiques'
+title: 'Labo 10: Variables dépendentes dichotomiques'
 author: "Visseho Adjiwanou, PhD."
 date: "`r format(Sys.time(), '%d %B %Y')`"
 output:
   pdf_document: default
   html_document: default
 ---
+
+## Interaction dans les modèles de regression linéaire
+
+## Exemple
+
+Name             Description
+---------------  --------------------------------------------------------------
+`beat_goesout`   Pourcentage de femmes dans chaque pays qui pensent qu'un mari
+                  a le droit de battre sa femme si elle sort sans le lui dire.
+`beat_burnfood`  Pourcentage de femmes dans chaque pays qui pensent qu'un mari 
+                  a le droit de battre sa femme si elle brûle sa nourriture.  
+`no_media`       Pourcentage de femmes dans chaque pays qui ont rarement accès
+                  un journal, une radio ou une télévision.
+`sec_school`     Pourcentage de femmes dans chaque pays ayant un niveau
+                  d'éducation secondaire ou supérieur.
+`year`           Année de l'enquête
+`region`         Région du monde
+`country`        pays
+---------------  --------------------------------------------------------------
+
+## dresser la table
+
+```{r}
+
+rm(list = ls())
+
+#install.packages("broom")
+
+library(tidyverse)
+library(summarytools)
+library(stargazer)
+library(broom)
+dhs_ipv <- read_csv("../Data/dhs_ipv.csv")
+
+summary(dhs_ipv$beat_goesout)
+
+```
+
+
+## Régression
+
+```{r}
+
+reg1 <- lm(formula = beat_burnfood ~ sec_school + no_media + region, data = dhs_ipv)
+summary(reg1)
+```
+
+Est-ce que cet effet change selon les périodes? On va considérer deux périodes, avant 2010 et après 2010
+
+
+```{r}
+
+dhs_ipv <- dhs_ipv %>% 
+  mutate(period = factor(if_else(year < 2010, "avant 2010", "après 2010")))
+
+freq(dhs_ipv$period)
+
+reg2 <- lm(formula = beat_burnfood ~ sec_school + no_media + period + no_media:period + region, data = dhs_ipv)
+
+summary(reg2)
+# OU
+
+reg3 <- lm(formula = beat_burnfood ~ sec_school + no_media*period + region, data = dhs_ipv)
+summary(reg3)
+
+stargazer(reg1, reg2, reg3, title = "Divers modèles", align = TRUE, type = "text")
+
+```
+
 
 ## Description de la base de données
 
