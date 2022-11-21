@@ -44,6 +44,15 @@ summary(dhs_ipv$beat_goesout)
 
 ```
 
+## Visualisation
+
+```{r}
+
+ggplot(dhs_ipv) +
+  geom_point(aes(x = year, y = beat_burnfood))
+
+```
+
 
 ## Régression
 
@@ -53,7 +62,25 @@ reg1 <- lm(formula = beat_burnfood ~ sec_school + no_media + region, data = dhs_
 summary(reg1)
 ```
 
-Est-ce que cet effet change selon les périodes? On va considérer deux périodes, avant 2010 et après 2010
+Le test F teste globalement si le modèle est différent d'un modèle nulle
+
+H0: B1 = B2 = B3 = B4 = B5 = 0
+
+
+
+```{r}
+
+qf(0.95, df1 = 5, df2 = 110)
+
+```
+
+Le F calculé est supperieur au F lu, on rejette l'hypothèse nulle.
+
+
+Une augmentation d'une unité de la proportion des femmes qui n'ont pas accès au média entraîne une augmentation de 0,34% de la proportion des femmes qui estiment qu'on doit battre une femme quand elle brûle la nourriture, toutes choses étant égales par ailleurs. Cet effet est statistiquement significatif.
+
+
+- Est-ce que cet effet change selon les périodes? On va considérer deux périodes, avant 2010 et après 2010
 
 
 ```{r}
@@ -63,15 +90,27 @@ dhs_ipv <- dhs_ipv %>%
 
 freq(dhs_ipv$period)
 
-reg2 <- lm(formula = beat_burnfood ~ sec_school + no_media + period + no_media:period + region, data = dhs_ipv)
-
+reg2 <- lm(formula = beat_burnfood ~ sec_school + no_media + period + region, data = dhs_ipv)
 summary(reg2)
+
+reg3 <- lm(formula = beat_burnfood ~ sec_school + no_media + period + no_media:period + region, data = dhs_ipv)
+
+summary(reg3)
 # OU
 
-reg3 <- lm(formula = beat_burnfood ~ sec_school + no_media*period + region, data = dhs_ipv)
-summary(reg3)
+reg4 <- lm(formula = beat_burnfood ~ sec_school + no_media*period + region, data = dhs_ipv)
+summary(reg4)
 
-stargazer(reg1, reg2, reg3, title = "Divers modèles", align = TRUE, type = "text")
+stargazer(reg1, reg2, reg3, reg4, title = "Divers modèles", align = TRUE, type = "text")
+
+```
+
+- On peut aussi voir comment les effets changent selon les régions
+
+```{r}
+
+reg5 <- lm(formula = beat_burnfood ~ sec_school + no_media + region*period, data = dhs_ipv)
+summary(reg5)
 
 ```
 
@@ -309,9 +348,9 @@ summary(bmk_logit)
 
 - Nous voyons ensuite les résidus de déviance, qui sont une mesure de l'ajustement du modèle. Cette partie de la sortie montre la distribution des résidus de déviance pour les cas individuels utilisés dans le modèle. Nous expliquons ci-dessous comment utiliser les résumés de la statistique de déviance pour évaluer l'adéquation du modèle.
 
-- La partie suivante de la sortie montre les coefficients, leurs erreurs standard, la statistique z (parfois appelée statistique z de Wald) et les valeurs p associées. Seul **jumeau** est statistiquement significatif. Les coefficients de régression logistique donnent la variation de la **log odds** du résultat pour une augmentation **d'une unité de la variable prédictive**.
+- La partie suivante de la sortie montre les coefficients, leurs erreurs standard, la statistique z (parfois appelée statistique z de Wald) et les valeurs p associées. Seules les variables **jumeau**, parity1 and secondary sont statistiquement significatives. Les coefficients de régression logistique donnent la variation de la **log odds** du résultat pour une augmentation **d'une unité de la variable prédictive**.
 
-- Les variables indicatrices ont une interprétation légèrement différente. Par exemple, le fait d'être un jumeau modifie les probabilités de décès de 0,9026.
+- Les variables indicatrices ont une interprétation légèrement différente. Par exemple, le fait d'être un jumeau modifie le log de l'odd de décéder de 0,9026.
 
 - En dessous du tableau des coefficients se trouvent des indices d'ajustement, comprenant les résidus nuls et déviance et l'AIC. Je montrerai plus tard un exemple d'utilisation de ces valeurs pour évaluer l'adéquation du modèle.
 
@@ -331,10 +370,16 @@ exp(cbind(OR = coef(bmk_logit), confint(bmk_logit)))
 
 ```
 
-- Être jumeau a 2,45 fois plus de chances de mourir que de naître unique, tous les autres facteurs sont fixes.
-- Par rapport à un bébé unique, les chances de mourir (plutôt que de ne pas mourir) sont multipliées par 2,4 pour les bébés juneaux.
+- Comment interprétez les odds ratio
 
-- Notez que même si R le produit, le rapport de cotes pour l'intercept n'est généralement pas interprété.
+    - Compris entre 0 et 1, on dira réduit les chances de (1- la valeur)*100. Exemple: odds ratio de 0,86. On dira que la caractéristique (ou qu'une augmentation d'une unité) réduit les risques du phénomène de (1-0,86)*100 = 14%) de 14%
+    - Compris entre 1 et 2, on dira augmente les chances de (valeur - 1)*100. Exemple: OR de 1,43, on dira que la caractéristique (ou qu'une augmentation d'une unité) augmente les risques du phénomène de 43%
+    - Supérieur à 2, on dira accroit les chances de (valeur) fois. Exemple: OR de 4,2; on dira accroit les chances du phénomène de 4 fois.
+
+- Être jumeau a 2,47 fois plus de chances de mourir que de naître unique, tous les autres facteurs sont fixes.
+- Par rapport à un bébé unique, les risques de mourir (plutôt que de ne pas mourir) sont multipliées par 2,4 pour les bébés jumeaux.
+
+- Notez que même si R le produit, le rapport de côtes pour l'intercept n'est généralement pas interprété.
 
 
 ## Modèle probit
@@ -357,7 +402,7 @@ Malheureusement, il n’existe aucun moyen d’expliquer ce résultat en termes 
 
 Et le **p value**. 
 
-- Une valeur de p inférieure à 0,05 (0,01 ou 0,001) signifie que la variable est **statistiquement** significative à 5% (1% ou 0,1% respectivement). Cependant, vous avez moins de pouvoir pour dire quelque chose à propos de la taille de l'effet. Pour cette raison, pour le modèle logit ou le modèle probit, il est préférable de **calculer la probabilité prédite** pour un groupe spécifique. Il y a différentes façons de le faire.
+- Une valeur de p inférieure à 0,05 (0,01 ou 0,001) signifie que la variable est **statistiquement** significative à 5% (1% ou 0,1% respectivement). Cependant, vous avez moins de pouvoir pour dire quelque chose à propos de l'ampleur de l'effet. Pour cette raison, pour le modèle logit ou le modèle probit, il est préférable de **calculer la probabilité prédite** pour un groupe spécifique. Il y a différentes façons de le faire.
 
 Avant de faire cela, regardons rapidement tous nos résultats précédents:
 
@@ -370,8 +415,10 @@ stargazer(bmk_lpm_gen, bmk_logit, bmk_probit, title = "Divers modèles de régre
 
 ## Test statistiques
 
+H0: Beta_primary = 0 et  Beta_secondary = 0
 
 ```{r}
+
 ### modèle non contraint (UM)
 
 bmk_logit_um <-
@@ -412,7 +459,28 @@ ggplot(data = data.frame(x = c(0, 20)), aes(x)) +
   stat_function(fun = dchisq, args = list(df = 2), color = "red") +
   theme_bw()
 
+qchisq(0.95, 2)
+
+
 ```
+
+Le LR calculé est plus grand que le LR lu, on rejette l'hypothèse nulle.
+
+
+## Interaction
+
+- Est-ce que le risque de décès est plus élevé chez les filles jumeaux ou pas?
+
+```{r}
+
+bmk_interaction <-
+  bmk %>% 
+  glm(formula = dead ~ twin + female + twin:female + age15_19 + age35_49 + parity1 + parity6 +  primary + secondary + bambara, family = "binomial")
+
+summary(bmk_interaction)
+```
+
+- Comment interprétez-vous la valeur du terme d'interaction?
 
 ## Qualité de l'ajustement d'un modèle
 
@@ -421,6 +489,7 @@ http://www.medicine.mcgill.ca/epidemiology/joseph/courses/epib-621/logfit.pdf
 
 
 ## Régression avec variables dépendantes qualitatives: extension
+
 
 ### Régression logistique multinomiales
 
@@ -438,20 +507,31 @@ region               Region (Atlantic, Quebec, Ontario, Paririe, BC)
 
 
 ```{r}
+
 library(carData)
 data(package = "carData")
 data("Womenlf")
 
-summary(Womenlf)
+summary(Womenlf$partic)
 
 
 ```
+
+- Spécification du modèle
+
+```{r}
+
+knitr::include_graphics("../Images/multinomial.jpg")
+```
+
+
 
 Le modèle de régression logistique multinomial n'est pas un modèle traditionnel de GLM, et ne peut donc pas être estimé avec glm. Nous allons plutôt utiliser la fonction **multinom** du package **nnet**, qui fait partie de base R. Donc, nous n'avons pas besoin de le télécharcger avant de l'utiliser. Le package VGAM permet d'estimer le même modèle et bien d'autres modèles. 
 
 ```{r}
 
 library(nnet)
+
 mod.multinom <- 
   Womenlf %>% 
   multinom(formula = partic ~ hincome + children + region)
@@ -475,8 +555,14 @@ exp(coef(mod.multinom))
 
 ```
 
+L'inconvénient de ce modèle est qu'il est caractérisé par ce que l'on appelle l'**indépendance des alternatives non pertinentes (IIA)** (independence of irrelevant alternatives - IIA). Supposons qu'une nouvelle alternative, presque identique à une alternative existante, soit ajoutée à l'ensemble des choix. On pourrait s'attendre à ce que la probabilité de choisir l'alternative dupliquée soit réduite de moitié dans ce modèle et que les probabilités de choisir les autres alternatives ne soient pas affectées. Malheureusement, ce n'est pas le cas, ce qui implique que le modèle logit multinomial est inapproprié lorsque deux ou plusieurs des alternatives sont des substituts proches.
 
-on peut changer la référence de la variable dépendante:
+Si l'on suppose que les termes d'erreur de l'utilité aléatoire sont distribués de manière multivariable, on obtient le modèle probit multinomial. Ce modèle permet aux termes d'erreur d'être corrélés entre les alternatives, ce qui lui permet de contourner le dilemme de l'AII. Son inconvénient est son coût de calcul élevé, qui jusqu'à récemment était prohibitif lorsqu'il y avait plus de quatre alternatives.
+
+
+
+On peut changer la référence de la variable dépendante:
+
 
 ```{r}
 
@@ -492,6 +578,23 @@ summary(mod.multinom1)
 ```
 
 ## Logit ordonné
+
+Lorsque la variable qualitative est ordinale, l'utilisation d'un probit ou d'un logit multinomial ne serait pas efficace car il ne serait pas tenu compte des informations supplémentaires implicites dans la nature ordinale de la variable dépendante. Les moindres carrés ordinaires (MCO) ne seraient pas non plus appropriés, car le codage de la variable dépendante dans ces cas, généralement 0, 1, 2, 3, etc., ne reflète qu'un classement : la différence entre un 1 et un 2 ne peut être traitée comme équivalente à la différence entre un 2 et un 3, par exemple.
+
+
+- specification du modèle
+
+$$y^* = \alpha + \beta x + \epsilon$$ 
+un indice non observable de "solvabilité"
+
+On observe que le résultat:
+
+- Y = B si $y^* \le \delta_1$
+- Y = A si $\delta_1 < y^* \le \delta_2$
+- Y = AA si $\delta_2 < y^* \le \delta_3$
+- Y = AAA si $ y^* \ge \delta_3$
+
+les seuils sont indéterminés et seront estimés par le modèle.
 
 https://stats.idre.ucla.edu/r/dae/ordinal-logistic-regression/
 
@@ -511,7 +614,7 @@ exp(coef(mod.ordlog))
 
 ```
 
-Pour les femmes qui ont des enfants à la maison, les chances de travailler (c’est-à-dire fulltime ou partime) sont 60% plus faibles que celles des femmes dont les enfants ne sont pas présents, toutes constantes restant inchangées.
+Pour les femmes qui ont des enfants à la maison, les chances de travailler (c’est-à-dire fulltime ou partime) sont 60% plus faibles que celles des femmes dont les enfants ne sont pas présents, toutes les autres variables restant inchangées.
 
 
 ----------------------------------------
