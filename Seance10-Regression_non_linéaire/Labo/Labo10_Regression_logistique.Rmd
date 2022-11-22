@@ -49,7 +49,7 @@ summary(dhs_ipv$beat_goesout)
 ```{r}
 
 ggplot(dhs_ipv) +
-  geom_point(aes(x = year, y = beat_burnfood))
+  geom_point(aes(x = sec_school, y = beat_burnfood))
 
 ```
 
@@ -58,8 +58,20 @@ ggplot(dhs_ipv) +
 
 ```{r}
 
+freq(dhs_ipv$region)
 reg1 <- lm(formula = beat_burnfood ~ sec_school + no_media + region, data = dhs_ipv)
 summary(reg1)
+
+dhs_ipv <- dhs_ipv %>% 
+  mutate(Asie = if_else(region == "Asia", 1, 0),
+         Afrique = if_else(region == "Sub-Saharan Africa", 1, 0),
+         Amerique = if_else(region == "Latin America", 1, 0),
+         Moyen_orient = if_else(region == "Middle East and Central Asia", 1, 0))
+
+
+reg1bis <- lm(formula = beat_burnfood ~ sec_school + no_media + Asie + Afrique + Amerique + Moyen_orient, data = dhs_ipv)
+summary(reg1bis)
+
 ```
 
 Le test F teste globalement si le modèle est différent d'un modèle nulle
@@ -310,7 +322,11 @@ bmk_lpm_gen <-
 
 summary(bmk_lpm_gen)  
 
-
+#bmk_lpm_gen <-
+#  bmk %>% 
+#  filter(dead != "NA" , twin != "NA") %>% 
+#  mutate(pred_dead = fitted.values(bmk_lpm_gen))
+         
 
 bmk_lpm_gen1 <- 
   bmk %>% 
@@ -457,6 +473,7 @@ LR
 
 ggplot(data = data.frame(x = c(0, 20)), aes(x)) +
   stat_function(fun = dchisq, args = list(df = 2), color = "red") +
+  stat_function(fun = dchisq, args = list(df = 5), color = "blue") +
   theme_bw()
 
 qchisq(0.95, 2)
@@ -513,9 +530,22 @@ data(package = "carData")
 data("Womenlf")
 
 summary(Womenlf$partic)
-
+freq(Womenlf$partic)
 
 ```
+
+
+```{r}
+
+Womenlf <-
+  Womenlf %>% 
+  mutate(fulltime = if_else(partic == "fulltime", 1, 0))
+
+glm(formula = fulltime ~ children, data = Womenlf, family = "binomial")
+
+```
+
+
 
 - Spécification du modèle
 
@@ -602,7 +632,9 @@ Il est estimé à partir de la fonction **polr** du package **MASS**
 
 
 ```{r}
+
 library(MASS)
+freq(Womenlf$partic1)
 
 mod.ordlog <- 
   Womenlf %>% 
@@ -612,6 +644,21 @@ summary(mod.ordlog)
 
 exp(coef(mod.ordlog))
 
+Womenlf <- 
+  Womenlf %>% 
+  mutate(emploi = factor(case_when(
+    partic == "not.work" ~ 1,
+    partic == "parttime" ~ 2,
+    partic == "fulltime" ~ 3
+  )))
+
+mod.ordlog1 <- 
+  Womenlf %>% 
+  polr(formula = emploi ~ hincome + children + region, Hess = TRUE)
+
+summary(mod.ordlog1)
+
+exp(coef(mod.ordlog1))
 ```
 
 Pour les femmes qui ont des enfants à la maison, les chances de travailler (c’est-à-dire fulltime ou partime) sont 60% plus faibles que celles des femmes dont les enfants ne sont pas présents, toutes les autres variables restant inchangées.
@@ -632,6 +679,9 @@ library(carData)
 bmklogit.mod <-
   bmk %>% 
   glm(formula = dead ~ twin + female + age15_19 + age35_49 + parity1 + parity6 +  primary + secondary + bambara, family = "binomial" )
+
+
+summary(bmklogit.mod)
 
 ```
 
