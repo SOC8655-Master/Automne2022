@@ -1,0 +1,354 @@
+---
+title: 'Séance 11.2: Données digitales'
+subtitle: "Collecte par grattage d'écran : screen-scraping"
+author: "Visseho Adjiwanou, PhD."
+date: "`r format(Sys.time(), '%d %B %Y')`"
+output:
+  beamer_presentation:
+    colortheme: beaver
+    fonttheme: structurebold
+    theme: Antibes
+  slidy_presentation: default
+  ioslides_presentation: default
+---
+
+
+
+## Plan de présentation
+
+- Collecte des données digitales à partir de grattage de site web
+  1. Avec XPath
+  2. Avec le selector de Gadget CSS (Cascading Style Sheets)
+  3. Avec Selenium
+
+- Conclusion  
+
+## Remarques importantes
+
+- Nous ferons recours dans cette partie du cours à plusieurs terminologies issues des sciences de l'informatique.
+- Nous ne serons pas amener à comprendre de manière spécifique chaque thème technique avant de procéder.
+- Dans la mesure du possible, je vous referai à d'autres ressources
+- Comprenez juste que notre but est de pouvoir collecter des données de plus en plus abondantes sur le web de manière automatique et de pouvoir les utiliser dans nos recherches
+- La question fondamentale demeure: pour quelles utilisations avez-vous besoin de ces données? En d'autres mots: c'est quoi votre question de recherche?
+
+
+Grattage de sites web
+======================================================
+
+## Qu'est-ce que le grattage d'écran?
+
+- Le "screen-scraping" fait référence au processus d'extraction automatique des données de pages Web et souvent à une longue liste de sites Web qui ne peuvent pas être minés à la main. 
+- Comme l'illustre la figure ci-dessous, un programme de capture d'écran typique:
+  a. charge le nom d'une page Web à extraire d'une liste de pages Web; 
+  b. télécharge le site Web dans un format tel que HTML ou XML; 
+  c. trouve une information souhaitée par l'auteur du code; et 
+  d. place ces informations dans un format approprié, tel qu'un «bloc de données» (qui est un langage R parlant pour un jeu de données). 
+  
+- Le "screen-scraping"  peut également être utilisée pour télécharger d'autres types de contenu, tels que du contenu audiovisuel. 
+
+## Qu'est-ce que le grattage d'écran?
+
+
+```{r, echo=FALSE, out.width='70%'}
+knitr::include_graphics("../Images/c10screen.png")
+                        
+```                        
+
+
+
+1. Grattage avec Xpath
+====================================================
+
+
+## Lecture d'une page Web dans R
+
+- Si vous avez identifié une page Web que vous souhaitez "gratter", la première étape dans la rédaction d'un programme de nettoyage d'écran consiste à télécharger le code source dans R. 
+- Pour ce faire, nous allons installer le package rvest, créé par Hadley Wickham. , qui fournit un certain nombre de fonctions très utiles pour le grattage d’écran.
+
+- Vous devrez peut-être également installer le package selectr
+
+```{r}
+#install.packages("rvest")
+#install.packages("selectr")
+```
+
+## Grattage d'une page simple
+
+- Nous allons commencer par scrapper [cette page Web très simple de Wikipedia](https://en.wikipedia.org/wiki/World_Health_Organization_ranking_of_health_systems_in_2000). 
+
+
+```{r, echo=FALSE, out.width='70%'}
+knitr::include_graphics("../Images/c10who.png")
+
+```
+
+
+## Grattage d'une page simple
+
+```{r, echo=FALSE, out.width='70%'}
+knitr::include_graphics("../Images/c10code.png")
+
+```
+
+
+
+## Grattage d'une page simple
+
+- Pour télécharger le code source dans R, nous pouvons utiliser la fonction **read_html** du package **rvest**. 
+
+```{r, results='hold'}
+
+#install.packages("tidyverse")
+#install.packages("rvest")
+library(tidyverse)
+library(rvest)
+
+wikipedia_page <- read_html("https://en.wikipedia.org/wiki/World_Health_Organization_ranking_of_health_systems_in_2000")
+
+wikipedia_page
+
+```
+
+
+## Analyse HTML (Parsing HTML)
+
+- La partie la plus difficile du grattage d’écran consiste peut-être à extraire l’information que vous souhaitez extraire du fichier html. 
+- Cela pose un défi car ces informations sont presque toujours cachées au plus profond du code source, ce qui peut être très difficile à parcourir. 
+- Heureusement, comme le montre la figure ci-dessous, le code source d'une page Web, tel que HTML ou XML, possède une structure «arborescente» qui vous permet d'affiner progressivement la partie de la page Web où réside l'information que vous souhaitez.
+
+## Analyse HTML (Parsing HTML) - code source
+
+![](/Users/visseho/OneDrive - UQAM/Cours/Images_cours/c10html.png)
+
+
+## Analyse HTML (Parsing HTML)
+
+- Pour savoir où se trouvent les données souhaitées dans cette structure arborescente, nous pouvons utiliser un outil pratique dans Chrome, appelé "Outils de développement" (Developper Tools):
+
+```{r, echo=FALSE, out.width='70%'}
+knitr::include_graphics("../Images/c10developper.png")
+
+```
+
+
+## Analyse HTML (Parsing HTML)
+
+```{r, echo=FALSE, out.width='70%'}
+knitr::include_graphics("../Images/c10dev2.png")
+
+```
+
+## Analyse HTML (Parsing HTML)
+
+- Lorsque j'ai inspecté la partie de la page Web que j'essayais de gratter en cliquant avec le bouton droit de la souris, la partie du code HTML ci-dessous est surlignée:
+
+```{r, echo=FALSE, out.width='70%'}
+knitr::include_graphics("../Images/c10dev3.png")
+
+```
+
+
+## Analyse HTML (Parsing HTML)
+
+- L'étape suivante consiste à identifier une chaîne de chiffres et de lettres appelée «Xpath» pour cette partie du code source. 
+- Le Xpath décrit la partie précise du code HTML où vivent les données que je veux. 
+- J'identifie le "Xpath" en cliquant avec le bouton droit de la souris sur la section en surbrillance du volet des outils de développement qui affiche le code html:
+
+```{r, echo=FALSE, out.width='70%'}
+knitr::include_graphics("../Images/c10dev4.png")
+
+```
+
+
+
+## Analyse HTML (Parsing HTML)
+
+- Maintenant que j'ai le Xpath, je peux utiliser ces informations pour affiner ma recherche dans le fichier HTML pour le tableau que je veux extraire à l'aide de la fonction **html_nodes** qui transmet le Xpath en tant qu'argument, comme illustré dans le code ci-dessous:
+
+```{r}
+
+
+Section_wikipedia2 <- html_node(wikipedia_page, xpath = '//*[@id="mw-content-text"]/div[1]/table')
+
+head(Section_wikipedia2)
+
+```
+
+## Analyse HTML (Parsing HTML)
+
+- La partie supérieure de la sortie m'indique que les données sont au format table (plutôt qu'au format texte), je vais donc utiliser la fonction **html_table** pour extraire la table incorporée dans le code html:
+
+```{r}
+
+health_rankings <- html_table(Section_wikipedia2, fill = T)
+
+head(health_rankings[, (1:2)])
+
+```
+
+
+## Remarques
+
+- Comme le montre la sortie ci-dessus, je dispose enfin des données souhaitées sous la forme d'un bloc de données ou d'un jeu de données appelé «health_rankings». 
+- Il s'agissait toutefois d'un travail fastidieux, mais rappelez-vous qu'il s'agissait d'un type de page Web très simple. 
+- En outre, il convient de noter que les groupes de pages Wikipedia ont un format très similaire, ce qui les rend très propices au grattage d'écran. 
+- Si, en revanche, je cherchais une liste de sites appartenant à plusieurs domaines, chacun ayant sa propre structure complexe, je pourrais passer des jours ou des semaines à écrire du code pour le gratter. 
+
+## Remarques
+
+- Dans ce scénario, de nombreuses personnes peuvent trouver qu'il est plus facile de collecter les données manuellement ou d'engager du personnel sur Amazon Mechanical Turk pour extraire les informations que vous souhaitez peut-être d'une liste de pages Web.
+
+- Une dernière remarque: souvent, la page Web que vous souhaitez gratter contient du XML au lieu de HTML (ou en plus du HTML). Dans ce cas, le package rvest dispose d'une série de fonctions permettant d'analyser XML, telles que **xml** et **xml_node**.
+
+## En résumé
+
+Pour faire un grattage de sites :
+
+1. Lire la page: read_html
+2. Trouver la partie qui vous concerne et copier le xpath: developpers_tools
+3. Sélectionner cette partie avec html_node
+4. Télécharger le sous le format approprié html_table si table
+
+
+```{r, results='hold'}
+#install.packages("rvest")
+library(tidyverse)
+library(rvest)
+
+wikipedia_page <- read_html("https://en.wikipedia.org/wiki/World_Health_Organization_ranking_of_health_systems_in_2000")
+
+section_table <- html_node(wikipedia_page, xpath = '//*[@id="mw-content-text"]/div[1]/table')
+
+base_de_donnee_wiki <-html_table(section_table, fill = TRUE)
+
+```
+
+## A vous de jouer
+
+1. Gratter le site web du département de Sociologie de l'uqam pour collecter les informations sur les professeurs
+  - https://sociologie.uqam.ca/corps-professoral/professeurs-es/
+
+
+```{r}
+
+page_socio_uqam <- read_html("https://sociologie.uqam.ca/corps-professoral/professeurs-es/")
+
+prof_socio <- html_node(page_socio_uqam, xpath = '//*[@id="post-967"]/div')
+prof_tableau <- html_text(prof_socio)
+prof_tableau
+
+```
+
+2. Télécharger le ranking des films
+  - https://www.imdb.com/title/tt1490017/
+
+
+2. Grattage avec le selecteur CSS
+====================================================
+
+## Collecte avec le sélecteur CSS
+
+- Il est souvent le cas, en particulier avec des pages Web plus complexes, que les procédures décrites ci-dessus ne fonctionneront pas. 
+- Dans ce cas, il est utile de connaître une alternative au code Xpath décrit ci-dessus: le «sélecteur CSS», qui est un autre extrait de code qui vous aide à trouver le nugget de HTML que vous souhaitez extraire d'une page Web.
+
+## Collecte avec le sélecteur CSS
+
+
+- Pour l'installer: https://selectorgadget.com
+
+- Il s'agit d'un outil interactif, semblable à l'outil de développeur Chrome décrit ci-dessus, qui permet d'interagir avec une page Web afin de révéler le sélecteur CSS. 
+- Après l’installation de l’outil, une petite icône apparaît dans la barre d’outils de Google Chrome, à savoir une main tenant un microscope. 
+- Lorsque vous cliquez sur cet outil, un nouveau volet apparaîtra en bas de la fenêtre de votre navigateur et révélera le CSS Selector. Il peut également être utilisé pour identifier le Xpath. Ce volet est illustré au bas de la figure ci-dessous:
+
+
+
+```{r, results='hold'}
+
+library(selectr)
+
+# refait en novembre 2022
+section_site1 <- html_nodes(site_uqam, css = "#main span , .poste , #main a")
+nom_texte1 <- html_text(section_site1)
+nom_texte1
+```
+
+
+## Collecte avec le sélecteur CSS
+
+
+```{r}
+
+uqam_page <- read_html("https://uqam.ca")
+
+Section_uqam <- html_node(uqam_page, css = '.GoldenRetriever-content')
+
+Section_uqam1 <- html_node(uqam_page, css = '.GoldenRetriever-item:nth-child(3) .GoldenRetriever-content')
+
+Section_uqam[[1]]
+Donnees_uqam <- html_text(Section_uqam)
+Donnees_uqam
+```
+
+
+
+
+## Remarques
+
+
+- Comme le montre la sortie ci-dessus, nous avons maintenant collecté des informations sur les événements souhaités. 
+- Notez, cependant, qu'il inclut des caractères en désordre avec des barres obliques inverses, ts et ns. 
+- Celles-ci s'appellent des «balises html», et nous allons apprendre à les nettoyer dans un prochain tutoriel sur le traitement de base du texte en R.
+
+- Maintenant vous essayez !!!
+
+## Ressources
+
+1. https://thinkr.fr/rvest/ 
+2. https://www.datacamp.com/community/tutorials/r-web-scraping-rvest
+3. https://blog.rstudio.com/2014/11/24/rvest-easy-web-scraping-with-r/
+4. https://selectorgadget.com/
+5. https://cran.r-project.org/web/packages/rvest/vignettes/selectorgadget.html
+
+
+
+
+## Ressources
+
+https://freakonometrics.hypotheses.org/tag/rselenium
+http://rpubs.com/johndharrison/RSelenium-Basics
+
+
+
+Conclusion
+===================
+
+
+## Scraping d'écran dans une boucle
+
+- Quelle que soit l'approche de grattage d'écran que vous utilisez, vous souhaiterez souvent gratter non pas une seule page, mais plusieurs pages. 
+- Dans ce cas, vous pouvez simplement intégrer l'une des techniques ci-dessus dans une boucle **for** qui lit une liste de pages Web que vous souhaitez gratter. 
+- Encore une fois, sachez que les sites Web ont souvent des structures différentes, de sorte que la façon dont vous extrayez des informations sur un site peut être très différente d'un autre. 
+- C'est l'une des principales raisons pour lesquelles le grattage d'écran peut être difficile - et aussi une autre raison pour laquelle le grattage d'écran est passé de mode en plus des problèmes juridiques soulignés ci-dessus. 
+
+## Scraping d'écran dans une boucle
+
+- Si vous continuez à gratter une grande liste de pages Web, vous souhaiterez peut-être intégrer une «gestion des erreurs» dans votre code, afin qu'il ne se casse pas à chaque fois que votre code ne fonctionne pas. 
+- Notez que certaines erreurs peuvent également être créées en violant les conditions d'utilisation d'un site Web.
+
+## Alors… Quand dois-je utiliser le grattage d'écran?
+
+- Il est à présent clair, espérons-le, que le grattage d'écran peut souvent poser plus de problèmes que ce qu'elle vaut, en particulier à l'ère des interfaces de programmation d'applications (API). 
+- Pourtant, il y a des cas où la capture d'écran reste utile. 
+- Un cas d'utilisation idéal est celui où vous grattez différentes pages d'un même site Web. Un exemple pourrait inclure un site Web du gouvernement local qui publie des informations sur les événements. Un tel site Web peut avoir la même URL «racine», mais différents suffixes qui décrivent différents jours, mois, etc. 
+
+- En supposant que la structure des pages est identique, on peut alors écrire une boucle qui commute la fin de l'URL pour différentes dates (en utilisant la convention de dénomination utilisée par le site).
+
+## Alors… Quand dois-je utiliser le grattage d'écran?
+
+- Une autre raison courante de gratter une page Web est qu'il est extrêmement difficile de copier et coller les informations que vous recherchez sur un site Web. - Les exemples sont des morceaux de texte extrêmement longs, ou ceux qui sont incorporés dans des tableaux complexes (mais encore une fois, l'analyse du code HTML pour identifier le texte précis dont vous avez besoin peut également prendre beaucoup de temps). 
+- Dans de tels cas, il peut être utile de considérer les employés d'Amazon Mechanical Turk comme une approche alternative pour collecter vos données.
+
+
+
+
+

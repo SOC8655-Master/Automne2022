@@ -137,7 +137,7 @@ Grattage de sites web
 - Pour télécharger le code source dans R, nous pouvons utiliser la fonction **read_html** du paquetage **rvest** que nous venons d'installer ci-dessus. 
 
 ```{r}
-install.packages("tidyverse")
+#install.packages("tidyverse")
 #install.packages("rvest")
 library(tidyverse)
 library(rvest)
@@ -188,7 +188,8 @@ wikipedia_page
 ## Analyse HTML (Parsing HTML)
 
 - L'étape suivante consiste à identifier une chaîne de chiffres et de lettres appelée «Xpath» pour cette partie du code source. 
-- Le Xpath décrit la partie précise du code HTML où vivent les données que je veux. - J'identifie le "Xpath" en cliquant avec le bouton droit de la souris sur la section en surbrillance du volet des outils de développement qui affiche le code html:
+- Le Xpath décrit la partie précise du code HTML où vivent les données que je veux. 
+- J'identifie le "Xpath" en cliquant avec le bouton droit de la souris sur la section en surbrillance du volet des outils de développement qui affiche le code html:
 
 ![](/Users/visseho/OneDrive - UQAM/Cours/Images_cours/c10dev4.png)
 
@@ -202,10 +203,12 @@ wikipedia_page
 
 # //*[@id="mw-content-text"]/div[1]/table
 
+
 Section_wikipedia2 <- html_node(wikipedia_page, xpath = '//*[@id="mw-content-text"]/div[1]/table')
 
 
 head(Section_wikipedia2)
+
 ```
 
 ## Analyse HTML (Parsing HTML)
@@ -296,6 +299,8 @@ prof_tableau
 ## Collecte avec le sélecteur CSS
 
 - Pour identifier le sélecteur CSS, nous allons utiliser un plug-in Chrome très répandu appelé le sélecteur Gadget. 
+- Pour l'installer: https://selectorgadget.com
+
 - Il s'agit d'un outil interactif, semblable à l'outil de développeur Chrome décrit ci-dessus, qui permet d'interagir avec une page Web afin de révéler le sélecteur CSS. 
 - Après l’installation de l’outil, une petite icône apparaît dans la barre d’outils de Google Chrome, à savoir une main tenant un microscope. 
 - Lorsque vous cliquez sur cet outil, un nouveau volet apparaîtra en bas de la fenêtre de votre navigateur et révélera le CSS Selector. Il peut également être utilisé pour identifier le Xpath. Ce volet est illustré au bas de la figure ci-dessous:
@@ -315,19 +320,27 @@ prof_tableau
 
 
 ```{r}
+
 library(selectr)
 
 site_wiki <- read_html("https://en.wikipedia.org/wiki/World_Health_Organization_ranking_of_health_systems_in_2000")
-section_wiki <- html_node(site_wiki, css = '')
-?html_node()
-tableau_wiki <- html_table(section_wiki)
 
+section_wiki <- html_nodes(site_wiki, css = '.jquery-tablesorter td , a .thumbborder , .headerSort')
+
+section_wiki[[1]]
+
+tableau_wiki <- html_text(section_wiki)
+tableau_wiki
 
 site_uqam <- read_html("https://sociologie.uqam.ca/corps-professoral/professeurs-es/")
-section_site <- html_node(site_uqam, css = ".infos , .nom")
+section_site <- html_nodes(site_uqam, css = ".infos , .nom")
 nom_texte <- html_text(section_site)
-nom_texte[1]
+nom_texte
 
+# refait en novembre 2022
+section_site1 <- html_nodes(site_uqam, css = "#main span , .poste , #main a")
+nom_texte1 <- html_text(section_site1)
+nom_texte1
 ```
 
 
