@@ -1,5 +1,5 @@
 ---
-title: 'Séance 10.2: Données digitales'
+title: 'Séance 11.2: Données digitales'
 subtitle: "Collecte par grattage d'écran : screen-scraping"
 author: "Visseho Adjiwanou, PhD."
 date: "`r format(Sys.time(), '%d %B %Y')`"
@@ -125,6 +125,7 @@ Grattage de sites web
 
 - Mais ce n'est pas ce que la page Web ressemble réellement à notre navigateur. 
 - Pour afficher le «code source» de la page Web, nous pouvons utiliser le menu déroulant de Chrome appelé «développeur», puis cliquer sur «Afficher la source». 
+- View ==> Developper ==> Developper tools
 - Nous voyons ensuite la page dans sa forme la plus élémentaire, appelée fichier HTML, qui est une longue fichier contenant à la fois le texte de la page Web et une longue liste d'instructions sur la manière dont le texte, les images et les autres composants de la page Web doivent être restitués par le navigateur:
 
 ## Grattage d'une page simple
@@ -136,6 +137,7 @@ Grattage de sites web
 - Pour télécharger le code source dans R, nous pouvons utiliser la fonction **read_html** du paquetage **rvest** que nous venons d'installer ci-dessus. 
 
 ```{r}
+install.packages("tidyverse")
 #install.packages("rvest")
 library(tidyverse)
 library(rvest)
