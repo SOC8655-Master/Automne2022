@@ -20,6 +20,26 @@ output:
 - Forces et faiblesses des données digitales
 
 
+## Introduction - questions de recherche
+
+"Combien une nation doit-elle dépenser pour la science ? Quel type de science ? Combien par le secteur privé et combien par le secteur public ? La demande de financement de la part d'exécutants scientifiques potentiels implique-t-elle un manque de financement ou une surabondance d'exécutants ? Ces questions de politique scientifique et d'autres questions connexes ont tendance à être posées et répondues aujourd'hui dans un contexte de plaidoyer très visible qui pose des hypothèses qui méritent d'être examinées de plus près. Une nouvelle "science de la politique scientifique" est en train d'émerger, et elle pourrait offrir des orientations plus convaincantes pour les décisions politiques et pour un plaidoyer plus crédible ..."
+
+## Introduction - questions de recherche
+
+"Relier la R&D à l'innovation de manière générale est une tâche difficile, mais pas désespérée. Nous avons besoin de modèles économétriques qui englobent suffisamment de variables dans un nombre suffisant de pays pour produire des simulations raisonnables de l'effet de choix politiques spécifiques. Ce besoin ne sera pas satisfait par de nouvelles subventions ou de nouveaux ateliers, mais exige l'attention d'une communauté d'érudits spécialisés. Au fur et à mesure que davantage d'économistes et de spécialistes des sciences sociales se tourneront vers ces questions, l'efficacité de la politique scientifique augmentera, ainsi que celle de la défense des sciences" (Marburger, 2005, cité par Foster et al, 2017). 
+
+
+## Introduction - questions de recherche
+
+
+```{r, warning=FALSE, message=FALSE, out.width='80%', echo=FALSE}
+
+knitr::include_graphics("../Images/science_policy.jpg")
+
+```
+
+
+
 
 Données digitales
 ======================================================
@@ -34,7 +54,7 @@ Données digitales
 
 - Comme le montre la figure ci-dessous, les dernières décennies ont non seulement vu une augmentation de la quantité de données textuelles, mais également une augmentation de la puissance de calcul qui est de plus en plus nécessaire pour l’analyser. 
 
-```{r, warning=FALSE, message=FALSE, out.width='80%'}
+```{r, warning=FALSE, message=FALSE, out.width='80%', echo=FALSE}
 
 knitr::include_graphics("../Images/Matthews.png")
 
@@ -71,7 +91,7 @@ knitr::include_graphics("../Images/Matthews.png")
 
 ## Exemples
 
-```{r, warning=FALSE, message=FALSE, out.width='80%'}
+```{r, warning=FALSE, message=FALSE, out.width='80%', echo=FALSE}
 
 knitr::include_graphics("../Images/c10facebook.png")
 
@@ -98,7 +118,7 @@ Caractéristiques des données digitales
 
 ##  2. Continues
 
-```{r, warning=FALSE, message=FALSE, out.width='80%'}
+```{r, warning=FALSE, message=FALSE, out.width='80%', echo=FALSE}
 
 knitr::include_graphics("../Images/c10continue.png")
 
@@ -113,7 +133,7 @@ Figure 2.2: Conception utilisée par Budak and Watts (2015) pour étudier les ma
 
 ##  2. Continues
 
-```{r, warning=FALSE, message=FALSE, out.width='80%'}
+```{r, warning=FALSE, message=FALSE, out.width='80%', echo=FALSE}
 
 knitr::include_graphics("../Images/c10continue2.png")
 
@@ -135,7 +155,7 @@ En plus d'étudier des événements inattendus, les systèmes de données volumi
 
 ## 3. Non réactives
 
-```{r, warning=FALSE, message=FALSE, out.width='80%'}
+```{r, warning=FALSE, message=FALSE, out.width='80%', echo=FALSE}
 
 knitr::include_graphics("../Images/c10reactive.png")
 
@@ -151,7 +171,7 @@ knitr::include_graphics("../Images/c10reactive.png")
 
 ## 4. Capture les relations sociales
 
-```{r, warning=FALSE, message=FALSE, out.width='80%'}
+```{r, warning=FALSE, message=FALSE, out.width='80%', echo=FALSE}
 
 knitr::include_graphics("../Images/c10relation.png")
 
@@ -189,7 +209,8 @@ knitr::include_graphics("../Images/c10relation.png")
 
 ## 9. Algorithmiquement confondant
 
-- Au début de 2013, les estimations de Google étaient bien supérieures à celles de la CDC. Des chercheurs ont par la suite découvert que les liens hypertextes liés à la grippe sur laquelle les internautes avaient cliqué apparaissaient dans leur navigateur Web après avoir recherché des informations sur les symptômes du rhume. C'est ce que l'on appelle parfois la dynamique de «l'équipe bleue».
+- Au début de 2013, les estimations de Google étaient bien supérieures à celles de la CDC. 
+- Des chercheurs ont par la suite découvert que les liens hypertextes liés à la grippe sur laquelle les internautes avaient cliqué apparaissaient dans leur navigateur Web après avoir recherché des informations sur les symptômes du rhume. 
 
 ## 10. Non-structurées
 
@@ -206,7 +227,8 @@ knitr::include_graphics("../Images/c10relation.png")
 
 ## 12. Biais positif
 
-- Enfin, les données de traces numériques ont souvent des dimensions performatives. - De nombreuses personnes ne signalent pas d'informations négatives à leur sujet en ligne précisément parce qu'elles savent que leurs amis, leurs collègues ou d'autres personnes qu'elles ne connaissent pas peuvent les surveiller. 
+- Enfin, les données de traces numériques ont souvent des dimensions performatives. 
+- De nombreuses personnes ne signalent pas d'informations négatives à leur sujet en ligne précisément parce qu'elles savent que leurs amis, leurs collègues ou d'autres personnes qu'elles ne connaissent pas peuvent les surveiller. 
 - Cela crée une autre forme commune de biais dans la recherche sur les médias sociaux.
 
 Sociologie (sciences sociales), qualité des données, données massives
@@ -214,7 +236,7 @@ Sociologie (sciences sociales), qualité des données, données massives
 
 ## Qualité des données
 
-- les problèmes sur les données digitales tels que nous venons de le dire ne sont pas limités uniquement à ces données. Ils sont inhérents à tous les données.
+- Les problèmes sur les données digitales tels que nous venons de le voir ne sont pas limités uniquement à ces données. Ils sont inhérents à toutes les données.
 - Par exemple, une enquête très bien réfléchie et exécutée qui comporte beaucoup de données manquantes a les mêmes problèmes dont nous venons de parler.
 - Même si la collecte des données est moins coûteuse, le coût pour en faire des données de qualité est exorbitant.
 
@@ -224,7 +246,7 @@ La qualité des données peut être caractérisée de différentes manières :
 - **Précision**: quelle est la précision des valeurs d'attribut dans les données?
 - **Exhaustivité**: les données sont-elles complètes?
 - **Cohérence**: Dans quelle mesure les valeurs sont-elles cohérentes dans et entre les bases de données?
-- **Actualité**: dans quelle mesure les données sont-elles actualisées?
+- **Actualisée**: dans quelle mesure les données sont-elles actualisées?
 - **Accessibilité**: toutes les variables sont-elles disponibles pour l'analyse?
 
 
@@ -238,7 +260,7 @@ La qualité des données peut être caractérisée de différentes manières :
 
 ## 1. Analyse
 
-- Processus de décomposition d'une variable complexe en ces éleements constitutifs
+- Processus de décomposition d'une variable complexe en ces éléments constitutifs
 - Exemple: La variable adresse "1245 Jean-Talon Est" peut être décomposée à:
   - Numéro
   - Nom
@@ -249,10 +271,11 @@ La qualité des données peut être caractérisée de différentes manières :
 Les étapes typiques d'une procédure d'analyse comprennent:
 
 - Fractionnement des champs en jetons (mots) sur la base de délimiteurs,
-- Standardisation des jetons par tables de correspondance et substitution par un formulaire standard,
-- Catégorisation des jetons,
-- Identification d'un motif d'ancres, de jetons et de délimiteurs,
-- Appel de sous-programmes selon le modèle identifié, mappage des jetons vers les composants prédéfinis
+
+>- Standardisation des jetons par tables de correspondance et substitution par un formulaire standard,
+>- Catégorisation des jetons,
+>- Identification d'un motif d'ancres, de jetons et de délimiteurs,
+>- Appel de sous-programmes selon le modèle identifié, mappage des jetons vers les composants prédéfinis
 
 ## 2. Standardisation
 
@@ -279,6 +302,13 @@ des exemples communs de standardisations sont:
 La normalisation consiste à garantir que les champs comparés entre les fichiers sont aussi similaires que possible dans le sens où ils auraient pu être générés par le même processus.
 
 - Par exemple, considérez un champ de salaire dans une enquête. Le salaire peut être enregistré de différentes manières: il peut être tronqué comme mesure de protection de la vie privée ou arrondi au millier le plus proche, et les valeurs manquantes peuvent être imputées avec la moyenne ou avec zéro. Lors de la normalisation, nous notons exactement comment les champs sont enregistrés.
+
+
+## Conclusion
+
+- Répondre à l'intérogation de départ pour le Canada à partir de ces données:
+
+https://www.sshrc-crsh.gc.ca/results-resultats/recipients-recipiendaires/2022/idg-sds-fra.aspx
 
 
 ## Ressources
