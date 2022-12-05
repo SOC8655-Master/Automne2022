@@ -1,5 +1,5 @@
 ---
-title: 'Labo 2.1: Analyse quantitative du texte'
+title: 'Labo 12.1: Analyse quantitative du texte'
 subtitle: 'processing'
 author: "Visseho Adjiwanou, PhD."
 date: "`r format(Sys.time(), '%d %B %Y')`"
@@ -38,7 +38,11 @@ L'utilisation de principes de données bien rangées est un moyen puissant de re
 
 Nous définissons donc le format de texte bien rangé (tidy-text) comme étant une table avec un jeton (token) par ligne. Un jeton est une unité de texte significative, comme un mot, que nous souhaitons utiliser pour l'analyse, et la **tokenisation** est le processus de division du texte en jetons (mots). Cette structure d'un jeton par ligne contraste avec la façon dont le texte est souvent stocké dans les analyses actuelles, peut-être sous forme de chaînes ou dans une matrice documents-termes. Pour l'exploration de texte ordonnée, le jeton qui est stocké dans chaque ligne est le plus souvent un seul mot, mais peut également être un n-gramme, une phrase ou un paragraphe. Nous utiliserons le packaqge **tidytext** convertir les documents en un seul terme par ligne.
 
-![](/Users/visseho/OneDrive - UQAM/Cours/Images_cours/c11tidytextdata.png)
+```{r, out.width='70%'}
+knitr::include_graphics("../Images/c11tidytextdata.png")
+```
+
+
 ## Ressources
 
 https://quanteda.io/reference/dictionary.html
@@ -56,7 +60,7 @@ https://cran.r-project.org/web/packages/stm/vignettes/stmVignette.pdf
 rm(list = ls())
 
 # Installer les différents packages
-install.packages("tm")
+#install.packages("tm")
 
 # Charger les packages
 
@@ -75,7 +79,11 @@ library(wordcloud)
 
 Pour transformer les textes en matrice documents-termes, nous aurons besoin des fonctions suivantes:
 
-![](../Données/c11prepocess.png)
+```{r, out.width='80%'}
+knitr::include_graphics("../Images/c11prepocess.png")
+```
+
+
 
 
 
@@ -83,7 +91,7 @@ Pour transformer les textes en matrice documents-termes, nous aurons besoin des 
 
  #load(url("https://cbail.github.io/Trump_Tweets.Rdata"))
 
-trumptweets <- readRDS("../Données/trumptweets.Rdata")
+trumptweets <- readRDS("../Data/trumptweets.Rdata")
 head(trumptweets)
 trumptweets$text[2]
 
@@ -118,6 +126,12 @@ trump_corpus <- tm_map(trump_corpus, content_transformer(stripWhitespace))
 trump_corpus  <- tm_map(trump_corpus, content_transformer(stemDocument), language = "english")
 
 
+```
+
+- Matrice Document-terme
+
+```{r}
+
 # Document-term matrix
 
 
@@ -125,13 +139,11 @@ trump_DTM <- DocumentTermMatrix(trump_corpus, control = list(wordLengths = c(3, 
 
 inspect(trump_DTM[24:42,24:50])
 
-?DocumentTermMatrix()
-
-
 trump_DTM_matrix <- as.matrix(trump_DTM)
 trump_DTM_matrix[1:5,1:8]
 
 ```
+
 
 
 ## 3. Tidy text
@@ -159,7 +171,10 @@ tidy_trump_tweets %>%
 
 Pour enlever les mots "inutiles", on va merger (fusionner) notre base de données avec la base de données de ces mots. Cette base de données de mots inutiles existe sous le nom de **stopwords**. Une fusion par **anti_join**, où n'est retenu que ce qui se trouve dans la base A et pas dans la base B est retenue.
 
-![](../Figs/join_cheat.png)
+```{r, out.width='70%'}
+knitr::include_graphics("../Images/join_cheat.png")
+```
+
 
 ```{r}
 
@@ -202,16 +217,12 @@ Remarquons que tidytext transforme le texte en minuscule. Donc, nous n'avons plu
 
 # Enlever les chiffres
 
-#tidy_trump_tweets <- tidy_trump_tweets[-grep("\\b\\d+\\b", tidy_trump_tweets$word),]
-
 tidy_trump_tweets <-
   tidy_trump_tweets %>% 
   filter(!grepl("\\b\\d+\\b", word))
 
 
 # Enlever les espaces
-
-#tidy_trump_tweets$word <- gsub("\\s+","",tidy_trump_tweets$word)    
 
 tidy_trump_tweets <-
   tidy_trump_tweets %>% 
@@ -223,11 +234,6 @@ tidy_trump_tweets <-
 
 tidy_trump_tweets <- tidy_trump_tweets %>%
   mutate_at("word", funs(wordStem((.), language="en")))
-
-
-#tidy_trump_tweets <-
-#  tidy_trump_tweets %>% 
-#  filter(!grepl("https|t.co|amp|rt", word))
 
 tidy_trump_tweets %>% 
   count(word) %>% 
@@ -245,6 +251,7 @@ Finalement, à partir des données tidy, on peut créer une matrice documents-te
 ```{r}
 
 # Document-term matrix
+
 tidy_trump_DTM <-
   tidy_trump_tweets %>%
   count(created_at, word) %>%
@@ -289,8 +296,8 @@ ggplot(top_20) +
   geom_col(aes(x = word, y = n, fill = word)) +
   theme_bw() +
   theme(axis.text = element_text(angle = 90, hjust = 1)) +
-  ylab("Number of time a word appears in a tweet") +
-  xlab("word") +
+  ylab("Nombre de fois qu'un mot apparaît dans les tweets") +
+  xlab("Mot") +
   guides(fill = FALSE) 
 
 
@@ -324,6 +331,8 @@ top_tfidf
 ```
 
 Plus le score TFIDF (poids) est élevé, plus le terme est rare dans un document donné et vice versa.
+
+L'ensemble de ses processus peut se faire assez aisément de la manière suivante en utilisant les pipes:
 
 ```{r}
 

@@ -1,6 +1,6 @@
 ---
-title: 'Labo 2.1: Analyse quantitative du texte'
-subtitle: 'processing'
+title: 'Labo 12.1bis: Analyse quantitative du texte'
+subtitle: 'Processing'
 author: "Visseho Adjiwanou, PhD."
 date: "`r format(Sys.time(), '%d %B %Y')`"
 output: html_document
@@ -54,7 +54,14 @@ corpus_raw
 
 ```
 
-Maintenant, on va créer le corpus avec ces tweets. Chaque tweet va être considérer comme un document et les mots utilisés dans le tweet comme les termes. Chaque tweet devient un document.
+Maintenant, on va créer le corpus avec ces documents. Chaque document va être considéré comme un document et les mots utilisés dans le texte comme les termes. 
+
+
+## Exercice
+
+Créer la matrice document-terme et le tidydata à partir de ces données.
+
+
 
 
 ```{r}

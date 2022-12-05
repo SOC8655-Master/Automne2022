@@ -42,13 +42,13 @@ Un terme de programmation général pour une unité de données de caractères e
 
 -
 
-Dans d'autres langues, "chaîne" fait souvent référence à une *séquence * d'informations numériques, comme chaînes binaires (par exemple "01110000 01101111 01101111 01110000"). Nous les utilisons rarement dans R.
+Dans d'autres langues, "chaîne" fait souvent référence à une *séquence* d'informations numériques, comme chaînes binaires (par exemple "01110000 01101111 01101111 01110000"). Nous les utilisons rarement dans R.
 
 -
 
-Notez qu'il s'agit de *séquences * de nombres plutôt que de nombres uniques, et donc de *chaînes *.
+Notez qu'il s'agit de *séquences* de nombres plutôt que de nombres uniques, et donc de *chaînes*.
 
-Une chose qui sépare une chaîne d'un nombre est que les zéros en tête sont significatifs: `01! = 1`
+Une chose qui sépare une chaîne d'un nombre est que les zéros en tête sont significatifs: `01 != 1`
 
 # Les fonctions pour travailler avec les chaines de charactères (avec Basic R)
 
@@ -63,7 +63,6 @@ head(restaurants$Zip_Code)
 restaurants <- 
   restaurants %>% 
   mutate(ZIP_length = nchar(Zip_Code)) #%>%
-#  count(ZIP_length)
 
 freq(restaurants$ZIP_length)
 
@@ -76,6 +75,7 @@ freq(restaurants$ZIP_length)
 Nous pouvons utiliser `substr ()` pour extraire uniquement les 5 premiers chiffres du code postal.
 
 ```{r substr}
+
 restaurants <- 
   restaurants %>%
   mutate(ZIP_5 = substr(Zip_Code, 1, 5),
@@ -119,11 +119,12 @@ paste0(1:5, letters[1:5])
 
 ## `paste()` 
 
-`sep =` contrôle ce qui se passe lorsque vous écrasez en entrée les vecteurs que vous donnez à `paste()`, tandis que `collapse =` contrôle si / comment ils passent d'un vecteur à une seule chaîne.
+`sep =` contrôle ce qui se passe lorsque vous combinez en entrée les vecteurs que vous donnez à `paste()`. Vous obtiendrez toujours un vecteur. `collapse =` contrôle si/comment ils passent d'un vecteur à une seule chaîne.
 
 Voici quelques exemples; assurez-vous de comprendre comment chaque ensemble d'arguments produit leurs résultats:
 
 ```{r paste_practice, eval=TRUE, results="hold"}
+
 paste(letters[1:5])
 paste(1:5, letters[1:5], sep = "+")
 paste(letters[1:5], collapse = "!")
@@ -143,11 +144,11 @@ paste(1:5, "Z", sep = "*", collapse = " ~ ")
 
 Il fournit des fonctions qui:
 
-* Remplace certaines fonctions de chaîne de base comme `paste ()` et `nchar ()` d'une manière un peu moins délicate avec des valeurs ou des facteurs manquants
-* Supprimez les espaces ou remplissez-les
-* Effectuer des tâches liées à **la correspondance de modèles**: Detect, locate, extract, match, replace, split.
- - Ces fonctions utilisent **des expressions régulières** pour décrire les modèles 
- - Les versions Base R et `stringi` existent, mais sont plus difficiles à utiliser
+- Remplace certaines fonctions de chaîne de base comme `paste ()` et `nchar ()` d'une manière un peu moins délicate avec des valeurs ou des facteurs manquants
+- Supprimez les espaces ou remplissez-les
+- Effectuer des tâches liées à **la correspondance de modèles**: Detect, locate, extract, match, replace, split.
+    - Ces fonctions utilisent **des expressions régulières** pour décrire les modèles 
+    - Les versions Base R et `stringi` existent, mais sont plus difficiles à utiliser
 
 De façon pratique, **la plupart** des fonctions `stringr` commence par "`str_`" pour permettre à RStudio d'auto-completer ce que vous saisissez.
 
@@ -168,6 +169,7 @@ str_sub("Washington", 3, 8)
 - `str_c ()` ("string combine") est exactement comme `paste()` mais où la valeur par défaut est `sep =" "` (comme `paste0()`)
 
 ```{r str_c_example}
+
 letters
 letters[1:5]
 1:5
@@ -238,6 +240,7 @@ head(unique(restaurants$Name), 4)
 head(fruit)
 str_sub(fruit, 1, 3)
 str_sub(fruit, -2) 
+
 ```
 
 Remarque: `mutate_if(x, y)` applique la fonction `y` à chaque colonne pour laquelle `x` est `TRUE`.]
@@ -254,7 +257,7 @@ Remarque: `mutate_if(x, y)` applique la fonction `y` à chaque colonne pour laqu
 - **Les caractères littéraux** sont des extraits définis à rechercher comme `SEA` ou `206`
 
 - **Métacaractères** soyons flexibles dans la description des modèles:
-  - barre oblique inversée `\`, caret `^`, signe dollar `$`, point `.`, pipe `|`, point d'interrogation `? `, astérisque `*', plus signe `+`, parenthèses `(` et `)`, crochets `[` et `]`, accolades `{` et `}`
+  - barre oblique inversée `\`, caret `^`, signe dollar `$`, point `.`, pipe `|`, point d'interrogation `? `, astérisque `*', signe plus `+`, parenthèses `(` et `)`, crochets `[` et `]`, accolades `{` et `}`
   - Pour traiter un métacaractère comme un caractère littéral, vous devez **l'échapper** avec deux barres obliques inverses `\\`, par ex. pour faire correspondre `(206)` avec les parenthèses, vous utiliseriez `\\(206\\)` dans votre expression régulière
 
 ## `str_detect()`
@@ -288,7 +291,7 @@ coffee1 %>% distinct(Name) %>% head()
 ## Histogramme
 
 
-renons chaque identifiant d'entreprise unique, conservons le score d'inspection le plus récent et examinons un histogramme des scores:
+Prenons chaque identifiant d'entreprise unique, conservons le score d'inspection le plus récent et examinons un histogramme des scores:
 
 ```{r coffee_histogram, fig.height = 3, dev = "svg" }
 
@@ -306,7 +309,7 @@ coffee %>%
 
 ## `str_detect()`: Patterns
 
-Cherchons des numéros de téléphone dont les trois premiers chiffres sont "206" en utilisant `str_detect ()`.
+Cherchons des numéros de téléphone dont **les trois premiers chiffres** sont "206" en utilisant `str_detect ()`.
 
 Nous voudrons que cela fonctionne, qu'ils aient des parenthèses au début ou non.
 Mais PAS pour correspondre à "206" se trouvant ailleurs:
@@ -358,7 +361,8 @@ restaurants %>%
   mutate(contient_nombre_206 = 
            str_detect(Phone, code_206_pattern)) %>% 
   group_by(contient_nombre_206) %>% 
-  tally()
+  tally() %>% 
+  ungroup()
 
 ?tally
 ```
@@ -421,6 +425,8 @@ address_number_test_examples <-
   c("2812 THORNDYKE AVE W", "1ST AVE", "10A 1ST AVE", 
     "10-A 1ST AVE", "5201-B UNIVERSITY WAY NE",
     "7040 1/2 15TH AVE NW")
+
+address_number_test_examples
 
 str_replace(address_number_test_examples, 
             address_number_pattern, replacement = "")

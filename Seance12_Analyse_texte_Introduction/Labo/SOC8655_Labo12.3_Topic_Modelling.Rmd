@@ -1,17 +1,10 @@
 ---
-title: 'Labo 11.3: Analyse quantitative du texte'
+title: 'Labo 12.3: Analyse quantitative du texte'
 subtitle: 'Topic modelling'
 author: "Visseho Adjiwanou, PhD."
 date: "`r format(Sys.time(), '%d %B %Y')`"
 output: html_document
 ---
-
-
-# 1. Packages
-
-## 2. Type de données
-
-
 
 ```{r}
 #install.packages("tidytext")
@@ -28,22 +21,18 @@ library(topicmodels)
 
 ```
 
-
-
-
-## 3. Tidy text
-
+## Processing
 
 ```{r}
 
-#load(url("https://cbail.github.io/Trump_Tweets.Rdata"))
 
-trumptweets <- readRDS("trumptweets.Rdata")
+trumptweets <- readRDS("../Data/trumptweets.Rdata")
+
 
 tidy_trump_tweets <- 
   trumptweets %>% 
   select(created_at, text) %>% 
-  unnest_tokens("word", text)     # Tokenise the data
+  unnest_tokens("word", text)    
 
 tidy_trump_tweets <- 
   tidy_trump_tweets %>% 
@@ -62,7 +51,8 @@ tidy_trump_tweets %>%
 
 ```
 
-# 4. Transformer le corpus en matrice document - termes
+
+La lda fonctionne avec la matrice document-terme. On va donc transformer le fichier.
 
 ```{r}
 
@@ -71,20 +61,23 @@ trump_tweets_dtm <-
   count(created_at, word) %>% 
   cast_dtm(created_at, word, n)
 
-inspect(trump_tweets_dtm[1:5,1:8])
+inspect(trump_tweets_dtm[1:5,1:6])
 
 ```
 
-# 5. Le modèle
+# Cinq sujets /topics
+
+Le but est de définir un certain nombre de sujets et essayer de voir celui qui permet une meilleure interprétation des données.
+
 
 ```{r}
 
-trump_tweet_lda <- LDA(trump_tweets_dtm, k = 3, control = list(seed = 3425))
+trump_tweet_lda <- LDA(trump_tweets_dtm, k = 5, control = list(seed = 3425))
 trump_tweet_lda
 
 ```
 
-# 6. word-topic probabilities
+Regardons ce qu'il y a dans chaque sujet
 
 ```{r}
 
@@ -102,7 +95,7 @@ tt_top_term
 
 ```
 
-# Graphique des termes
+On peut finalement représenter les trois sujets sous formes de graphiques.
 
 ```{r}
 
@@ -118,11 +111,10 @@ tt_top_term %>%
 
 ```
 
-# Autre exemple
-
-Nous allons utiliser les données de AssociatedPress fourni par le package topicmodels, comme exemple de DocumentTermMatrix. Il s'agit d'un recueil de 2246 articles de presse d'une agence de presse américaine, principalement publiés vers 1988.
+D'autres exemples avec d'autres corpus
 
 ```{r}
+
 library(topicmodels)
 
 data("AssociatedPress")

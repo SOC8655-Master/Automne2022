@@ -1,5 +1,5 @@
 ---
-title: 'Labo 2.2: Analyse quantitative du texte'
+title: 'Labo 12.2: Analyse quantitative du texte'
 subtitle: 'Analyse de sentiments'
 author: "Visseho Adjiwanou, PhD."
 date: "`r format(Sys.time(), '%d %B %Y')`"
@@ -9,6 +9,8 @@ output: html_document
 # Analyse de sentiments
 
 L'analyse de sentiment est une technique d'extraction d'information dans un corpus. Le but est de détecter les mots cherchés/voulus dans le corpus. Pour cela, on va se baser sur les dictionnaires qui existent ou définir notre propre dictionnaire.
+
+## Processing
 
 
 ```{r}
@@ -33,7 +35,7 @@ Nous allons charger les données de trump tweet
 
 ```{r}
 
-trumptweets <- readRDS("../Données/trumptweets.RData")
+trumptweets <- readRDS("../Data/trumptweets.RData")
 
 
 tidy_trump_tweets <- 
@@ -91,11 +93,6 @@ tidy_trump_tweets <-
   tidy_trump_tweets %>% 
   filter(!grepl("\\b\\d+\\b", word))
 
-
-#tidy_trump_tweets <- tidy_trump_tweets[-grep("\\b\\d+\\b", tidy_trump_tweets$word),]
-
-# Une fois de plus, tidytext transforme automatiquement tous les mots en minuscules.
-
 # Enlever l'espace
 
 tidy_trump_tweets <-
@@ -105,6 +102,7 @@ tidy_trump_tweets <-
 #tidy_trump_tweets$word <- gsub("\\s+","",tidy_trump_tweets$word)    
 
 ```
+
 
 ```{r}
 
@@ -136,7 +134,7 @@ ggplot(top_20) +
   geom_bar(aes(x = word, y = n, fill = word), stat = "identity") +
   theme_minimal() +
   theme(axis.text = element_text(angle = 90, hjust = 1)) +
-  labs(x = "mot", y = "Nombre de fois que le mot apparait dans un tweet") +
+  labs(x = "Mot", y = "Nombre de fois que le mot apparait dans un tweet") +
   guides(fill = FALSE)
 
 ```
@@ -206,6 +204,7 @@ head(get_sentiments("bing"), 24)
 summary(get_sentiments("bing"))
 
 head(get_sentiments("nrc"), 24)
+
 ```
 
 ```{r}
@@ -385,7 +384,9 @@ ggplot(data = tidy_trump_tweets_nrc1, aes(x = 2, y = percentage, fill = sentimen
 
 Il existe de nombreux autres types d'analyse de sentiments, que nous n'avons pas le temps de couvrir ici. Cependant, vous devez savoir que différents outils d'analyse des sentiments fonctionnent mieux pour certains corpus que pour d'autres. Voici une figure d'un article récent qui applique une variété de dictionnaires de sentiments à différents corpus:
 
-![](/Users/visseho/OneDrive - UQAM/Cours/Images_cours/comparaison.png)
+```{r, out.width='80%'}
+knitr::include_graphics("../Images/comparaison.png")
+```
 Source: http://homepages.dcc.ufmg.br/~fabricio/download/cosn127-goncalves.pdf
 
 
