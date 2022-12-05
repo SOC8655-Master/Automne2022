@@ -166,6 +166,7 @@ top_tfidf
 
 ```
 
+
 ## Notre propre dictionnaire
 
 ```{r}
@@ -204,6 +205,7 @@ head(get_sentiments("bing"), 24)
 summary(get_sentiments("bing"))
 
 head(get_sentiments("nrc"), 24)
+summary(get_sentiments("nrc"))
 
 ```
 
