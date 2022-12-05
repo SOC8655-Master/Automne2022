@@ -109,22 +109,28 @@ trump_corpus
 View((trump_corpus))
 
 # Les informations de chaque document
-trump_corpus[[1]][["content"]]    
+trump_corpus[[97]][["content"]]    
 trump_corpus[[2]][["meta"]]
 
 # Enlever les chiffres
 
 trump_corpus <- tm_map(trump_corpus, content_transformer(removeNumbers))  
+trump_corpus[[97]][["content"]] 
 
 # Transformer en minuscule
 trump_corpus <- tm_map(trump_corpus,  content_transformer(tolower)) 
+trump_corpus[[97]][["content"]] 
+
 
 # Enlever les espaces
 trump_corpus <- tm_map(trump_corpus, content_transformer(stripWhitespace))
 
+trump_corpus[[97]][["content"]] 
+
 # Stemming
 trump_corpus  <- tm_map(trump_corpus, content_transformer(stemDocument), language = "english")
 
+trump_corpus[[97]][["content"]] 
 
 ```
 
@@ -180,6 +186,7 @@ knitr::include_graphics("../Images/join_cheat.png")
 
 data("stop_words")
 head(stopwords(), 24)
+
 
 tidy_trump_tweets <- 
   tidy_trump_tweets %>% 
@@ -352,7 +359,7 @@ top_tfidf <- tidy_trump_tfidf %>%
 top_tfidf
 top_tfidf$word[1]
 
-
+wordcloud(tidy_trump_tfidf$word, tidy_trump_tfidf$n, max.words = 40)
 
 ```
 
@@ -386,6 +393,7 @@ dtm_trumptweets_matrix[1:5,1:8]
 dtm_trumptweets_matrix %>% {
   wordcloud(.$word, .$n, max.words = 20)
 }
+
 
 
 ```
