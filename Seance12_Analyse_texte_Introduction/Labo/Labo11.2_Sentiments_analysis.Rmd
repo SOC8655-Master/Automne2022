@@ -1,0 +1,492 @@
+---
+title: 'Labo 11.2: Analyse quantitative du texte'
+subtitle: 'Analyse de sentiments'
+author: "Visseho Adjiwanou, PhD."
+date: "`r format(Sys.time(), '%d %B %Y')`"
+output: html_document
+---
+
+
+# Analyse de texte basée sur le dictionnaire
+
+## Introduction
+
+Nous utiliserons deux packages pour faire l'analyse quantitative du texte: tm qui est travaille sur les `document text-matrix` et *tidytext* qui utilise `tidy-data`. D'autres packages sont le [stm](https://cran.r-project.org/web/packages/stm/vignettes/stmVignette.pdf), [topicsmodels](https://cran.r-project.org/web/packages/topicmodels/vignettes/topicmodels.pdf), [quanteda](https://quanteda.io/)
+
+## Type de données
+
+1. Matrice Document-terme 
+
+Une façon rapide d'explorer des données textuelles consiste à simplement compter les occurrences de chaque mot ou terme. Le nombre de fois qu'un mot particulier apparaît dans un document donné est appelé terme fréquence (tf). La statistique tf peut être résumée dans une matrice de termes de document, qui est un tableau rectangulaire avec des lignes représentant des documents et des colonnes représentant des termes uniques. L'élément (i, j) de cette matrice donne les décomptes du jième terme (colonne) dans le ième document (ligne). Nous pouvons également inverser les lignes et les colonnes et convertir une matrice de terme de document en une matrice de terme de document où les lignes et les colonnes représentent respectivement les termes et les documents.
+
+![Matrice document-terme](/Users/visseho/OneDrive - UQAM/Cours/Images_cours/c11term_matrix.png)
+
+2. Tidy-data
+
+L'utilisation de principes de données bien rangées est un moyen puissant de rendre la gestion des données plus facile et plus efficace, et cela n'est pas moins vrai lorsqu'il s'agit de traiter du texte. Comme décrit par Hadley Wickham (Wickham 2014), les données bien rangées ont une structure spécifique:
+
+- Chaque variable est une colonne
+- Chaque observation est une rangée
+- Chaque type d'unité d'observation est un tableau
+
+Nous définissons donc le format de texte bien rangé (tidy-text) comme étant une table avec un jeton (token) par ligne. Un jeton est une unité de texte significative, comme un mot, que nous souhaitons utiliser pour l'analyse, et la tokenisation est le processus de division du texte en jetons. Cette structure d'un jeton par ligne contraste avec la façon dont le texte est souvent stocké dans les analyses actuelles, peut-être sous forme de chaînes ou dans une matrice de termes de document. Pour l'exploration de texte ordonnée, le jeton qui est stocké dans chaque ligne est le plus souvent un seul mot, mais peut également être un n-gramme, une phrase ou un paragraphe. Dans le package tidytext, nous fournissons des fonctionnalités permettant de symboliser par des unités de texte couramment utilisées comme celles-ci et de les convertir en un seul terme par ligne.
+
+![](/Users/visseho/OneDrive - UQAM/Cours/Images_cours/c11tidytextdata.png)
+
+## 1. Dressons la table
+
+
+
+```{r}
+#install.packages("tidytext")
+#install.packages("textdata")
+
+library(tidyverse)
+library(tidytext)
+library(textdata) # 
+library(tm)
+library(maps)
+library(SnowballC)
+library(wordcloud)
+
+data(package = "textdata")
+
+```
+
+
+
+
+## 3. Tidy text
+
+
+```{r}
+
+#load(url("https://cbail.github.io/Trump_Tweets.Rdata"))
+
+trumptweets <- readRDS("trumptweets.RData")
+
+tidy_trump_tweets <- 
+  trumptweets %>% 
+  select(created_at, text) %>% 
+  unnest_tokens("word", text)     # Tokenise the data
+  
+tidy_trump_tweets  
+
+head(tidy_trump_tweets, 12)
+
+tidy_trump_tweets %>% 
+  count(word) %>% 
+  arrange(desc(n))
+
+```
+
+### 4. Text pre-processing
+
+Un mot sur les fusions (join)
+
+
+```{r}
+
+data("stop_words")
+head(stopwords())
+
+tidy_trump_tweets <- 
+  tidy_trump_tweets %>% 
+  anti_join(stop_words)
+
+
+head(tidy_trump_tweets, 20)
+
+tidy_trump_tweets %>% 
+  count(word) %>% 
+  arrange(desc(n))
+  
+```
+
+Il faut enlever les mots inutiles
+
+
+
+```{r}
+
+#tidy_trump_tweets <-
+#  tidy_trump_tweets[-grep("https|t.co|amp|rt", tidy_trump_tweets$word), ] 
+
+tidy_trump_tweets <-
+  tidy_trump_tweets %>% 
+  filter(!grepl("https|t.co|amp|rt", word))
+
+tidy_trump_tweets %>% 
+  count(word) %>% 
+  arrange(desc(n))
+
+
+
+# Enlever les chiffres
+
+tidy_trump_tweets <-
+  tidy_trump_tweets %>% 
+  filter(!grepl("\\b\\d+\\b", word))
+
+
+#tidy_trump_tweets <- tidy_trump_tweets[-grep("\\b\\d+\\b", tidy_trump_tweets$word),]
+
+# OUne fois de plus, tidytext rend automatiquement tous les mots en minuscules.
+
+# Enlever l'espace
+
+tidy_trump_tweets <-
+  tidy_trump_tweets %>% 
+  mutate(word = gsub("\\s+","", word))
+
+tidy_trump_tweets$word <- gsub("\\s+","",tidy_trump_tweets$word)    
+
+```
+
+# Analyse: Découverte des topics
+
+Parmi les formes les plus élémentaires d'analyse quantitative de texte figurent les techniques de comptage de mots et les méthodes basées sur un dictionnaire. Ce labo couvrira ces deux sujets, ainsi que l'analyse des sentiments, qui est une forme d'analyse de texte basée sur un dictionnaire. 
+
+## Fréquence des mots avec tidytext - statistique tf (terme fréquence)
+
+Le nombre de fois qu'un mot particulier apparaît dans un document donné est appelé terme fréquence (*term frequency*) (tf). La statistique tf peut être résumée dans une matrice de termes document en sommant les colonnes pour trouver le nombre de fois que le mot vient.
+
+```{r}
+
+tidy_trump_tweets %>% 
+  count(word, sort = TRUE)
+
+
+tidy_trump_tweets %>%          # Same as previously but with arrange
+  count(word) %>% 
+  arrange(desc(n))
+
+# Sélectionner les 20 mots les plus importants
+
+top_20 <- 
+  tidy_trump_tweets %>% 
+  count(word, sort = TRUE) 
+
+top_20 <- top_20[1:20, ]    
+  
+top_20  
+
+
+
+```
+
+Graphique des 20 mots les plus importants
+
+```{r}
+
+ggplot(top_20) +
+  geom_bar(aes(x = word, y = n, fill = word), stat = "identity") +
+  theme_minimal() +
+  theme(axis.text = element_text(angle = 90, hjust = 1)) +
+  labs(x = "mot", y = "Nombre de fois que le mot apparait dans un tweet") +
+  guides(fill = FALSE)
+
+```
+
+
+
+
+
+## tf-idf
+
+
+Dans l'analyse ci-dessus, nous avons visualisé la distribution de la fréquence des termes. Ceci peut se faire à l'intérieur de chaque tweet (plus précisément à l'intérieur d'un groupe de document). Pour le tweet par exemple, on peut scinder les tweet selon une date donnée (les tweets il y a un an avec les tweets plus récents). Cependant, la fréquence élevée d'un certain terme dans un document signifie peu si ce terme apparaît souvent dans les documents du corpus (exempe, the, a ...). Pour résoudre ce problème, nous devons diminuer l'importance des termes fréquemment utilisés dans les documents. Cela peut être fait en calculant la statistique appelée (term frequency–inverse document frequency), en abrégé **tf–idf**.
+
+La statistique tf–idf est une autre mesure de l'importance de chaque terme dans un document donné. Pour un document d et un terme w donnés, nous définissons tf – idf (w, d) comme 
+
+tf–idf(w, d) = tf(w, d) × idf(w) où
+
+idf(w) = log(N/df(w))
+
+- N Nombre total de documents
+- df(w) la fréquence du document ou le nombre de documents qui contient le terme w.
+
+La division par df(w) implique que idf (w) prend une valeur plus petite lorsque le terme w est utilisé plus fréquemment dans les documents. Par conséquent, les termes communs à tous les documents reçoivent moins de poids dans tf–idf.
+
+L'idée de tf-idf est de trouver les mots importants pour le contenu de chaque document en diminuant le poids des mots couramment utilisés et en augmentant le poids des mots peu utilisés dans une collection ou un corpus de documents. Le calcul de tf-idf tente de trouver les mots importants (c'est-à-dire communs) dans un texte, mais pas trop courants.
+
+Nous pouvons calculer le tf-idf pour les tweets Trump basés sur des données en tidytext comme suit:
+
+```{r}
+
+
+tidy_trump_tfidf <- 
+  trumptweets %>%
+  select(created_at, text) %>%
+  unnest_tokens("word", text) %>%
+ # anti_join(stop_words) %>%
+  count(word, created_at) %>%
+  bind_tf_idf(word, created_at, n)
+
+
+top_tfidf <- tidy_trump_tfidf %>%
+  arrange(desc(n))
+
+top_tfidf
+
+head(top_tfidf$word)
+
+top_tfidf <- 
+  tidy_trump_tfidf %>% 
+  arrange(desc(tf_idf))
+
+top_tfidf
+
+```
+
+Le tfidf augmente à mesure qu'un terme apparaît dans un document, mais il est pondéré négativement par la fréquence globale des termes dans tous les documents de l'ensemble de données ou du corpus. 
+
+En termes plus simples, le tf-idf nous aide à saisir quels mots sont non seulement importants dans un document donné, mais aussi distinctifs vis-à-vis du corpus plus large ou de l'ensemble de données tidytext.
+
+
+## Analyse de texte quantitative basée sur un dictionnaire
+
+Bien que le nombre de fréquences de mots et le tf-idf puissent être un moyen informatif d'examiner les données textuelles, une autre technique très populaire consiste à compter le nombre de mots qui apparaissent dans chaque document qui ont reçu une signification ou une valeur particulière pour le chercheur. Il existe de nombreux exemples que nous aborderons ci-dessous, dont certains sont plus sophistiqués que d'autres.
+
+**Créer votre propre dictionnaire**
+
+Pour commencer, créons notre propre dictionnaire de termes que nous voulons examiner à partir du jeu de données de tweet Trump. Supposons que nous fassions une étude des problèmes économiques et que nous voulons sous-définir les tweets contenant des mots associés à l'économie. Pour ce faire, nous pourrions d'abord créer une liste ou un «dictionnaire» ou des termes associés à l'économie.
+
+
+```{r}
+
+#economic_dictionary <- c("economy","unemployment","trade","tariffs")
+
+economic_dictionary <- "economy|unemployment|trade|tariffs|employment"
+
+economic_dictionary1 <- "Togo|Cameroon"
+
+
+```
+
+Ayant créé un dictionnaire très simple / primitif, nous pouvons maintenant sous-définir les parties de notre base de données tidytext qui contiennent ces mots en utilisant la fonction str_detect dans le package stringr de Hadley Wickham:
+
+```{r}
+
+economic_tweets <- 
+  trumptweets %>% 
+  filter(str_detect(text, economic_dictionary))
+
+head(economic_tweets$text)
+
+
+```
+
+
+## Analyse de sentiment
+
+L'exemple ci-dessus était quelque peu arbitraire et principalement conçu pour vous présenter le concept d'analyse de texte à base de dictionnaire. La liste des termes économiques que j'ai trouvée était très ponctuelle - et bien que les tweets identifiés ci-dessus mentionnent chacun l'économie, il y a probablement beaucoup plus de tweets dans notre ensemble de données qui font référence à des problèmes économiques qui n'incluent pas les mots que j'ai identifiés.
+
+Les approches basées sur des dictionnaires sont souvent plus utiles lorsqu'un dictionnaire de haute qualité est disponible qui intéresse le chercheur ou l'analyste. Un type de dictionnaire populaire est un **dictionnaire des sentiments** qui peut être utilisé pour évaluer la valence d'un texte donné en recherchant des mots qui décrivent l'affect ou l'opinion. Certains de ces dictionnaires sont créés en examinant la comparaison des évaluations textuelles des produits des forums en ligne avec les systèmes de notation. D'autres sont créés par l'observation systématique les textes de personnes qui ont écrit sur différentes émotions.
+
+Commençons par examiner certains des dictionnaires de sentiments intégrés dans tidytext. Il s'agit notamment du **afinn** qui comprend une liste de mots chargés de sentiments qui sont apparus dans les discussions de Twitter sur le changement climatique; **bing** qui comprend des mots sensibles identifiés sur les forums en ligne; et **nrc** qui est un dictionnaire qui a été créé en demandant aux travailleurs d'Amazon Mechanical Turk de coder la valence émotionnelle d'une longue liste de termes. Ces algorithmes produisent souvent des résultats similaires, même s'ils sont formés sur différents ensembles de données (ce qui signifie qu'ils identifient les mots chargés de sentiments en utilisant différents corpus). Chacun de ces dictionnaires ne décrit que des mots chargés de sentiments en anglais. Ils ont également différentes échelles. Nous pouvons parcourir le contenu de chaque dictionnaire comme suit:
+
+
+```{r}
+
+head(get_sentiments("afinn"), 24)
+
+summary(get_sentiments("afinn"))
+
+head(get_sentiments("bing"), 24)
+summary(get_sentiments("bing"))
+
+```
+
+Appliquons le dictionnaire bing sentiment à notre base de données de tweets de Trump:
+
+```{r}
+
+dictionnaire <- get_sentiments("bing")
+
+trump_tweet_sentiment <- 
+  tidy_trump_tweets %>%
+  inner_join(dictionnaire) %>%
+  count(created_at, sentiment) 
+
+               
+head(trump_tweet_sentiment)
+
+#head(tidy_trump_tweets)
+
+ggplot(trump_tweet_sentiment, aes(x=created_at, y=n, color=sentiment))+
+  geom_line(size=.5)+
+  theme_minimal()+
+  labs(x = "Date", y = "Nombre de publications", title = "Evolution des sentiments") +
+#  facet_wrap(~sentiment)+
+  theme_bw()
+
+```
+
+Faisons maintenant un visuel qui compare la fréquence des tweets positifs et négatifs par jour. Pour ce faire, nous devrons travailler un peu avec la variable created_at - plus précisément, nous devrons la transformer en un objet "date" que nous pouvons utiliser pour extraire le jour pendant lequel chaque tweet a été fait. Le package lubridate est le meilleur outil pour travailler avec les dates (https://www.rdocumentation.org/packages/lubridate/versions/1.7.4).
+https://evoldyn.gitlab.io/evomics-2018/ref-sheets/R_lubridate.pdf
+
+
+Un mot sur le package lubridate
+
+```{r}
+
+library(lubridate)
+
+tidy_trump_tweets <-
+  tidy_trump_tweets %>% 
+  mutate(date = date(created_at))
+
+
+# Utilisons un meilleur regroupement
+
+trump_tweet_sentiment1 <- 
+  tidy_trump_tweets %>%
+  inner_join(get_sentiments("bing")) %>%
+  count(date, sentiment) 
+
+ggplot(trump_tweet_sentiment1, aes(x=date, y=n, color=sentiment))+
+  geom_line(size=.5)+
+  theme_minimal()+
+  labs(x = "Date", y = "Nombre de publications", title = "Evolution des sentiments") +
+#  facet_wrap(~sentiment)+
+  theme_bw()
+
+```
+
+Agrégons le nombre de sentiment négatif/positif par jour
+
+```{r}
+
+trump_sentiment_negatif <-
+  tidy_trump_tweets %>%
+  inner_join(get_sentiments("bing")) %>% 
+  filter(sentiment=="negative") %>%
+  count(date, sentiment)
+
+trump_sentiment_negatif
+
+trump_sentiment_positif <-
+  tidy_trump_tweets %>%
+  inner_join(get_sentiments("bing")) %>% 
+  filter(sentiment=="positive") %>%
+  count(date, sentiment)
+
+trump_sentiment_positif
+
+trump_sentiment <-
+  tidy_trump_tweets %>%
+  inner_join(get_sentiments("bing")) %>% 
+  count(date, sentiment)
+
+trump_sentiment 
+
+```
+
+Graphique du sentiment 
+
+```{r}
+
+negatif <-
+  ggplot(trump_sentiment_negatif) +
+  geom_line(aes(x = date, y = n), color = "red") +
+  labs(x = "Date", y = "Fréquence de mots négative dans les tweet de Trump")
+
+negatif
+
+```
+
+Finalement, est - ce que le nombre de tweet négatif est associé à l'approbation de Trump?
+
+
+```{r}
+
+trump_approval <- read.csv("https://projects.fivethirtyeight.com/trump-approval-data/approval_topline.csv")
+
+head(trump_approval)
+
+trump_approval <-
+  trump_approval %>% 
+  mutate(date = mdy(modeldate))
+
+head(trump_approval)
+
+
+approval_plot <-
+  trump_approval %>%
+  filter(subgroup == "Adults") %>%
+  #filter(date > min(trump_sentiment_plot$date)) %>% 
+  group_by(date) %>%
+  summarise(approval = mean(approve_estimate))
+
+head(approval_plot)
+
+# Graphique
+
+approval <-
+  ggplot(approval_plot)+
+  geom_line(aes(x = date, y = approval))+
+  #theme_minimal()+
+  labs(x = "Date", y = "% des Américains qui aprouvent Trump")
+
+approval
+```
+
+
+Finalement les deux graphiques ensembles
+
+```{r}
+library(ggpubr)
+
+ggarrange(negatif, approval, nrow = 2)
+
+```
+
+# Utilisons le dictionnaire nrf
+
+```{r}
+
+nrc <- get_sentiments("nrc")
+nrc
+
+trump_tweet_sentiment_nrc <-
+  tidy_trump_tweets %>% 
+  inner_join(nrc) %>% 
+  count(date, sentiment)
+
+trump_tweet_sentiment_nrc
+
+
+
+# Roue des sentiments
+
+tidy_trump_tweets_nrc1 <-
+  tidy_trump_tweets %>%  
+  inner_join(nrc) %>%
+  group_by(sentiment) %>% 
+  count() %>% 
+  ungroup()%>% 
+  arrange(desc(sentiment)) %>%
+  mutate(percentage = round(n/sum(n),4)*100,
+         lab.pos = cumsum(percentage)-.5*percentage)
+
+ggplot(data = tidy_trump_tweets_nrc1, 
+       aes(x = 2, y = percentage, fill = sentiment))+
+  geom_bar(stat = "identity")+
+  coord_polar("y", start = 200) +
+  geom_text(aes(y = lab.pos, label = paste(percentage,"%", sep = "")), col = "white") +
+  theme_void() +
+  #scale_fill_brewer(palette = "Dark2")+
+  xlim(.5, 2.5) +
+  ggtitle("Sentiment dans les tweets de Trump")
+
+```
+
+
+
+Il existe de nombreux autres types d'analyse des sentiments, que nous n'avons pas le temps de couvrir ici. Cependant, vous devez savoir que différents outils d'analyse des sentiments fonctionnent mieux pour certains corpus que pour d'autres. Voici une figure d'un article récent qui applique une variété de dictionnaires de sentiments différents à différents corpus:
+
+![](/Users/visseho/OneDrive - UQAM/Cours/Images_cours/comparaison.png)
+Source: http://homepages.dcc.ufmg.br/~fabricio/download/cosn127-goncalves.pdf
+
+
