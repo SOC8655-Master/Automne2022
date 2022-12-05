@@ -140,6 +140,7 @@ knitr::include_graphics("../Images/lda2.png")
 >- Étant donné un corpus et un entier K de termes (en entrée), fournissez les sujets qui décrivent le mieux la collection de documents: un processus appelé inférence postérieure. 
 >- L'algorithme le plus courant pour résoudre ce problème est une technique appelée **échantillonnage de Gibbs**.
 
+>- Cette présentation est sublime https://www.youtube.com/watch?v=T05t-SqKArY
 
 ## Échantillonnage de Gibbs
 
@@ -214,6 +215,14 @@ knitr::include_graphics("../Images/gibbs4.png")
 knitr::include_graphics("../Images/gibbs5.png")
 ```
 
+## Échantillonnage de Gibbs
+
+Cette vidéo est à regarder:
+
+https://www.youtube.com/watch?v=BaM1uiCpj_E&t=0s
+
+
+
 ## Écahntillonnage de Gibbs (exemple)
 
 ```{r, echo=FALSE, out.width='80%'}
@@ -275,8 +284,11 @@ knitr::include_graphics("../Images/gibbs13.png")
 ```{r, echo=FALSE, out.width='80%'}
 
 knitr::include_graphics("../Images/gibbs14.png")
+
 ```
 
+
+<!--
 
 ## Échantillonnage de Gibbs: formule
 
@@ -315,6 +327,7 @@ $$p(z_{d,n = k}) {\displaystyle \propto }[\underset{\text{combien le doc aime le
 
 - Supposons que nous mettons le mot B ($^Bchat_2$) dans le sujet 1, alors:
 
+-->
 
 ## En conclusion
 
@@ -324,6 +337,9 @@ $$p(z_{d,n = k}) {\displaystyle \propto }[\underset{\text{combien le doc aime le
 >- **Processus simplifié**: choisissez à plusieurs reprises un sujet, puis un mot dans ce sujet, et placez-les dans le sac de mots représentant le document jusqu'à ce qu'un document soit complet.
 >- **Sortie**: distributions de mots pour chaque sujet, distributions de sujets pour le corpus.
 
+
+
+<!--
 
 Structural Topic Model 
 ========================================
@@ -370,6 +386,7 @@ Analyse de réseaux et analyse des réseaux de texte
 <!--
 >-Enfin, il existe sans doute un ensemble de techniques d'identification des clusters au sein des réseaux sociaux plus sophistiquées que celles utilisées dans d'autres techniques d'analyse de texte automatisée décrites dans mes précédents tutoriels.
 -->
+
 
 ## Labo
 
