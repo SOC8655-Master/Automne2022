@@ -2,7 +2,7 @@
 title: 'Séance 2.2: Analyse données digitales'
 subtitle: 'Les principales méthodes'
 author: "Visseho Adjiwanou, PhD."
-institute: "SICSS - Montréal"
+institute: "UQAM - Montréal"
 date: "`r format(Sys.time(), '%d %B %Y')`"
 output:
   beamer_presentation:
@@ -130,7 +130,7 @@ knitr::include_graphics("../Images/lda2.png")
 
 >- L'ensemble des sujets utilisées par un document est appelé allocation du document (Figure 7.2). 
 
->- Cette terminologie explique le nom d'allocation de Dirichlet latente: chaque document a une allocation sur des sujets latents régie par une distribution de Dirichlet.-->
+>- Cette terminologie explique le nom d'allocation de Dirichlet latente: chaque document a une allocation sur des sujets latents régie par une distribution de Dirichlet.
 
 
 ## Latent Dirichet Allocation (LDA)
@@ -140,7 +140,7 @@ knitr::include_graphics("../Images/lda2.png")
 >- Étant donné un corpus et un entier K de termes (en entrée), fournissez les sujets qui décrivent le mieux la collection de documents: un processus appelé inférence postérieure. 
 >- L'algorithme le plus courant pour résoudre ce problème est une technique appelée **échantillonnage de Gibbs**.
 
-<!--
+
 ## Échantillonnage de Gibbs
 
 - L'échantillonnage de Gibbs fonctionne au niveau du mot pour découvrir les sujets qui décrivent le mieux une collection de documents. 
@@ -148,22 +148,23 @@ knitr::include_graphics("../Images/lda2.png")
 
 ## Échantillonnage de Gibbs
 
-![](/Users/visseho/OneDrive - UQAM/Cours/Images_cours/lda3.png)
+```{r, out.width='80%'}
+knitr::include_graphics("../Images/lda3.png")
+```
+
+## Échantillonnage de Gibbs
+
+- C'est là que nous devrions finalement arriver.
+
+>- Cependant, nous ne savons pas cela pour commencer. 
+>- Nous pouvons donc initialement attribuer des mots aux sujets de manière aléatoire. 
+>- Cela entraînera des sujets médiocres, mais nous pouvons améliorer ces sujets. 
+>- Nous améliorons ces sujets en prenant chaque mot, en faisant semblant de ne pas connaître le sujet et en sélectionnant un nouveau sujet pour le mot.
 
 
 ## Échantillonnage de Gibbs
 
-- C'est là que nous devrions finalement arriver. 
-- Cependant, nous ne savons pas cela pour commencer. 
-- Nous pouvons donc initialement attribuer des mots aux sujets de manière aléatoire. 
-- Cela entraînera des sujets médiocres, mais nous pouvons améliorer ces sujets. 
-- Nous améliorons ces sujets en prenant chaque mot, en faisant semblant de ne pas connaître le sujet et en sélectionnant un nouveau sujet pour le mot.
-
--->
-
-## Échantillonnage de Gibbs
-
-- Un modèle de sujet veut faire deux choses: 
+- Un modèle de sujets veut faire deux choses: 
 
     >- il ne veut pas utiliser beaucoup de sujets dans un document et 
     >- il ne veut pas utiliser beaucoup de mots dans un sujet.
@@ -205,6 +206,7 @@ knitr::include_graphics("../Images/gibbs3.png")
 knitr::include_graphics("../Images/gibbs4.png")
 
 ```
+
 ## Écahntillonnage de Gibbs (exemple)
 
 ```{r, echo=FALSE, out.width='80%'}
@@ -313,17 +315,14 @@ $$p(z_{d,n = k}) {\displaystyle \propto }[\underset{\text{combien le doc aime le
 
 - Supposons que nous mettons le mot B ($^Bchat_2$) dans le sujet 1, alors:
 
--->
 
 ## En conclusion
 
 **Objectif**: étant donné un corpus de textes et un nombre précis de sujets, trouver les paramètres qui l'ont probablement généré.
 
->-**Entrée principale**: texte et nombre de sujets à découvrir.
-
->-**Processus simplifié**: choisissez à plusieurs reprises un sujet, puis un mot dans ce sujet, et placez-les dans le sac de mots représentant le document jusqu'à ce qu'un document soit complet.
-
->-**Sortie**: distributions de mots pour chaque sujet, distributions de sujets pour le corpus.
+>- **Entrée principale**: texte et nombre de sujets à découvrir.
+>- **Processus simplifié**: choisissez à plusieurs reprises un sujet, puis un mot dans ce sujet, et placez-les dans le sac de mots représentant le document jusqu'à ce qu'un document soit complet.
+>- **Sortie**: distributions de mots pour chaque sujet, distributions de sujets pour le corpus.
 
 
 Structural Topic Model 
