@@ -53,10 +53,18 @@ Voici les documents connus pour être écrits par chaque auteur:
 
 Le texte des 85 essais est extrait du site Web de la Bibliothèque du Congrès et stocké sous le nom **fpXX.txt**, où XX représente le numéro d'essai allant de 01 à 85. Chaque fichier de données contient les données textuelles de son essai correspondant. Voir le tableau 5.1, qui affiche la première et la dernière page de **The Federalist Paper no. 1** à titre d'exemple.
 
-![Table 1. The Federalist Papers Data](fed1.png)
 
-![Table 2. The Federalist Papers Data](fed2.png)
+```{r}
+knitr::include_graphics("../Images/fed1.png")
+```
 
+
+
+```{r}
+knitr::include_graphics("../Images/fed2.png")
+```
+
+# Télecharger les données
 
 1. Utiliser l'une des techniques de grattage apprises en classe pour gratter ce site https://guides.loc.gov/federalist-papers/full-text pour collecter les données et transformer le tableau en base de données. Vous pouvez remarquer que ces textes sont présentés par dizaine comme dans le lien ici: https://guides.loc.gov/federalist-papers/text-1-10
 
@@ -67,6 +75,7 @@ Le texte des 85 essais est extrait du site Web de la Bibliothèque du Congrès e
 library(tidyverse)
 library(magrittr)
 library(rvest)
+library(summarytools)
 
 webpage <- read_html("https://guides.loc.gov/federalist-papers/text-1-10") 
 
@@ -132,7 +141,7 @@ web_table
 
 ```
 
--->
+# Analyse du corpus
 
 Maintenant, vous allez utiliser le package tidytext pour analyser les données.
 Voici les premiers codes qui vous permettent de télécharger ces données. Pour cet exemple, vous aurez besoin d'un ensemble de package que je vous charge aussi en même temps:
@@ -176,7 +185,7 @@ corpus_raw
 
 corpus_raw[[1]][1]
 
-
+system
 
 ?VCorpus
 
@@ -247,7 +256,12 @@ corpus_tidy_text <-
 
 ```{r}
 
-corpus_dtm 
+corpus_dtm <- 
+  corpus_tidy_text %>% 
+  count(id_num, word) %>% 
+  cast_dtm(id_num, word, n)
+
+inspect(corpus_dtm[1:5,1:6])
 
 ```
 
@@ -255,11 +269,12 @@ corpus_dtm
 
 4. Découverte des sujets
 
-La découverte de sujets est un exemple d'**apprentissage non supervisé** parce que nous n'avons pas accès à de véritables informations sur l'affectation des sujets. C'est-à-dire qu'on ne sait pas, a priori, quels sujets existent dans le corpus et caractérisent chaque document. Nous souhaitons découvrir des sujets en analysant la distribution de la fréquence des termes/mots au sein d'un document donné et entre les documents. En revanche, dans l'**apprentissage supervisé**, les chercheurs utilisent un échantillon avec une variable de résultat observé pour en savoir plus sur la relation entre le résultat et les prédicteurs. Par exemple, nous pouvons demander à des codeurs humains de lire certains documents et d'attribuer des sujets. Nous pouvons ensuite utiliser ces informations pour prédire les sujets d'autres documents qui n'ont pas été lus. De toute évidence, le manque d'informations sur les variables de résultat rend les problèmes d'apprentissage non supervisés plus difficiles que les problèmes supervisés.
+La découverte de sujets est un exemple d'**apprentissage non supervisé** parce que nous n'avons pas accès à de véritables informations sur l'affectation des sujets. C'est-à-dire qu'on ne sait pas, à priori, quels sujets existent dans le corpus et caractérisent chaque document. Nous souhaitons découvrir des sujets en analysant la distribution de la fréquence des termes/mots au sein d'un document donné et entre les documents. En revanche, dans l'**apprentissage supervisé**, les chercheurs utilisent un échantillon avec une variable de résultat observé pour en savoir plus sur la relation entre le résultat et les prédicteurs. Par exemple, nous pouvons demander à des codeurs humains de lire certains documents et d'attribuer des sujets. Nous pouvons ensuite utiliser ces informations pour prédire les sujets d'autres documents qui n'ont pas été lus. De toute évidence, le manque d'informations sur les variables de résultat rend les problèmes d'apprentissage non supervisés plus difficiles que les problèmes supervisés.
 
 - Présenter le nuage des mots (wordcloud) qui utilise la fréquence des mots (tf) pour les documents 12 et 24. Commenter les résultats en essayant d'établir le/les sujets couverts par ces documents. Retenez les 20 mots les plus importants. N'oubliez pas que le package wordcloud utilise la matrice document-termes. Vous devez donc transformer votre donnée tidy au 3 en matrice document-termes que vous nommez **dtm**
 
 ```{r}
+
 graph_doc <- function(donnee){
   ggplot(donnee) +
     geom_col(aes(x = reorder(word, desc(n)), y = n, fill = word), show.legend = FALSE) +
@@ -313,7 +328,7 @@ graph_doc(doc12_idf_10)
 ```
 
 
-Maintenant, si on voulait faire les mêmes choses mais avec le wordcloud, on doit transformer la base de données en matrice document-terms
+Maintenant, si on voulait faire les mêmes choses mais avec le wordcloud, on doit transformer la base de données en matrice document-terms. (PAS forcément).
 
 ```{r}
 
@@ -373,6 +388,11 @@ Hamilton <- corpus_tidy_text_tfidf %>%
 On peut utiliser un algorithme pour séparer les données. L'un de ses algorithmes est appelé le k-mean. L'algorithme k-means est un algorithme itératif dans lequel un ensemble d'opérations est effectué à plusieurs reprises jusqu'à ce qu'une différence notable dans les résultats ne soit plus produite. Le but de l'algorithme est de diviser les données en k groupes similaires où chaque groupe est associé à son centre de gravité, qui est égal à la moyenne intra-groupe. Pour cela, vous devez d'abord attribuer chaque observation à son cluster le plus proche, puis calculer le centroïde de chaque cluster en fonction de cette nouvelle affectation de cluster. Ces deux étapes sont répétées jusqu'à ce que l'affectation de cluster ne change plus. Notez que les chercheurs doivent choisir le nombre de grappes k et le centroïde initial de chaque grappe. Dans R, les emplacements initiaux des centroïdes sont sélectionnés au hasard, sauf indication contraire.
 
 
+La fonction kmeans() implémente l'algorithme k-means dans R. La fonction a différents arguments, mais le premier argument x prend une matrice d'observations à laquelle on applique l'algorithme k-means. 
+
+Les principaux arguments de la fonction kmeans() incluent "centers" (le nombre de clusters), "iter.max" (le nombre maximum d'itérations) et "nstart" (le nombre de centroïdes initiaux choisis au hasard). Il est recommandé de spécifier l'argument nstart afin que l'algorithme soit exécuté plusieurs fois avec des valeurs de départ différentes (la fonction kmeans() rapporte les meilleurs résultats).
+
+
 
 ```{r}
 
@@ -388,7 +408,29 @@ kmean_out <-
   Hamilton_dtm %>% 
   kmeans(centers = CLUSTERS, nstart = 10)
 
+# Éléments de la liste
+names(kmean_out)
+
+# Nombre d'itérations
 kmean_out$iter
+
+# Les centroïdes du résultat
+
+kmean_out$cluster
+
+```
+
+
+Les objets de sortie, kmean_out, sont des listes qui contiennent divers éléments concernant les résultats de l'application de l'algorithme k-means. Ils incluent iter (un entier représentant le nombre d'itérations jusqu'à la convergence, qui est atteinte lorsque les affectations de cluster ne changent plus), cluster (un vecteur de l'appartenance au cluster résultant) et "centers" (une matrice de centroïdes de cluster).
+
+- La convergence est atteinte au bout de 3 itérations. Le nombre maximal d'itérations par défaut est de 10. Si la convergence n'est pas atteinte, l'argument iter.max doit être spécifié comme un nombre supérieur à 10.
+
+
+
+
+
+```{r}
+
 
 
 hamilton_words <-
@@ -399,11 +441,8 @@ hamilton_words <-
 hamilton_words <- bind_cols(hamilton_words, as_tibble(t(kmean_out$centers)))
 
 
+
 ```
-
-
-
-
 
 - Présenter les 10 mots de chaque centroïde des clusters.
 
@@ -416,7 +455,7 @@ top_word <-
   group_by(cluster) %>% 
   top_n(10, value)
 
-ggplot(top_word %>% filter(cluster == 2)) +
+ggplot(top_word %>% filter(cluster == 1)) +
   geom_col(aes(x = reorder(word, desc(value)), y = value)) +
   coord_flip() 
   #facet_wrap(~cluster)
@@ -427,13 +466,38 @@ ggplot(top_word %>% filter(cluster == 2)) +
 
 ```{r}
 
+ggplot(top_word ) +
+  geom_col(aes(x = reorder(word, -desc(value)), y = value, fill = cluster), show.legend = FALSE) +
+  coord_flip() +
+  facet_wrap(~cluster, scales = "free")
+
 
 ```
 
 
 L'examen des 10 termes les plus importants au centroïde de chaque groupe suggère que le groupe 2 se rapporte à la guerre et à la fiscalité, comme indiqué par des termes comme armi, taxat et guerre, tandis que le groupe 1 ne couvre qu'un seul document. Le groupe 3 traite de la conception institutionnelle et le groupe 4 semble concerner les systèmes judiciaires. La comparaison de ces sujets avec le contenu réel de The Federalist Papers montre un degré de validité décent pour les résultats de l'algorithme de clustering k-means.
 
-## Tableau avec les 
+
+```{r}
+
+#if (!requireNamespace("BiocManager", quietly=TRUE))
+#    install.packages("BiocManager")
+#BiocManager::install('Rgraphviz')
+
+#library(Rgraphviz)
+
+## plotting the results using the labels and limits defined earlier
+#plot(Hamilton_dtm, col = kmean_out$cluster + 1,
+#xlim = lim, ylim = c(-1, 1))
+## plotting the centroids
+#points(kmean_out$centers, pch = 8, cex = 2)
+
+
+
+```
+
+
+## Tableau avec les top word de chaque cluster
 
 
 ```{r}
@@ -520,9 +584,9 @@ tt_top_term %>%
 
 8. Prédire l'auteur des 11 essais sans auteur
 
-Comme mentionné précédemment, la paternité de certains des documents fédéralistes est inconnue. Nous utiliserons les 66 essais attribués à Hamilton ou à Madison pour prédire la paternité des 11 articles contestés. Étant donné que chaque article fédéraliste traite d'un sujet différent, vous allez vous concentrer sur l'utilisation des articles, des prépositions et des conjonctions. En particulier, vous allerz analyser la fréquence d'utilisation des 10 mots suivants par les deux auteurs: **although, always, commonly, consequently, considerable, enough, there, upon, while, whilst**. Ces mots sont sélectionnés sur la base de l'analyse présentée dans l'article académique qui a inspiré cet exercice. En conséquence, vous devez utiliser le corpus sans la stemmisation. 
+Comme mentionné précédemment, la paternité de certains des documents fédéralistes est inconnue. Nous utiliserons les 66 essais attribués à Hamilton ou à Madison pour prédire la paternité des 11 articles contestés. Étant donné que chaque article fédéraliste traite d'un sujet différent, vous allez vous concentrer sur l'utilisation des articles, des prépositions et des conjonctions. En particulier, vous allez analyser la fréquence d'utilisation des 10 mots suivants par les deux auteurs: **although, always, commonly, consequently, considerable, enough, there, upon, while, whilst**. Ces mots sont sélectionnés sur la base de l'analyse présentée dans l'article académique qui a inspiré cet exercice. En conséquence, vous devez utiliser le corpus sans la stemmisation. 
 
-- Créer une base données avec les identifiants des essais de chaque auteur avec le nom des auteurs. Cette nouvelle base de données que vous appelez known_essays doit avoir deux variables (document et author) et com
+- Créer une base de données avec les identifiants des essais de chaque auteur avec le nom des auteurs. Cette nouvelle base de données que vous appelez known_essays doit avoir deux variables (document et author) et com
 
 
 
@@ -586,10 +650,11 @@ corpus_tidy_short_t <-
     id_num %in% ma ~ "Madison",
     id_num %in% ja ~ "Jay"))
 
+# Autre manière
 
-corpus_tidy_short_t <-
-  corpus_tidy_short_t %>% 
-  left_join(known_essays, by = "id_num")
+#corpus_tidy_short_t <-
+#  corpus_tidy_short_t %>% 
+#  left_join(known_essays, by = "id_num")
 
 
 #ctable(corpus_tidy_short_t$word, corpus_tidy_short_t$author, "c")
@@ -602,22 +667,24 @@ mots_auteurs <-
   group_by(author, word) %>% 
   summarise(moyenne = mean(prop))
 
+
 mots_auteurs <-
   pivot_wider(mots_auteurs, names_from = word, values_from = moyenne)
 mots_auteurs
+
 t(mots_auteurs)
 
 
 hm_tfm <-
   unnest_tokens(corpus_tidy, word, text) %>%
-  count(id, word) %>%
+  count(id_num, word) %>%
   # term freq per 1000 words
-  group_by(id) %>%
+  group_by(id_num) %>%
   mutate(count = n / sum(n) * 1000) %>%
   select(-n) %>%
-  inner_join(STYLE_WORDS, by = "word") %>%
+  inner_join(Style_words, by = "word") %>%
   # merge known essays
-  left_join(known_essays, by = c("id", "document")) %>%
+  left_join(known_essays, by = c("id_num")) %>%
   # make wide with each word a column
   # fill empty values with 0
   spread(word, count, fill = 0)
@@ -689,6 +756,8 @@ hm_fit <- lm(author2 ~ upon + there + consequently + whilst,
              data = author_data)
 hm_fit
 
+summary(hm_fit)
+
 ```
 
 ```{r}
@@ -698,7 +767,7 @@ author_data <- author_data %>%
   add_predictions(hm_fit) %>%
   mutate(pred_author = if_else(pred >= 0, "Hamilton", "Madison"))
 
-ctable(author_data$pred_author, author_data$author, "c")
+ctable(author_data$pred_author, author_data$author, "no")
 
 ```
 
@@ -763,8 +832,7 @@ test %>%
 
 ```
 
-The results below show that even when the cross validation procedure is used, the
-model continues to perfectly classify the authorship of each essay.
+Les résultats ci-dessous montrent que même lorsque la procédure de validation croisée est utilisée, le modèle continue de classer parfaitement la paternité de chaque essai.
 
 
 ```{r}
