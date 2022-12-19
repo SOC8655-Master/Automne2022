@@ -1,0 +1,83 @@
+---
+title: 'Séance 15: Conclusion du cours'
+author: "Visseho Adjiwanou, PhD."
+date: "`r format(Sys.time(), '%d %B %Y')`"
+output:
+  beamer_presentation:
+    colortheme: beaver
+    fonttheme: structurebold
+    theme: Antibes
+  slidy_presentation: default
+  ioslides_presentation: default
+---
+
+## Bilan
+
+1. Compétences en R
+2. Méthodes traditionnelles vues 
+3. Nouvelles approches
+
+## Compétences en R
+
+- On a juste gratté la surface, mais suffisamment en profondeur pour que vous puissiez vous envolez tout seul.
+- Comme toute langue, on s'améliore en l'utilisant
+- C'est une petite tâche que je viens de déposer sur votre CV qui peut vous amener loin
+- Où aller à partir d'ici
+
+>- Continuer par travailler sur vos projets en utilisant R.
+>- Faites des présentations dans R. 
+>- J'ai des projets qui peuvent vous intéresser, (avec moins d'argent pour le moment)
+
+## Compétences en méthodes d'analyse "traditionnelle"
+
+- Méthodes vues
+  - Analyse descriptive
+  - Régression linéaire simple
+  - Régression logistique
+
+- Ceci est la base encore une fois de toutes les autres méthodes
+- Où aller à partir de là?
+
+>- Suivez d'autres cours qui se donnent à l'université (par exemple, modèles multiniveaux, modèles de risques et durée, modèles d'équations structurelles)
+>- Lisez des livres de méthodes quantitatives, ceux que je vous ai suggéré dans ce cours sont un bon début
+
+## Compétences en nouvelles approches computationnelles
+
+- Sous formes d'ateliers
+- Méthodes vues
+  - Grattage de sites web pour collecter des données
+  - Utilisation de API pour collecter des données
+  - Analyse de texte
+  
+- C'est le plus grand gain que vous aviez eu dans ce cours et c'est la compétence que vous pouvez perdre aussi le plus vite si vous ne faites pas attention
+
+## Compétences en nouvelles approches computationnelles
+
+- Où aller à partir de maintenant
+
+>- Si vous n'avez pas pu faire un projet avec cette méthode dans le cadre de ce cours, je vous encourage à commencer un maintenant (pour le fun)
+>- Suivez des cours en lignes (pas dans le vide, avec un projet en tête)
+>- les autres cours peuvent être les cours sur l'apprentissage automatique, sur l'analyse de réseaux, et pourquoi pas, analyse de texte à nouveau
+
+## Et finalement
+
+- Les méthodes ne valent rien sans une bonne réflexion derrière.
+- Lisez les articles de votre mémoire/thèse avec un esprit critique
+- Inscrivez vous dans les forums de discussion
+- Bonne continuation et au plaisir de vous retrouvez dans les couloirs du département, au séminaire et pourquoi pas de lire vos articles...
+
+Bon Repos! Joyeuses Fêtes! Bonne Année!
+========================================
+
+## Je ne peux pas partir sans quelques codes R pour aggrémenter votre période des fêtes
+
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+#install.packages('animation')
+library(animation)
+demo('fireworks')
+```
+
+## Je ne peux pas partir sans quelques codes R
+
+- https://rstudio-pubs-static.s3.amazonaws.com/237347_4375e98b087f444fbac540a9e6fc674b.html
