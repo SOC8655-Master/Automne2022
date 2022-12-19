@@ -85,6 +85,8 @@ webpage <- read_html("https://guides.loc.gov/federalist-papers/text-1-10")
 #webpage_text
 #https://www.youtube.com/watch?v=smriIBG08ok
 
+//*[@id="s-lg-box-collapse-21730519"]
+
 page_section <- html_node(webpage, xpath = '//*[@id="s-lg-col-1"]/div')
 
 #'//*[@id="s-lg-box-wrapper-25493264"]'
@@ -183,11 +185,7 @@ DIR_SOURCE <- system.file("extdata/federalist", package = "qss")
 corpus_raw <- VCorpus(DirSource(directory = DIR_SOURCE, pattern = "fp"))
 corpus_raw
 
-corpus_raw[[1]][1]
-
-system
-
-?VCorpus
+corpus_raw[[2]][1]
 
 ```
 
@@ -408,6 +406,7 @@ kmean_out <-
   Hamilton_dtm %>% 
   kmeans(centers = CLUSTERS, nstart = 10)
 
+
 # Éléments de la liste
 names(kmean_out)
 
@@ -600,6 +599,7 @@ ja <- c(2:5, 64)
 HAMILTON_ESSAYS <- c(1, 6:9, 11:13, 15:17, 21:36, 59:61, 65:85)
 MADISON_ESSAYS <- c(10, 14, 37:48, 58)
 JAY_ESSAYS <- c(2:5, 64)
+
 known_essays <- bind_rows(tibble(id_num = MADISON_ESSAYS,
                                  author = "Madison"),
                           tibble(id_num = HAMILTON_ESSAYS,
@@ -750,7 +750,8 @@ author_data <-
   filter(is.na(author) | author != "Jay") %>%
   mutate(author2 = case_when(.$author == "Hamilton" ~ 1,
                              .$author == "Madison" ~ -1,
-                             TRUE ~ NA_real_))
+                             TRUE ~ NA_real_)) %>% 
+  select(author, author2, upon,  there, consequently, whilst)
 
 hm_fit <- lm(author2 ~ upon + there + consequently + whilst,
              data = author_data)
@@ -761,7 +762,7 @@ summary(hm_fit)
 ```
 
 ```{r}
-
+library(summarytools)
 
 author_data <- author_data %>%
   add_predictions(hm_fit) %>%
