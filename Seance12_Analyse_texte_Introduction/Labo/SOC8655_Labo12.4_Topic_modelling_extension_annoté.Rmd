@@ -261,6 +261,7 @@ corpus_dtm <-
 
 inspect(corpus_dtm[1:5,1:6])
 
+
 ```
 
 
