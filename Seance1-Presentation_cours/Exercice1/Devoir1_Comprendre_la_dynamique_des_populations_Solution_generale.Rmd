@@ -1,0 +1,320 @@
+---
+title: "Devoir1: Comprendre la dynamique des populations"
+author: "Visseho Adjiwanou, PhD."
+date: "`r format(Sys.time(), '%d %B %Y')`"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+--------------------------------------------------------------------------------
+**NOTE**
+
+1. Ce devoir est à rendre au plus grand tard le **29 janvier**. 
+
+2. Vous le soumettez sur Moodle en deux versions, une version RMarkDown et une version pdf.
+
+3. Je répondrai à vos questions sur ce devoir jusqu'au **lundi 27 janvier**
+
+4. Éviter le **plagiat**. Éviter de vous copier.
+
+5. Ce devoir est noté sur 50 et compte pour 6% de la note finale.
+
+--------------------------------------------------
+
+Comprendre la dynamique des populations est important pour de nombreux domaines des sciences sociales. Nous allons calculer certaines quantités démographiques à base des naissances pour deux pays, le Kénya et la Suède, pour deux périodes: 1950 à 1955 et 2005 à 2010. Nous analyserons les fichiers de données CSV suivants: `Kenya.csv` et `Sweden.csv`. Chaque fichier contient des données démographiques. Le tableau ci-dessous présente les noms et les descriptions des variables dans chaque ensemble de données.
+
+
+ Nom                  Description
+ -------------------- ----------------------------------------------------------
+ `country`            Nom du pays abrégé
+ `period`             Période au cours de laquelle les données sont collectées
+ `age`                Groupe d'âge 
+ `births`             Nombre de naissance en milliers (i.e., nombre d'enfants 
+                      nés des femmes du groupe d'âges) 
+ `deaths`             Nombre de décès en millier 
+ `py.men`             Personne-années pour les hommes en milliers 
+ `py.women`           Personne-années pour les femmes en milliers
+--------------------- ------------------------------------------------------------
+Source: United Nations, Department of Economic and Social Affairs, Population Division (2013). *World Population Prospects: The 2012 Revision, DVD Edition.*
+
+Les données sont collectées pour une période de 5 ans, où *personne-années* est une mesure de la contribution temporelle de chaque personne au cours de la période. Par exemple, une personne qui vit pendant toute la période de cinq ans contribue pour cinq personnes-années alors que celle qui ne vit que pendant la première moitié de la période contribue à 2,5 personnes-années. Avant de commencer cet exercice, il serait judicieux d’inspecter directement chaque ensemble de données. Dans R, cela peut être fait avec la fonction `View`, qui prend comme argument le nom d'un fichier (`data.frame`) à examiner. Alternativement, dans RStudio, double-cliquer sur le nom du fichier que vous venez d'ouvrir dans l’onglet `Environment` vous permettra de visualiser les données dans une vue de type tableur. Vous pouvez directement visualiser les données dans RMarkDown avec la commande `head`.
+
+**Remarque**: Prenez toujours soins d'enregistrer les données à utiliser dans le même fichier que votre RMarkDown pour vous simplifier la vie.
+
+## Mise en route
+
+Ce code vous permet de charger directement les données. Vous devez télécharger les données de Moodle et les placer avec ce fichier Rmarkdown dans le même dossier (voir remarque en haut). Ne pas les ouvrir avant de les télécharger.
+
+```{r}
+
+## Telecharger les données
+Sweden <- read.csv("Sweden.csv")
+Kenya <- read.csv("Kenya.csv")
+
+```
+
+## QUESTION 1: 10 points
+
+Nous commençons par calculer *le taux brut de natalité* (TBN) pour une période donnée. Le TBN est défini comme suit:
+ $$ 
+    \text{TBN} 
+     =  \frac{\text{Nombre total de naissances}}{\text{Nombre total de personnes-années vécues}}
+  $$
+Calculez le TBN pour chaque période pour le Kenya et la Suède. 
+Interpréter vos résultats en :
+- décrivant l'évolution du TBN pour chaque pays;
+- comparant les taux entre les deux pays.
+
+
+### Votre réponse
+
+
+```{r}
+
+head(Kenya)
+
+# Naissance totale par période
+NTK_1950_1955 <- sum(Kenya$births[1:15])
+
+
+
+Kenya$births[2]
+
+NTK_2005_2010 <- sum(Kenya$births[16:30])
+
+# Personne année totale par période
+PAK_1950_1955 <- sum(Kenya$py.men[1:15]) + sum(Kenya$py.women[1:15])
+PAK_2005_2010 <- sum(Kenya$py.men[16:30]) + sum(Kenya$py.women[16:30])
+
+# Taux brut de natalité par période
+TBN_K_1950_1955 <- (NTK_1950_1955 / PAK_1950_1955) * 1000
+TBN_K_2005_2010 <- (NTK_2005_2010 / PAK_2005_2010) * 1000
+
+# Taux brut de natalité dans un tableau
+TBN_K <- c("1950-1955" = TBN_K_1950_1955, "2005-2010" = TBN_K_2005_2010)
+TBN_K
+
+```
+
+NTK = Naissance totale Kenya; PAK = Personnes années Kenya; TBN_K = Taux brut de natalité Kenya.
+En utilisant les mêmes commandes sur les données du `Sweden` et du `World`, on obtient les taux bruts de natalité du Sweden et du World.
+
+`TRES IMPORTANT: CE PROCÉDÉ EST CE QUI EST ATTENDU DE VOUS.`
+
+Mais, vous pouvez remarquer que nous avons écrit les mêmes commandes trois fois de suite, si ce n'est plus que cela, en comptant le nombre de fois que nous l'avons écrit aussi pour chaque pays. C'est dans ces cas qu'il est utile de faire recours aux fonctions.
+
+### Utilisation d'une fonction
+
+```{r}
+
+
+NT <- function(data){
+  NT_1 <- sum(data$births[1:15])
+  NT_2 <- sum(data$births[16:30])
+ # names(NT_1) <- "1950 - 1955"
+ # names(NT_2) <- "2005 - 2010"
+  c(NT_1, NT_2) # C() dit explicitement à fonction que nous voulons montrer les résultats
+}
+
+
+NT_Sweden <- NT(Sweden)
+NT_Sweden
+
+NT_Kenya <- NT(Kenya)
+NT_Kenya
+
+
+
+```
+
+Sur la base de cet exemple, on peut créer une fonction pour calculer directement le taux brut de natalité.
+
+
+```{r}
+TBN_x <- function(data){
+  TBN_1 <- (sum(data$births[1:15]) / (sum(data$py.men[1:15]) + sum(data$py.women[1:15]))) * 1000
+  TBN_2 <- (sum(data$births[16:30]) / (sum(data$py.men[16:30]) + sum(data$py.women[16:30]))) * 1000
+  c(TBN_1, TBN_2)               
+}
+
+TBN_x_Kenya <- TBN_x(Kenya)
+TBN_x_Kenya
+
+TBN_x_Sweden <- TBN_x(Sweden)
+TBN_x_Sweden
+
+## Donnée pour 100 pays
+
+
+library(tidyverse)
+TBN_all <- bind_cols(Period = c("1950 - 1955", "2000 - 2005"), Kenya = TBN_x_Kenya, Sweden = TBN_x_Sweden) 
+
+TBN_all  
+
+```
+
+Si on avait des centaines de pays, on ne va pas calculer les taux de cette maniere
+
+```{r}
+pays <- c("Sweden", "Kenya")
+pays[1]
+class(pays[1])
+
+TBN_x(pays[1])
+
+TBN_pays <- data_frame()
+
+for (p in 1:length(pays)) {
+  tbn <- TBN_x(pays[p])
+  TBN_pays <- bind_rows(TBN_pays, tbn)
+}
+
+for (p in pays) {
+  TBN_x(pays[p])
+  
+}
+```
+
+
+## QUESTION 2: 5 points
+
+Le TBN est facile à comprendre mais pose des problèmes de comparaisons. Pourquoi le taux brut de natalité n'est pas un bon indicateur de comparaison du niveau de fécondité entre pays?
+
+## QUESTION 3: 10 points
+
+Pour remédier à ces problèmes, nous calculons l'*indice synthétique de fécondité* (ISF). Contrairement au TBN, l'ISF s'ajuste en fonction de la composition par âge de la population féminine en âge de procréer. Pour ce faire, nous devons d'abord calculer le *taux de fécondité par âge* (TFA), qui représente le taux de fécondité chez les femmes en âge de procréer `[15, 50]`. Le TFA pour la tranche d'âge [x, x + $\delta$) (par exemple pour [15 - 20)), où `x` est l'âge de départ et $\delta$ la largeur de la tranche d'âge (mesurée en années), est défini comme suit:
+
+  $$
+    \text{TFA}_{[x,\ x+\delta)} 
+    \ = \ \frac{\text{Nombre de naissances des femmes âgées de $[x,\ x+\delta)$}}{\text{Nombre de personnes-années vécues par les femmes âgées $[x,\ x+\delta)$}}
+  $$
+
+Notez que les crochets, `[ , ]`, incluent la limite alors que les parenthèses, `( , )`, l'excluent. Par exemple, `[20, 25)` représente la tranche d’âge supérieure ou égale à 20 ans et inférieure à 25 ans. Dans les données démographiques typiques, la tranche d'âge $\delta$ est fixée à 5 ans.
+
+Calculez le taux de fécondité par âge pour le Kenya pour chacune des deux périodes. Vous pouvez décider de créer des objets séparés, ou de nouvelles objets inclus directement dans le fichier de données du Kenya. Faites la même chose pour la Suède. 
+
+### Votre réponse
+
+
+```{r}
+
+## calcul du TFA
+
+Sweden.TFA <- Sweden$births / Sweden$py.women
+Sweden.TFA
+
+Kenya.TFA <- Kenya$births / Kenya$py.women
+Kenya.TFA
+
+## Ajout des labels
+names(Sweden.TFA) <- names(Kenya.TFA) <- Sweden$age
+
+## resultats pour les femmes d'âges reproductifs [15, 50)
+Sweden.TFA[4:10]  # 1950-1955
+Sweden.TFA[19:25] # 2005-2010
+Kenya.TFA[4:10]
+Kenya.TFA[19:25]
+
+
+```
+
+### Votre interprétation
+
+De manière générale, les taux de fécondité par âge ont diminué au fil du temps pour les deux pays. Le TFA pour la Suède et le Kenya était le plus élevé pour la tranche d'âge [20, 25 ans] en 1950-1955. Cependant, en 2005-2010, le TFA de la Suède était le plus élevé pour [30, 35), tandis que celui du Kenya était le plus élevé pour [20, 25). Ceci suggère que les femmes suédoises retardent la procréation jusqu'à un âge plus avancé par rapport aux femmes au Kenya. 
+
+En conclusion, on observe des traits caractéristiques de différents niveaux de la transition démographique.
+
+- Au Kenya, on observe une baisse généralisée de la fécondité qui touche tous les âges, en témoigne un affaissement des courbes de fécondité par âge au cours des deux périodes.
+
+- Par contre en Suède, on observe un déplacement de la courbe vers la droite, témoignant d'un avancement de l'âge à la première naissance. Si l'âge à la première naissance augmente, il est presque certain que les femmes ne peuvent pas **retrouver** toutes les naissances reportées. D'où, une faible baisse de la fécondité que dans le cas du Kenya. Mais, encore une fois, sachez que la Suède est passé par le stage du Kenya et que le Kenya va se retrouver au stade de la Suède.
+
+Un graphique peut vous montrer aisément ces changements. Pour ce faire, il est plus aisé de calculer les TFA dans les bases Kenya et Sweden
+
+```{r}
+
+## TFA comme variable de Kenya et Sweden
+
+Kenya$TFA <- Kenya[, "births"] / Kenya[,"py.women"]
+Sweden$TFA <- Sweden[, "births"] / Sweden[,"py.women"]
+
+ggplot(Kenya %>% filter(TFA != 0)) +
+  geom_line(aes(x = age, y = TFA, group = period, color = period))
+
+```
+
+```{r}
+
+ggplot(Sweden %>% filter(TFA != 0)) +
+  geom_line(aes(x = age, y = TFA, group = period, color = period))
+
+```
+
+
+## QUESTION 4: 10 points
+
+En utilisant le TFA, nous pouvons définir l’Indice Synthétique de Fécondité (ISF) comme le nombre moyen d’enfants que les femmes mettent au monde si elles vivent tout au long de leur vie reproductive.
+
+ $$
+  \text{ISF} 
+   =   \text{TFA}_{[15,\ 20)} \times 5 + \text{TFA}_{[20,\ 25)} \times 5 
+  + \dots + \text{TFA}_{[45,\ 50)} \times 5
+  $$
+
+Nous multiplions chaque taux de fécondité par âge par 5 car la tranche d'âge est de 5 ans. Calculez l'ISF pour le Kenya pour chacune des deux périodes. Comme dans la question précédente, continuer à supposer que la tranche d'âge en âge de procréer des femmes est de `[15, 50)`. En général, comment est-ce que l'indice synthétique de fécondité a-t-il évolué au cours de la période de 1950 à 2000 au Kenya. Faites la même chose pour la Suède. Interprétez vos résultats.
+
+
+### Votre réponse 
+
+```{r}
+
+## calcul du l'indice synthétique pour les femmes d'âges reproductifs [15, 50)
+
+Sweden.ISF <- c(sum(Sweden.TFA[4:10] * 5), sum(Sweden.TFA[19:25] * 5))
+Kenya.ISF <- c(sum(Kenya.TFA[4:10] * 5), sum(Kenya.TFA[19:25] * 5))
+
+## Ajout des labels
+
+names(Sweden.ISF) <- names(Kenya.ISF) <-  c("1950-1955", "2005-2010") 
+
+## Résultats
+Sweden.ISF 
+Kenya.ISF 
+
+
+```
+
+### Votre interprétation
+
+Les ISF qui en résultent constituent une preuve supplémentaire de la réduction mondiale de la fécondité. Au Kenya, les femmes avaient en moyenne 7,6 enfants dans les années 50, puis ramenées à 4,9 en 2010. Il s'agit d'une baisse substantielle, mais le taux de fécondité du Kenya reste élevé par rapport au reste du monde. En Suède, nous trouvons que la fécondité a diminué sous le plafond de 2 enfants par femme au cours de la deuxième période. Cela suggère que sans l'immigration, la population suédoise pourrait commencer à diminuer.
+
+Remarque: dans de nombreux pays développés, les femmes ont des enfants à  un âge de plus en plus âgé et en ont moins. La croissance démographique mondiale est principalement due aux taux de fécondité relativement élevés dans les pays en développement.
+
+
+
+----------------------------------------------------------- **BON DEVOIR** ---------------------------------------------------------
+
+# ANNEXES
+
+## 1. Glossaire
+
+Fécondité: C’est l'étude des naissances 
+
+Fécondité = Fertility 
+
+Fécondité # Fertilité 
+
+Taux brut de natalité = Crude birth rate (CBR) 
+
+Taux global de fécondité générale 
+
+Indice synthétique de fécondité (ISF) = Total fertility rate (TFR) 
+
+Taux de fécondité par âge = Age specific fertility rate (ASFR) 
+
+
+
+
+  
+  
+
