@@ -219,13 +219,15 @@ L'étude combine des données volumineuses (Big Data) avec des données d'enquê
 
   - Big data: base de données contenant des enregistrements de milliards d’interactions sur le plus grand réseau de téléphonie mobile du Rwanda auprès de 1,5 million d’individus uniques
   - Enquête: enquêtes téléphoniques de suivi d'un échantillon aléatoire stratifié géographiquement de 856 abonnés individuels 
+
+## Prédire la pauvreté
+
   - Les données de téléphonie mobile sont utilisées par de plus en plus de personnes en Afrique subsaharienne
   - Téléphones portables peuvent:
     - Capturer des informations riches sur la fréquence et le calendrier des événements de communication
     - Refléter la structure complexe du réseau social d’un individu
     - Révéler le modèle de choix de lieu de voyage et
     - Histoires de consommation et dépenses
-
 
 
 ## Prédire la pauvreté
@@ -238,12 +240,10 @@ knitr::include_graphics("../../Images/Matthews2.png")
 
 ## Prédire la pauvreté
 
-
 ```{r, out.width='80%', echo = FALSE, fig.align = 'center'}
 knitr::include_graphics("../../Images/blum_pp.png")
 
 ```
-
 
 
 ## Prédire la pauvreté
@@ -278,10 +278,22 @@ Other Groups. Or Make Your Own., N.Y. Times, Mar. 27, 2018
   - https://www.nytimes.com/interactive/2018/03/27/upshot/make-your-own-mobility-animation.html
 
 
+## Autres exemples
+
+- Comment réduire la pauvreté: https://www.nytimes.com/interactive/2022/08/01/upshot/rich-poor-friendships.html?searchResultPosition=7
+
+  - Chetty, R., Jackson, M. O., Kuchler, T., Stroebel, J., Hendren, N., Fluegge, R. B., Gong, S., Gonzalez, F., Grondin, A., Jacob, M., Johnston, D., Koenen, M., Laguna-Muggenburg, E., Mudekereza, F., Rutter, T., Thor, N., Townsend, W., Zhang, R., Bailey, M., … Wernerfelt, N. (2022a). Social capital I: Measurement and associations with economic mobility. Nature, 608(7921), Article 7921. https://doi.org/10.1038/s41586-022-04996-4
+  
+  - https://opportunityinsights.org/wp-content/uploads/2022/07/socialcapital_nontech.pdf
+
+## Questions pour le cours prochain
+
+- Chercher des études innovantes qui utilisent des données numériques ou leur combinaison avec des données usuelles pour répondre à des questions de recherches qui vous intéressent. 
+
 ## Conclusion
 
 - Le futur de la recherche en science sociale va ressembler de plus en plus à cette intégration de plusieurs sources de données, mais aussi et surtout à l'utilisation des données numériques; 
-- Il devient donc important de préparer les étudiants que vous êtes à cette nouvelle donne en statistique
+- Il devient donc important de préparer les étudiants que vous êtes à cette nouvelle donne en statistique;
 - Ceci commence maintenant!
 
 Questions?  

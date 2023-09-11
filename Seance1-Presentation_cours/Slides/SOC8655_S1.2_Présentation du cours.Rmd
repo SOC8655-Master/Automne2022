@@ -56,7 +56,7 @@ Subdivisé en trois parties :
 
 3. La troisième partie présente :
   - les nouveaux types de données disponibles pour les chercheurs en sciences sociales, principalement les données de Twitter et de Facebook;
-  - et les nouvelles méthodes d'analyse de ces données (analyses textuelles, analyses de réseaux).
+  - et les nouvelles méthodes d'analyse de ces données (analyses textuelles en particulier, analyses de réseaux).
 
 ## Objectifs du cours
 
@@ -151,7 +151,10 @@ Voir plan de cours
 ## Datacamp
 
 > - Datacamp est une plateforme d’apprentissage en ligne qui sera utilisé tout au long de la session pour appuyer votre apprentissage. Vous n’avez pas à payer pour les cours qui y sont dessus, je m’en suis déjà chargé. 
-> - Veuillez-vous inscrire à partir de ce lien pour accéder aux cours (pour ceux qui ne l'ont pas encore fait): https://www.datacamp.com/groups/sharedlinks/96288181e47119bd675b6f15982e6770687fb8f37b2305dbe5ce399dff5bff0b
+> - Veuillez-vous inscrire à partir de ce lien pour accéder aux cours (pour ceux qui ne l'ont pas encore fait): 
+
+> - https://www.datacamp.com/groups/shared_links/52bbf27885a77b61cfe0261318f98b52833044be94de019f2
+8a6c130c36ae317
 
 > - Je vous encourage vivement (dans la mesure de vos possibilités) à compléter les deux premiers chapitres “Introduction à R” et “Introduction to the Tidyverse” avant le début des classes. N’hésitez pas à me contacter si vous avez des questions.
 
@@ -166,6 +169,8 @@ Voir plan de cours
 > - De même, d’autres personnes peuvent avoir de meilleures réponses à vos questions que moi. 
 
 > - Slack dispose d'une interface bureau ainsi que d'une application pour votre téléphone
+
+> - https://join.slack.com/t/soc8655a23/shared_invite/zt-21vvzp6aa-Wzqw0UTz8Wp9LR1Pyce7Kw
 
 ## Perusal
 
@@ -241,23 +246,25 @@ Voir plan de cours
 
 ## Mode d'évaluation
 
-1. **Lectures d’articles et travaux pratiques** (25%)
+1. **Lectures d’articles et travaux pratiques** (10%)
     - Vous avez à faire le résumé de deux lectures assignées à vous et le soumettre la veille de chaque cours (voir section sur Calendrier). 
+
+<!--
     - De même, je vais vous assigner des capsules vidéo à écouter sur Datacamp chaque semaine, qui seront évaluées. 
-    - Par ailleurs, chaque étudiant.e aura à faire une présentation de 15 minutes sur un des articles lus. Vous devez vous filmer et envoyer la présentation puisque nous n’aurons pas le temps de faire une présentation synchrone. Vingt-cinq pour cent (25%) de la note finale est attribuée à votre engagement avec ces matériels.  
+    - Par ailleurs, chaque étudiant.e aura à faire une présentation de 15 minutes sur un des articles lus. Vous devez vous filmer et envoyer la présentation puisque nous n’aurons pas le temps de faire une présentation synchrone. Vingt-cinq pour cent (25%) de la note finale est attribuée à votre engagement avec ces matériels.  -->
 
 ## Mode d'évaluation
 
-2. **Travaux de maison** (40%)
+2. **Travaux de maison** (50%)
     - Quatre (4) devoirs couvrant les principaux chapitres du cours
     - Devoirs à faire avec documents ouverts mais pas en groupe
     - Utilisation de RMarkDown pour soumettre les devoirs
-    - Deux semaines pour rendre le devoir (sauf le 6e)
-    - Compte chacun pour 10%
+    - Deux semaines pour rendre le devoir (sauf le dernier)
+    - 
 
 ## Mode d'évaluation
 
-3. **Projet final** (35%)
+3. **Projet final** (40%)
     - Vous aurez à soumettre un projet final de 7500 mots sur un sujet de votre choix. 
     - Idéalement, ce projet doit couvrir les deux parties du cours. Vous aurez jusqu’au 5 janvier pour soumettre ce projet. 
     - Ce projet peut être fait individuellement ou par binôme. Voici les étapes et échéances à respecter pour la soumission du projet :
@@ -268,7 +275,7 @@ Voir plan de cours
 
 4. **Note finale**
 
-- Votre note finale sera une moyenne pondérée de votre note du projet final ou examen final (35%), des séries de devoirs (40%), des cours sur datacamp, des travaux pratiques et de résumé de lectures (25%). 
+- Votre note finale sera une moyenne pondérée de votre note du projet final ou examen final (40%), des séries de 4 devoirs (50%), des cours sur datacamp, des travaux pratiques et de résumé de lectures (10%). 
 - Je me réserve le droit de donner des bonus pour une participation active à l'intérieur et à l'extérieur de la classe. Par exemple, un étudiant qui aide activement ses camarades de classe en répondant aux questions ou qui s'engage de manière productive en classe pourrait avoir droit à une petite prime.
 
 ## Mode d'évaluation
@@ -283,10 +290,10 @@ Remarques:
 
 Devoirs               Date remise                Date de soumission 
 --------------------  -------------------------  ---------------------
-1                     3 octobre                  17 octobre         
-2                     7 novembre                 21 novembre         
-3                     28 novembre                14 décembre        
-4                     12 décembre                19 décembre        
+1                     2 octobre                  15 octobre         
+2                     6 novembre                 19 novembre         
+3                     27 novembre                10 décembre        
+4                     11 décembre                17 décembre        
 
 ## Mode d'évaluation
 
@@ -302,12 +309,12 @@ Pénalités pour les devoirs et les cours:
 
 Date               Date remise              
 -----------------  ----------------------------------------------
-26 septembre       Soumission de votre sujet de recherche 
+25 septembre       Soumission de votre sujet de recherche 
                    (1 page d’introduction – 10%)
-31 octobre         Soumission de votre revue de littérature (15%)
-21 novembre        Soumission de votre méthodologie et plan d’analyse (15%) 
-19 décembre        Soumission du draft du projet (ou projet final)
-4 janvier          Soumission du projet final
+30 octobre         Soumission de votre revue de littérature (15%)
+4 décembre         Soumission de votre méthodologie et plan d’analyse (15%) 
+18 décembre        Soumission du draft du projet (ou projet final)
+5 janvier          Soumission du projet final
 
 
 ## Calendrier 
