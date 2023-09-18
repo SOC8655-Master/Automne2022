@@ -5,11 +5,11 @@ author: "Visseho Adjiwanou, PhD."
 institute: "Département de Sociologie - UQAM"
 #date: "`r format(Sys.time(), '%d %B %Y')`"
 output:
-  slidy_presentation: default
   beamer_presentation:
     colortheme: beaver
     fonttheme: structurebold
-    theme: AnnArbor
+    theme: Ilmenau
+  slidy_presentation: default
   ioslides_presentation: default
 header-includes:
   - \usepackage{color}
@@ -85,61 +85,6 @@ Sources de données en sciences sociales
 https://blog.google/products/search/discovering-millions-datasets-web/
 
 
-<!--
-Description statistique univariée sur les variables qualitatives
-=========================================================
-
-## Description statistique des variables qualitatives
-
-Soit une série de valeurs qualitative:
-H, F, F, F, H, F, H, F, F, F, F, H, H, F, H, H, F
-
-  - donner les effectifs de chaque modalité
-  - donner les proportions (= fréquences) de chaque modalité par rapport au total
-  - combiner si besoin les proportions, notamment des proportions cumulées pour des variables ordinales)
-
-
-## Description statistique des variables qualitatives
-
-- Une telle information peut être présentée dans un tableau dit de distribution:
-
-Occurence de la variable (X)       H              F             Total
----------------------------------- -------------- ------------- -----------
-Effectifs                          7              10            17 
-Fréquence                          7/17           10/17         17/17
-
-
-## Description statistique des variables qualitatives
-
-- Notation générale (avec plus de modalités)
-
-La variable X prend les valeurs $x_1, x_2, . . . , x_p$, n valeurs avec p occurrences différentes:
-
-
-```{r}
-
-knitr::include_graphics("/Users/visseho/OneDrive - UQAM/Cours/Images_cours/Tableau1.jpg")
-
-```
-
-
-![](/Users/visseho/OneDrive - UQAM/Cours/Images_cours/Tableau1.jpg)
-
-
-## Description statistique des variables qualitatives
-
-- Nombre total d'observation
-
-$$n = \sum_{i=1}^p n_i$$
-
-- Fréquence relative
-
-$$f_i = \frac{n_i}{n}$$
-
-- Somme des fréquences
-
-$$\sum_{i=1}^p f_i = 1$$
--->
 
 Exemples
 ========================================================
@@ -296,23 +241,26 @@ Introduction à Tidyverse
 
 ## Processus d'analyse des données
 
-<!--
-```{r}
-library(knitr)
-include_graphics("/Users/visseho/OneDrive - UQAM/Cours/Images_cours/r4ds.jpg")
+![](../Images/r4ds.jpg)
 
-```
-
--->
+## Processus d'analyse des données
 
 - Tidyverse comprend un ensemble de packages qui suivent la même philosophie dont le but est de vous aider à répondre à chaque étape de votre processus d'analyse des données. 
 - Résumons ce processus:
-  1. Où sont les données? Vous devez les importer (**read**) pour les analyser. La manière dont vous allez les importer dépend du type de fichier.
-  2. Est-ce que vous avez besoin de l'ensemble des variables du fichier de données? pas nécessairement. Vous devez sélectionner (**select**) celles qui vous intéresse
-  3. Est-ce que vous travaillez sur l'ensemble de l'échantillon ou uniquement sur les femmes? Vous devez les filtrer (**filter**)
-  4. Devez-vous utiliser les groupes d'âges ou les âges réels? Vous devez créer de nouvelles variables (**mutate**)
-  5. Que faites-vous des individus qui n'ont pas répondu à certaines questions? leur attribuer une valeur (**impute**) ou les enlever (**na.rm pour remove na**)
-  6. Que savons-nous sur les variables? Vous devez produire des statistiques descriptives (**summarize**)
+
+>  1. Où sont les données? Vous devez les importer (**read**) pour les analyser. La manière dont vous allez les importer dépend du type de fichier.
+
+>  2. Est-ce que vous avez besoin de l'ensemble des variables du fichier de données? pas nécessairement. Vous devez sélectionner (**select**) celles qui vous intéresse
+
+>  3. Est-ce que vous travaillez sur l'ensemble de l'échantillon ou uniquement sur les femmes? Vous devez les filtrer (**filter**)
+  
+## Processus d'analyse des données
+  
+>  4. Devez-vous utiliser les groupes d'âges ou les âges réels? Vous devez créer de nouvelles variables (**mutate**)
+
+>  5. Que faites-vous des individus qui n'ont pas répondu à certaines questions? leur attribuer une valeur (**impute**) ou les enlever (**na.rm pour remove na**)
+
+>  6. Que savons-nous sur les variables? Vous devez produire des statistiques descriptives (**summarize**)
 
 
 ## Processus d'analyse des données  
@@ -335,13 +283,7 @@ library(tidyverse)
 - Comme dit plus haut, Tidyverse va nous servir à faire tout ce travail.
 - Imitez au maximum ce que je vais faire
 
-```{r, out.width='70%', results='hide', echo=FALSE}
-
-knitr::include_graphics("../Images/r4ds.jpg")
-
-```
-
-
+![](../Images/r4ds.jpg)
 
 ## Processus d'analyse des données
 
@@ -384,6 +326,9 @@ La documentation est éparse sur chacun de ces packages.
 - Les packages R sont une collection de fonctions R, de code conforme et d'exemples de données. 
 - Par défaut, R installe un ensemble de packages lors de l'installation. 
 - D'autres packages sont ajoutés plus tard, lorsqu'ils sont nécessaires à des fins spécifiques: c'est le cas de Tidyverse et de Summarytools
+
+## Informations sur les packages
+
 - Il existe un package pour presque tout
 - Une manière de commencer par travailler facilement avec les nouveaux packages, c'est d'utiliser leur feuille de résumé s'il en existe.
 
@@ -399,32 +344,10 @@ Introduction à Summarytools
 - Summarytools va être utiliser pour présenter :
   - les statistiques descriptives sur les variables qualitatives (**freq**)
   - présenter les tableaux croisés liant deux variables descriptives (**ctable**) 
-- Comme pour tout package, vous devez en priorité l'installer avant son utilisation (**install.packages("nom du package")**) Cette installation se fait pour une fois de bon. 
-- Mais, au début de chaque utilisation, vous devez le chargez (**libreary(nom du package)**)
-- Faites attention aux **guillemets** entre installer et charger un package: pour réussir à écrire les codes correctement, vous devez ouvrir grands vos yeux.
 
+>- Comme pour tout package, vous devez en priorité l'installer avant son utilisation (**install.packages("nom du package")**) Cette installation se fait pour une fois de bon. 
 
-<!--
-Introduction au labo
-========================================================
+>- Mais, au début de chaque utilisation, vous devez le chargez (**libreary(nom du package)**)
 
-## Base de données
+>- Faites attention aux **guillemets** entre installer et charger un package: pour réussir à écrire les codes correctement, vous devez ouvrir grands vos yeux.
 
-- Nous allons utiliser les données de l'enquête "Socio-Cultural Survey" de 1996
-
-"Les enquêtes socio-culturelles font partie d'une grande série d'études internationales comparatives des valeurs fondamentales. Des enquêtes parallèles sont réalisées chaque année dans plusieurs pays européens et aux États-Unis. CROP Inc. a commencé cette série au Canada en 1983. Ces enquêtes portent sur un large éventail d'attitudes de base - sociales, culturelles, économiques et politiques."
-
-
-## Travail à faire avant le cours
-
-- Lisez cette note de cours et envoyez-moi vos questions
-- Lisez la documentation sur l'étude  **cora-crsc1996-E-1996.pdf**, disponible sur Moodle
-- Choisissez :
-  - Une variable dépendante de votre choix qui vous intéresse
-  - Quatre variables indépendantes dont une de type qualitative **nominale**, une de type qualitative **ordinale**, une de type quantitative **ratio** et une de type quantitative **intervalle** en lien avec votre variable dépendante
-  - Votre échantillon, c'est-à-dire le groupe cible qui vous concerne
-- Décrivez/Spéculer sur le lien que vous entrevoyez entre chacune de vos variables indépendantes et votre variable dépendante. Si vous faites recours à vos théories sociologiques, ce serait encore parfait.
-- En plus de ceci, répondez aux questions qui se trouvent dans cette note de cours.
-- Envoyez-moi le tout avant le début du cours.
-
--->
